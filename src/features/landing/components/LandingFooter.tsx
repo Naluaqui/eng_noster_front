@@ -1,8 +1,10 @@
+import { publicRoutes } from '@/shared/constants/routes';
+
 export function LandingFooter() {
   return (
     <footer className="landing-footer">
       <div className="footer-brand">
-        <a className="footer-brand__mark" href="/" aria-label="Noster">
+        <a className="footer-brand__mark" href={publicRoutes.landing} aria-label="Noster">
           <span>N</span>
           <strong>Noster</strong>
         </a>
@@ -11,16 +13,16 @@ export function LandingFooter() {
 
       <nav className="footer-column" aria-label="Links principais">
         <h2>Produto</h2>
-        <a href="/">Início</a>
+        <a href={publicRoutes.landing}>Início</a>
         <a href="#produto">Mentes de negócio</a>
         <a href="#carousel-title">Carrossel</a>
       </nav>
 
       <nav className="footer-column" aria-label="Legal e empresa">
         <h2>Empresa</h2>
-        <a href="/">Sobre</a>
-        <a href="/">Privacidade</a>
-        <a href="/">Termos</a>
+        <a href={publicRoutes.landing}>Sobre</a>
+        <a href={publicRoutes.landing}>Privacidade</a>
+        <a href={publicRoutes.landing}>Termos</a>
       </nav>
 
       <address className="footer-column">
@@ -32,13 +34,13 @@ export function LandingFooter() {
       <div className="footer-column footer-social">
         <h2>Social</h2>
         <div>
-          <a href="/" aria-label="Noster no LinkedIn">
+          <a href={publicRoutes.landing} aria-label="Noster no LinkedIn">
             in
           </a>
-          <a href="/" aria-label="Noster no Instagram">
+          <a href={publicRoutes.landing} aria-label="Noster no Instagram">
             ig
           </a>
-          <a href="/" aria-label="Noster no GitHub">
+          <a href={publicRoutes.landing} aria-label="Noster no GitHub">
             gh
           </a>
           <a href="mailto:contato@noster.ai" aria-label="Enviar email para Noster">

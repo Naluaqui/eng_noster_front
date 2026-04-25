@@ -1,0 +1,17 @@
+:root {
+  color-scheme: dark;
+  font-family: var(--font-body);
+  background: #1c1c1c;
+  color: #fffdff;
+
+  --font-display: 'Bungee Inline', ui-sans-serif, system-ui, sans-serif;
+  --font-attention: 'Bungee Shade', var(--font-display);
+  --font-body:
+    'Lexend Exa', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  --color-background: #1c1c1c;
+  --color-foreground: #fffdff;
+  --color-accent-yellow: #ffe342;
+  --color-accent-purple: #865cff;
+  --color-accent-mint: #00ffc3;
+}

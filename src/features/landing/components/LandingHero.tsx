@@ -1,5 +1,9 @@
-import { BrainCircuit, LogIn, MessagesSquare, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+'use client';
+
+import type { PointerEvent } from 'react';
+import { BrainCircuit, MessagesSquare, Sparkles } from 'lucide-react';
+import { GoogleLoginButton } from '@/features/auth/components/GoogleLoginButton';
+import { publicRoutes } from '@/shared/constants/routes';
 
 const decisionSteps = ['capturar', 'estruturar', 'decidir'];
 const decisionLenses = [
@@ -23,18 +27,86 @@ const signalTags = [
   'próximo passo',
 ];
 
+const runawayHeadline = [
+  { text: 'Enxergue', accent: false },
+  { text: 'além do que foi dito', accent: true },
+];
+
+function resetRunawayLetters(container: HTMLElement) {
+  container.querySelectorAll<HTMLElement>('.runaway-title__letter').forEach((letter) => {
+    letter.style.setProperty('--escape-x', '0px');
+    letter.style.setProperty('--escape-y', '0px');
+    letter.style.setProperty('--escape-rotate', '0deg');
+  });
+}
+
+function handleRunawayPointerMove(event: PointerEvent<HTMLHeadingElement>) {
+  const letters = event.currentTarget.querySelectorAll<HTMLElement>('.runaway-title__letter');
+  const escapeRadius = 112;
+
+  letters.forEach((letter) => {
+    const rect = letter.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const distanceX = centerX - event.clientX;
+    const distanceY = centerY - event.clientY;
+    const distance = Math.hypot(distanceX, distanceY) || 1;
+
+    if (distance > escapeRadius) {
+      letter.style.setProperty('--escape-x', '0px');
+      letter.style.setProperty('--escape-y', '0px');
+      letter.style.setProperty('--escape-rotate', '0deg');
+      return;
+    }
+
+    const force = (escapeRadius - distance) / escapeRadius;
+    const directionX = distanceX / distance;
+    const directionY = distanceY / distance;
+    const escapeX = directionX * force * 58;
+    const escapeY = directionY * force * 42;
+    const escapeRotate = directionX * force * 12;
+
+    letter.style.setProperty('--escape-x', `${escapeX.toFixed(2)}px`);
+    letter.style.setProperty('--escape-y', `${escapeY.toFixed(2)}px`);
+    letter.style.setProperty('--escape-rotate', `${escapeRotate.toFixed(2)}deg`);
+  });
+}
+
+function RunawayHeadline() {
+  return (
+    <h1
+      id="landing-title"
+      className="runaway-title"
+      aria-label="Enxergue além do que foi dito"
+      onPointerMove={handleRunawayPointerMove}
+      onPointerLeave={(event) => resetRunawayLetters(event.currentTarget)}
+    >
+      {runawayHeadline.map((line) => (
+        <span
+          className={`runaway-title__line${line.accent ? ' runaway-title__line--accent' : ''}`}
+          aria-hidden="true"
+          key={line.text}
+        >
+          {[...line.text].map((letter, index) => (
+            <span className="runaway-title__letter" key={`${line.text}-${index}`}>
+              {letter === ' ' ? '\u00A0' : letter}
+            </span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  );
+}
+
 export function LandingHero() {
   return (
     <section className="landing-hero" aria-labelledby="landing-title">
       <header className="hero-topbar">
-        <a className="brand-mark" href="/" aria-label="Noster">
+        <a className="brand-mark" href={publicRoutes.landing} aria-label="Noster">
           <span className="brand-mark__symbol">N</span>
           <span>NOSTER</span>
         </a>
-        <Link className="hero-login hero-login--compact" to="/app/reunioes">
-          <LogIn size={18} aria-hidden="true" />
-          Login
-        </Link>
+        <GoogleLoginButton compact />
       </header>
 
       <div className="hero-watermark" aria-hidden="true">
@@ -47,19 +119,21 @@ export function LandingHero() {
             <BrainCircuit size={18} aria-hidden="true" />
             Engenharia de decisão com IA
           </span>
-          <h1 id="landing-title">
-            Enxergue
-            <span>além do que foi dito</span>
-          </h1>
+          <RunawayHeadline />
           <p className="hero-lead">
             Uma engenharia de decisão que cruza histórico visual e inteligência multi-dimensional,
             transformando sinais e trade-offs em dashboards 360º.
           </p>
 
           <div className="hero-actions" aria-label="Ações principais">
-            <a className="hero-secondary-action" href="#produto">
+            <button type="button" className="hero-secondary-action" 
+              onClick={() => {
+                document.getElementById('produto')?.scrollIntoView({ 
+                  behavior: 'smooth',
+                });
+              }}>
               Ver experiência
-            </a>
+            </button>
           </div>
         </div>
 
