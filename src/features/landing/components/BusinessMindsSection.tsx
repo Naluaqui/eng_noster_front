@@ -84,7 +84,7 @@ export function BusinessMindsSection() {
       className="business-minds-section"
       aria-labelledby="business-minds-title"
     >
-      <div className="minds-intro">
+      <div className="minds-intro" id="multi-perspectiva">
         <span>Multi-perspectiva</span>
         <h2 id="business-minds-title">Mentes de negócio</h2>
         <p>

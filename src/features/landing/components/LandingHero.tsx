@@ -138,7 +138,7 @@ export function LandingHero() {
           <div className="hero-actions" aria-label="Ações principais">
             <button type="button" className="hero-secondary-action" 
               onClick={() => {
-                document.getElementById('produto')?.scrollIntoView({ 
+                document.getElementById('multi-perspectiva')?.scrollIntoView({ 
                   behavior: 'smooth',
                 });
               }}>
