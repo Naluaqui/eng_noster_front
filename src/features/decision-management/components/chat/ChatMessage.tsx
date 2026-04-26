@@ -1,4 +1,4 @@
-import type { DecisionMessage } from '../types/decision';
+import type { DecisionMessage } from '../../types/decision';
 
 type ChatMessageProps = {
   message: DecisionMessage;

@@ -1,5 +1,5 @@
 import type { Meeting } from '@/features/meetings/types/meeting';
-import type { DecisionImpactFlowData } from '../data/decisionImpactFlows';
+import type { DecisionImpactFlowData } from '../../data/decisionImpactFlows';
 
 type DecisionImpactFlowProps = {
   meeting: Meeting;

@@ -1,4 +1,4 @@
-import { decisionMessages } from '../data/decisionMessages';
+import { decisionMessages } from '../../data/decisionMessages';
 import { ChatInput } from './ChatInput';
 import { ChatMessage } from './ChatMessage';
 import { PerspectiveSelector } from './PerspectiveSelector';

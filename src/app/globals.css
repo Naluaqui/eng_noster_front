@@ -39,8 +39,7 @@ select {
 
 .ui-button,
 .ui-input,
-.perspective-selector button,
-.personas-mini-header button {
+.perspective-selector button {
   border-radius: 0.5rem;
 }
 
@@ -93,31 +92,17 @@ select {
   gap: 0.75rem;
 }
 
-.perspective-selector,
-.personas-mini-header div:last-child {
+.perspective-selector {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.perspective-selector button,
-.personas-mini-header button {
+.perspective-selector button {
   border: 1px solid rgba(255, 253, 255, 0.14);
   padding: 0.55rem 0.75rem;
   background: rgba(134, 92, 255, 0.16);
   color: var(--color-foreground);
-}
-
-.insight-chart {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 1rem;
-}
-
-.insight-chart div {
-  border-radius: 0.5rem;
-  padding: 1rem;
-  background: rgba(0, 255, 195, 0.1);
 }
 
 .feedback-state {

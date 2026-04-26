@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { DecisionAnalysisFolder } from './DecisionAnalysisFolder';
-import { DecisionDecisionsPanel } from './DecisionDecisionsPanel';
+import { DecisionDecisionsPanel } from '../decisions/DecisionDecisionsPanel';
+import { DecisionAnalysisFolder } from '../overview/DecisionAnalysisFolder';
 import { DecisionManagementNavigation, type DecisionManagementTab } from './DecisionManagementNavigation';
 import { PrincipalInsightCard } from './PrincipalInsightCard';
 

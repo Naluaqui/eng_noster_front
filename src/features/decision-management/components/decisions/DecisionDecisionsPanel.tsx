@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { meetings } from '@/features/meetings/data/meetings';
-import { decisionImpactFlows } from '../data/decisionImpactFlows';
+import { decisionImpactFlows } from '../../data/decisionImpactFlows';
 import { DecisionImpactFlow } from './DecisionImpactFlow';
 import { DecisionMeetingsTable } from './DecisionMeetingsTable';
 

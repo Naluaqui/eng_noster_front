@@ -5,7 +5,7 @@ import { DecisionFinancialHistory } from './DecisionFinancialHistory';
 import { DecisionHealthSnapshot } from './DecisionHealthSnapshot';
 import { DecisionOverviewMetrics } from './DecisionOverviewMetrics';
 import { DecisionPerformanceOverview } from './DecisionPerformanceOverview';
-import { DecisionPersonaPanel } from './DecisionPersonaPanel';
+import { DecisionPersonaPanel } from '../personas/DecisionPersonaPanel';
 
 const analysisTabs = [
   { id: 'totvs', label: 'TOTVS' },

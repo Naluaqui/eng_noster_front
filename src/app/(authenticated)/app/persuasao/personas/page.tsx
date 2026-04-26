@@ -1,5 +1,5 @@
-import { PersonaAnalysisPanel } from '@/features/insights/components/PersonaAnalysisPanel';
+import { PersuasionDashboard } from '@/features/persuasion/components/PersuasionDashboard';
 
 export default function PersuasionPersonasRoute() {
-  return <PersonaAnalysisPanel />;
+  return <PersuasionDashboard />;
 }
