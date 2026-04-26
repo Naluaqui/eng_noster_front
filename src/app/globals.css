@@ -1,5 +1,6 @@
 @import '../shared/styles/tokens.css';
 @import '../features/landing/styles/landing.css';
+@import '../features/landing/styles/landing-hover.css';
 
 * {
   box-sizing: border-box;

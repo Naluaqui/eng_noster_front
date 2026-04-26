@@ -1,6 +1,6 @@
 'use client';
 
-import type { PointerEvent } from 'react';
+import { Fragment, type PointerEvent } from 'react';
 import { BrainCircuit, MessagesSquare, Sparkles } from 'lucide-react';
 import { GoogleLoginButton } from '@/features/auth/components/GoogleLoginButton';
 import { publicRoutes } from '@/shared/constants/routes';
@@ -87,10 +87,20 @@ function RunawayHeadline() {
           aria-hidden="true"
           key={line.text}
         >
-          {[...line.text].map((letter, index) => (
-            <span className="runaway-title__letter" key={`${line.text}-${index}`}>
-              {letter === ' ' ? '\u00A0' : letter}
-            </span>
+          {line.text.split(' ').map((word, wordIndex) => (
+            <Fragment key={`${line.text}-${wordIndex}`}>
+              {wordIndex > 0 ? <span className="runaway-title__space" aria-hidden="true" /> : null}
+              <span className="runaway-title__word">
+                {[...word].map((letter, letterIndex) => (
+                  <span
+                    className="runaway-title__letter"
+                    key={`${line.text}-${wordIndex}-${letterIndex}`}
+                  >
+                    {letter}
+                  </span>
+                ))}
+              </span>
+            </Fragment>
           ))}
         </span>
       ))}
