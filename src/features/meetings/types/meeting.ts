@@ -6,4 +6,8 @@ export type Meeting = {
   date: string;
   participants: string[];
   status: MeetingStatus;
+  summary: string;
+  owner: string;
+  tags: string[];
+  signalCount: number;
 };

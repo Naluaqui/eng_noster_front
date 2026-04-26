@@ -5,6 +5,7 @@ export const publicRoutes = {
 export const authenticatedRoutes = {
   home: '/app',
   meetings: '/app/reunioes',
+  multiAgents: '/app/multi-agentes',
   decisions: '/app/decisoes',
   insights: '/app/insights',
   personas: '/app/insights/personas',
@@ -13,6 +14,7 @@ export const authenticatedRoutes = {
 
 export const sidebarRoutes = [
   { href: authenticatedRoutes.meetings, label: 'Reuniões' },
+  { href: authenticatedRoutes.multiAgents, label: 'Multi-agentes' },
   { href: authenticatedRoutes.decisions, label: 'Gestão de decisões' },
   { href: authenticatedRoutes.insights, label: 'Insights' },
   { href: authenticatedRoutes.settings, label: 'Configurações' },
