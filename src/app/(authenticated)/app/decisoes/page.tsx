@@ -1,11 +1,5 @@
-import { DecisionChat } from '@/features/decision-management/components/DecisionChat';
-import { DecisionSummary } from '@/features/decision-management/components/DecisionSummary';
+import { DecisionManagementWorkspace } from '@/features/decision-management/components/DecisionManagementWorkspace';
 
 export default function DecisionsRoute() {
-  return (
-    <>
-      <DecisionChat />
-      <DecisionSummary />
-    </>
-  );
+  return <DecisionManagementWorkspace />;
 }

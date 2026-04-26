@@ -3,7 +3,9 @@
 @import '../features/landing/styles/landing-hover.css';
 @import '../features/authenticated-app/styles/authenticated-app.css';
 @import '../features/meetings/styles/meetings.css';
+@import '../features/decision-management/styles/decision-management.css';
 @import '../features/multi-agents/styles/multi-agents.css';
+@import '../features/persuasion/styles/persuasion.css';
 
 * {
   box-sizing: border-box;

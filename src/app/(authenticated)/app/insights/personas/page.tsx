@@ -1,5 +1,6 @@
-import { PersonaAnalysisPanel } from '@/features/insights/components/PersonaAnalysisPanel';
+import { redirect } from 'next/navigation';
+import { authenticatedRoutes } from '@/shared/constants/routes';
 
 export default function PersonasRoute() {
-  return <PersonaAnalysisPanel />;
+  redirect(authenticatedRoutes.personas);
 }

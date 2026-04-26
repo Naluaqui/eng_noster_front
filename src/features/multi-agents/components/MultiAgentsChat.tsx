@@ -7,13 +7,6 @@ import { MultiAgentMessage } from './MultiAgentMessage';
 export function MultiAgentsChat() {
   return (
     <main className="feature-page multi-agents-page">
-      <header className="feature-page__header multi-agents-page__header">
-        <div>
-          <span>Multi-agentes</span>
-          <h2>Sala de decisão virtual</h2>
-          <p>Converse com múltiplas perspectivas para transformar reuniões em análises acionáveis.</p>
-        </div>
-      </header>
 
       <section className="multi-agents-workspace" aria-label="Chat multi-agentes">
         <AnalysisNavigation />

@@ -28,7 +28,7 @@ export const landingSlides = [
     title: 'Rastro e direção',
     description:
       'Cada decisão passa a ter memória, dono, consequência e leitura por personas para revelar padrões antes invisíveis.',
-    points: ['rastreabilidade', 'alinhamento entre áreas', 'insights por persona'],
+    points: ['rastreabilidade', 'alinhamento entre áreas', 'persuasão por persona'],
     accent: 'purple',
     icon: 'benefits',
   },

@@ -1,5 +1,6 @@
-import { InsightsDashboard } from '@/features/insights/components/InsightsDashboard';
+import { redirect } from 'next/navigation';
+import { authenticatedRoutes } from '@/shared/constants/routes';
 
 export default function InsightsRoute() {
-  return <InsightsDashboard />;
+  redirect(authenticatedRoutes.insights);
 }

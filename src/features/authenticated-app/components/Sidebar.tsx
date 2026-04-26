@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { authenticatedRoutes, publicRoutes } from '@/shared/constants/routes';
+import { publicRoutes } from '@/shared/constants/routes';
 import { SidebarNav } from './SidebarNav';
 import { UserProfileMenu } from './UserProfileMenu';
 
@@ -11,9 +11,6 @@ export function Sidebar() {
       </Link>
       <UserProfileMenu />
       <SidebarNav />
-      <Link className="app-sidebar__settings" href={authenticatedRoutes.settings}>
-        Configurações
-      </Link>
     </aside>
   );
 }

@@ -6,7 +6,7 @@ export function PersonaAnalysisPanel() {
   return (
     <main className="feature-page">
       <PersonasMiniHeader />
-      <section className="insights-grid" aria-label="Insights por persona">
+      <section className="insights-grid" aria-label="Persuasão por persona">
         {insights.map((insight) => (
           <InsightCard insight={insight} key={insight.id} />
         ))}

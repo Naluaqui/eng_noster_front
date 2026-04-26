@@ -191,7 +191,7 @@ export function LandingHero() {
       <div className="hero-marquee" aria-hidden="true">
         <span>Reuniões</span>
         <span>Gestão de decisões</span>
-        <span>Insights</span>
+        <span>Persuasão</span>
         <span>Personas</span>
         <span>
           <Sparkles size={14} />

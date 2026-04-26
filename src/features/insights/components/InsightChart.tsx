@@ -6,7 +6,7 @@ type InsightChartProps = {
 
 export function InsightChart({ metrics }: InsightChartProps) {
   return (
-    <div className="insight-chart" aria-label="Indicadores de insights">
+    <div className="insight-chart" aria-label="Indicadores de persuasão">
       {metrics.map((metric) => (
         <div key={metric.label}>
           <strong>{metric.value}</strong>

@@ -8,13 +8,13 @@ export function InsightsDashboard() {
     <main className="feature-page">
       <header className="feature-page__header">
         <div>
-          <span>Insights</span>
-          <h2>Dashboard de decisão</h2>
+          <span>Persuasão</span>
+          <h2>Dashboard de persuasão</h2>
         </div>
       </header>
       <InsightChart metrics={insightMetrics} />
       <PersonasMiniHeader />
-      <section className="insights-grid" aria-label="Insights recentes">
+      <section className="insights-grid" aria-label="Sinais de persuasão recentes">
         {insights.map((insight) => (
           <InsightCard insight={insight} key={insight.id} />
         ))}
