@@ -7,136 +7,374 @@
 .decision-inspiring-chart-card {
   position: relative;
   display: grid;
-  min-height: clamp(20rem, 48vw, 31rem);
-  overflow: hidden;
-  border: 1px solid rgba(28, 28, 28, 0.08);
-  border-radius: 0.5rem;
-  padding: clamp(1.2rem, 3vw, 2rem);
+  gap: 1.35rem;
+  overflow: visible;
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  border-radius: 1.25rem;
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
   background:
-    radial-gradient(circle at 18% 74%, rgba(0, 255, 195, 0.28), transparent 12rem),
-    radial-gradient(circle at 70% 42%, rgba(0, 149, 255, 0.2), transparent 17rem),
-    linear-gradient(180deg, #ffffff 0%, #eefbff 100%);
-  box-shadow: 0 1rem 2.8rem rgba(28, 28, 28, 0.06);
+    radial-gradient(circle at 14% 8%, rgba(124, 58, 237, 0.1), transparent 14rem),
+    radial-gradient(circle at 82% 12%, rgba(45, 140, 255, 0.1), transparent 16rem),
+    #ffffff;
+  box-shadow: 0 1.2rem 2.8rem rgba(88, 82, 120, 0.065);
 }
 
 .decision-inspiring-chart-card header {
   position: relative;
   z-index: 2;
   display: grid;
-  justify-items: center;
-  text-align: center;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 18rem);
+  gap: 1rem;
+  align-items: start;
+}
+
+.decision-inspiring-chart-card header > div {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.decision-inspiring-chart-card header > div > span {
+  color: rgba(43, 39, 56, 0.48);
+  font-size: 0.72rem;
+  font-weight: 720;
 }
 
 .decision-inspiring-chart-card h2 {
-  max-width: 24rem;
+  max-width: 44rem;
   margin: 0;
-  color: var(--color-background);
-  font-size: clamp(1.18rem, 2.5vw, 2.1rem);
-  font-weight: 950;
-  line-height: 1.12;
+  color: #252233;
+  font-size: clamp(2rem, 3vw, 3.3rem);
+  font-weight: 860;
+  line-height: 0.98;
+  letter-spacing: -0.07em;
 }
 
 .decision-inspiring-chart-card h2 strong {
-  color: #118dff;
+  color: #7c3aed;
+  font-weight: 860;
 }
 
-.decision-inspiring-chart-card h2 span {
+.decision-inspiring-chart-card p {
+  max-width: 48rem;
+  margin: 0;
+  color: rgba(43, 39, 56, 0.56);
+  font-size: 0.95rem;
+  font-weight: 560;
+  line-height: 1.5;
+}
+
+.decision-inspiring-chart-card__legend {
+  display: grid;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 18rem;
+  margin: 0;
+  margin-left: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.decision-inspiring-chart-card__legend li {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.2rem 0.65rem;
+  align-items: start;
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  border-radius: 1rem;
+  padding: 0.85rem 0.95rem;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 0.55rem 1.5rem rgba(28, 28, 28, 0.035);
+}
+
+.decision-inspiring-chart-card__legend i {
+  grid-row: 1 / 4;
   display: block;
+  width: 0.72rem;
+  height: 0.72rem;
+  margin-top: 0.28rem;
+  border-radius: 999px;
+}
+
+.decision-inspiring-chart-card__legend .is-priority i {
+  background: #7c3aed;
+}
+
+.decision-inspiring-chart-card__legend .is-pressure i {
+  background: #2d8cff;
+}
+
+.decision-inspiring-chart-card__legend span {
+  color: rgba(43, 39, 56, 0.48);
+  font-size: 0.72rem;
+  font-weight: 760;
+}
+
+.decision-inspiring-chart-card__legend strong {
+  color: #252233;
+  font-size: 0.92rem;
+  font-weight: 820;
+  line-height: 1.3;
+}
+
+.decision-inspiring-chart-card__legend small {
+  color: rgba(43, 39, 56, 0.58);
+  font-size: 0.72rem;
+  font-weight: 620;
+  line-height: 1.45;
 }
 
 .decision-inspiring-chart-card__visual {
-  position: absolute;
-  right: 0;
-  bottom: -0.2rem;
-  left: 0;
-  height: 74%;
+  position: relative;
+  min-height: clamp(24rem, 42vw, 31rem);
+  overflow: visible;
+  border-radius: 1rem;
 }
 
 .decision-inspiring-chart-card__visual svg {
   display: block;
   width: 100%;
   height: 100%;
+  min-height: clamp(24rem, 42vw, 31rem);
+  overflow: visible;
 }
 
-.decision-inspiring-chart-card__back-area {
-  filter: blur(0.3px);
+.decision-wave-grid {
+  stroke: rgba(43, 39, 56, 0.08);
+  stroke-width: 1;
 }
 
-.decision-inspiring-chart-card__front-area {
-  filter: drop-shadow(0 1.2rem 1.4rem rgba(17, 141, 255, 0.18));
+.decision-wave-axis,
+.decision-wave-month {
+  fill: rgba(43, 39, 56, 0.42);
+  font-size: 0.64rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
 }
 
-.decision-inspiring-chart-card__line {
-  stroke: rgba(255, 253, 255, 0.88);
-  stroke-width: 4;
+.decision-wave-month {
+  font-size: 0.72rem;
+  font-weight: 760;
 }
 
-.decision-inspiring-chart-card__visual line {
-  stroke: rgba(255, 253, 255, 0.72);
-  stroke-dasharray: 5 7;
-  stroke-width: 2;
+.decision-wave {
+  transition: opacity 0.22s ease, filter 0.22s ease;
 }
 
-.decision-inspiring-chart-card__visual circle:first-of-type {
-  fill: #168dff;
+.decision-inspiring-chart-card__visual svg:hover .decision-wave {
+  opacity: 0.32;
 }
 
-.decision-inspiring-chart-card__visual circle:last-of-type {
+.decision-inspiring-chart-card__visual svg:hover .decision-wave:hover {
+  opacity: 1;
+  filter: drop-shadow(0 0.95rem 1.6rem rgba(43, 39, 56, 0.12));
+}
+
+.decision-wave-area {
+  transition: opacity 0.22s ease;
+}
+
+.decision-wave-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.decision-wave-area,
+.decision-wave-line,
+.decision-wave-point {
+  pointer-events: none;
+}
+
+.decision-wave-hitbox {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  pointer-events: stroke;
+}
+
+.decision-wave--priority,
+.decision-wave--pressure {
+  pointer-events: none;
+}
+
+.decision-wave--priority .decision-wave-hitbox,
+.decision-wave--pressure .decision-wave-hitbox {
+  pointer-events: stroke;
+}
+
+.decision-wave-point {
   fill: #ffffff;
+  stroke-width: 2.5;
 }
 
-.decision-inspiring-chart-card__visual ul {
+.decision-wave--priority .decision-wave-area {
+  fill: url(#priorityAreaGradient);
+}
+
+.decision-wave--priority .decision-wave-line {
+  stroke: #7c3aed;
+}
+
+.decision-wave--priority .decision-wave-point {
+  stroke: #7c3aed;
+}
+
+.decision-wave--pressure .decision-wave-area {
+  fill: url(#pressureAreaGradient);
+}
+
+.decision-wave--pressure .decision-wave-line {
+  stroke: #2d8cff;
+}
+
+.decision-wave--pressure .decision-wave-point {
+  stroke: #2d8cff;
+}
+
+.decision-wave-point-overlays {
   position: absolute;
   inset: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  z-index: 5;
+  pointer-events: none;
 }
 
-.decision-inspiring-chart-card__visual li {
+.decision-wave-point-trigger {
   position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  border-radius: 999px;
+  outline: none;
+  pointer-events: auto;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.decision-wave-point-trigger::before {
+  content: '';
+  position: absolute;
+  inset: 0.38rem;
+  border-radius: inherit;
+  border: 2px solid #7c3aed;
+  background: #ffffff;
+  box-shadow: 0 0 0 0.22rem rgba(124, 58, 237, 0.1);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.decision-wave-point-trigger--pressure::before {
+  border-color: #2d8cff;
+  box-shadow: 0 0 0 0.22rem rgba(45, 140, 255, 0.1);
+}
+
+.decision-wave-point-trigger:hover::before,
+.decision-wave-point-trigger:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.decision-wave-tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.9rem);
+  left: 50%;
   display: grid;
-  justify-items: center;
+  gap: 0.52rem;
+  width: min(22rem, 72vw);
+  min-width: 18rem;
+  border: 1px solid rgba(43, 39, 56, 0.08);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+  background: rgba(255, 255, 255, 0.985);
+  box-shadow: 0 1rem 2.2rem rgba(43, 39, 56, 0.14);
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  transform: translateX(-50%) translateY(0.35rem);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.decision-wave-point-trigger:hover .decision-wave-tooltip,
+.decision-wave-point-trigger:focus-visible .decision-wave-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.decision-wave-point-trigger.is-start .decision-wave-tooltip {
+  left: 0;
+  transform: translateX(0) translateY(0.35rem);
+}
+
+.decision-wave-point-trigger.is-start:hover .decision-wave-tooltip,
+.decision-wave-point-trigger.is-start:focus-visible .decision-wave-tooltip {
+  transform: translateX(0) translateY(0);
+}
+
+.decision-wave-point-trigger.is-end .decision-wave-tooltip {
+  right: 0;
+  left: auto;
+  transform: translateX(0) translateY(0.35rem);
+}
+
+.decision-wave-point-trigger.is-end:hover .decision-wave-tooltip,
+.decision-wave-point-trigger.is-end:focus-visible .decision-wave-tooltip {
+  transform: translateX(0) translateY(0);
+}
+
+.decision-wave-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: -0.42rem;
+  left: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: rgba(255, 255, 255, 0.985);
+  border-right: 1px solid rgba(43, 39, 56, 0.08);
+  border-bottom: 1px solid rgba(43, 39, 56, 0.08);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.decision-wave-point-trigger.is-start .decision-wave-tooltip::before {
+  left: 0.95rem;
+  transform: rotate(45deg);
+}
+
+.decision-wave-point-trigger.is-end .decision-wave-tooltip::before {
+  right: 0.95rem;
+  left: auto;
+  transform: rotate(45deg);
+}
+
+.decision-wave-tooltip > strong {
+  color: #252233;
+  font-size: 0.86rem;
+  font-weight: 840;
+  letter-spacing: -0.02em;
+}
+
+.decision-wave-tooltip span {
+  display: grid;
   gap: 0.12rem;
-  min-width: 4.1rem;
-  transform: translate(-50%, -100%);
 }
 
-.decision-inspiring-chart-card__visual li:nth-child(1) {
-  top: 69%;
-  left: 7.5%;
+.decision-wave-tooltip em {
+  color: rgba(43, 39, 56, 0.42);
+  font-size: 0.64rem;
+  font-style: normal;
+  font-weight: 760;
+  letter-spacing: 0.01em;
 }
 
-.decision-inspiring-chart-card__visual li:nth-child(2) {
-  top: 50%;
-  left: 26.25%;
-}
-
-.decision-inspiring-chart-card__visual li:nth-child(3) {
-  top: 36%;
-  left: 47.18%;
-}
-
-.decision-inspiring-chart-card__visual li:nth-child(4) {
-  top: 59%;
-  left: 69.37%;
-}
-
-.decision-inspiring-chart-card__visual li:nth-child(5) {
-  top: 29%;
-  left: 89.37%;
-}
-
-.decision-inspiring-chart-card__visual li strong {
-  color: var(--color-background);
-  font-size: 0.74rem;
-  font-weight: 950;
-}
-
-.decision-inspiring-chart-card__visual li span {
-  color: rgba(28, 28, 28, 0.46);
-  font-size: 0.62rem;
-  font-weight: 850;
+.decision-wave-tooltip b {
+  color: #252233;
+  font-size: 0.76rem;
+  font-weight: 760;
+  line-height: 1.42;
 }
 
 .decision-meetings-table-card {
