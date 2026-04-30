@@ -1,0 +1,444 @@
+.decision-financial-history {
+  display: grid;
+  grid-template-columns: minmax(22rem, 1.1fr) minmax(24rem, 1.35fr);
+  gap: 1rem;
+}
+
+.decision-balance-card,
+.decision-transaction-card {
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  background: #ffffff;
+  box-shadow: 0 1.2rem 2.8rem rgba(88, 82, 120, 0.065);
+}
+
+.decision-balance-card {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  background:
+    radial-gradient(circle at 0 0, rgba(124, 58, 237, 0.08), transparent 12rem),
+    radial-gradient(circle at 100% 0, rgba(45, 140, 255, 0.08), transparent 12rem),
+    #ffffff;
+}
+
+.decision-balance-card > header,
+.decision-transaction-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.decision-balance-card header div {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.decision-balance-card span,
+.decision-transaction-card__description,
+.decision-balance-card__description {
+  color: rgba(43, 39, 56, 0.55);
+  font-size: 0.72rem;
+  font-weight: 620;
+}
+
+.decision-balance-card header strong {
+  color: #252233;
+  font-size: clamp(1.9rem, 3vw, 2.65rem);
+  font-weight: 760;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.decision-balance-card__description,
+.decision-transaction-card__description {
+  max-width: 34rem;
+  margin: 0.75rem 0 0;
+  line-height: 1.45;
+}
+
+.decision-balance-card button,
+.decision-transaction-card button {
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 0.75rem;
+  background: #f4edff;
+  color: #7c3aed;
+  font-size: 0.68rem;
+  font-weight: 760;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.decision-balance-card button:hover,
+.decision-transaction-card button:hover {
+  background: #ede3ff;
+}
+
+.decision-balance-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.decision-balance-kpis div {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  border-radius: 0.95rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.decision-balance-kpis span {
+  color: rgba(43, 39, 56, 0.5);
+  font-size: 0.64rem;
+  font-weight: 700;
+}
+
+.decision-balance-kpis strong {
+  color: #252233;
+  font-size: 0.92rem;
+  font-weight: 780;
+  letter-spacing: -0.03em;
+}
+
+.decision-balance-chart {
+  position: relative;
+  min-height: 15rem;
+  margin-top: 1rem;
+  overflow: visible;
+}
+
+.decision-balance-chart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 15rem;
+  overflow: visible;
+}
+
+.decision-balance-chart__grid {
+  stroke: rgba(43, 39, 56, 0.08);
+  stroke-width: 1;
+}
+
+.decision-balance-chart__axis,
+.decision-balance-chart__label {
+  fill: rgba(43, 39, 56, 0.42);
+  font-size: 0.58rem;
+  font-weight: 700;
+}
+
+.decision-balance-chart__area {
+  fill: rgba(124, 58, 237, 0.1);
+}
+
+.decision-balance-chart__line {
+  fill: none;
+  stroke: #7c3aed;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.decision-balance-chart__point {
+  fill: #ffffff;
+  stroke: rgba(124, 58, 237, 0.72);
+  stroke-width: 2;
+}
+
+.decision-balance-point-overlays {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.decision-balance-point-trigger {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: 6;
+  display: block;
+  width: 1.45rem;
+  height: 1.45rem;
+  min-width: 1.45rem;
+  min-height: 1.45rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  pointer-events: auto;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.decision-balance-point-trigger:hover,
+.decision-balance-point-trigger:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.decision-balance-tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.8rem);
+  left: 50%;
+  display: grid;
+  gap: 0.2rem;
+  min-width: 9.5rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(43, 39, 56, 0.08);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 1rem 2rem rgba(43, 39, 56, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  transform: translateX(-50%) translateY(0.35rem);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.decision-balance-point-trigger:hover .decision-balance-tooltip,
+.decision-balance-point-trigger:focus-visible .decision-balance-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.decision-balance-tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: -0.42rem;
+  left: 50%;
+  width: 0.7rem;
+  height: 0.7rem;
+  background: #ffffff;
+  border-right: 1px solid rgba(43, 39, 56, 0.08);
+  border-bottom: 1px solid rgba(43, 39, 56, 0.08);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.decision-balance-tooltip span {
+  color: rgba(43, 39, 56, 0.52);
+  font-size: 0.66rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.decision-balance-tooltip strong {
+  color: #252233;
+  font-size: 0.84rem;
+  font-weight: 780;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.decision-balance-tooltip em,
+.decision-balance-tooltip small {
+  display: none;
+}
+.decision-transaction-card {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+}
+
+.decision-transaction-card h2 {
+  margin: 0;
+  color: #252233;
+  font-size: 1rem;
+  font-weight: 760;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.decision-transaction-card ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.decision-transaction-card li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  border-radius: 1rem;
+  padding: 0.85rem;
+  background: #fbfaff;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.decision-transaction-card li:hover {
+  border-color: rgba(124, 58, 237, 0.16);
+  box-shadow: 0 0.85rem 1.8rem rgba(88, 82, 120, 0.08);
+  transform: translateY(-0.08rem);
+}
+
+.decision-transaction-card li > i {
+  display: grid;
+  width: 2.25rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.decision-transaction-card li.is-positive > i {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+
+.decision-transaction-card li.is-risk > i {
+  background: rgba(244, 63, 94, 0.12);
+  color: #e11d48;
+}
+
+.decision-transaction-card li.is-warning > i {
+  background: rgba(245, 158, 11, 0.14);
+  color: #d97706;
+}
+
+.decision-transaction-card__content {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.decision-transaction-card__content span {
+  overflow: hidden;
+  color: #252233;
+  font-size: 0.76rem;
+  font-weight: 740;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.decision-transaction-card__content time {
+  color: rgba(43, 39, 56, 0.5);
+  font-size: 0.66rem;
+  font-weight: 620;
+}
+
+.decision-transaction-card__bar {
+  height: 0.34rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(43, 39, 56, 0.07);
+}
+
+.decision-transaction-card__bar b {
+  display: block;
+  width: var(--width);
+  height: 100%;
+  border-radius: inherit;
+}
+
+.decision-transaction-card li.is-positive .decision-transaction-card__bar b {
+  background: #10b981;
+}
+
+.decision-transaction-card li.is-risk .decision-transaction-card__bar b {
+  background: #f43f5e;
+}
+
+.decision-transaction-card li.is-warning .decision-transaction-card__bar b {
+  background: #f59e0b;
+}
+
+.decision-transaction-card li > strong {
+  color: #252233;
+  font-size: 0.82rem;
+  font-weight: 780;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.decision-transaction-card li.is-positive > strong {
+  color: #059669;
+}
+
+.decision-transaction-card li.is-risk > strong {
+  color: #e11d48;
+}
+
+.decision-transaction-card li.is-warning > strong {
+  color: #d97706;
+}
+
+.decision-balance-card .decision-balance-point-trigger {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: 6;
+
+  display: block;
+  width: 1.15rem;
+  height: 1.15rem;
+  min-width: 1.15rem;
+  min-height: 1.15rem;
+
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+
+  pointer-events: auto;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+.decision-balance-card .decision-balance-point-trigger:hover,
+.decision-balance-card .decision-balance-point-trigger:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.decision-balance-card .decision-balance-point-trigger::before {
+  content: "";
+  position: absolute;
+  inset: 0.31rem;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid #7c3aed;
+  box-shadow: 0 0 0 0.2rem rgba(124, 58, 237, 0.12);
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.decision-balance-card .decision-balance-point-trigger:hover::before,
+.decision-balance-card .decision-balance-point-trigger:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.decision-balance-chart__point {
+  fill: #ffffff;
+  stroke: rgba(124, 58, 237, 0.72);
+  stroke-width: 2;
+}

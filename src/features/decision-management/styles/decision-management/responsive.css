@@ -1,0 +1,120 @@
+@media (max-width: 900px) {
+  .decision-management-navigation {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .principal-insight-card {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .principal-insight-card::before {
+    clip-path: polygon(0 36%, 100% 24%, 100% 100%, 0 100%);
+  }
+
+  .decision-overview-metrics > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .decision-overview-metrics__actions {
+    justify-content: flex-start;
+  }
+
+  .decision-overview-metrics__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-impact-flow-card__topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .decision-impact-flow-card__map,
+  .decision-impact-flow-card__diagram {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-impact-flow-card__domain::after,
+  .decision-impact-flow-card__diagram::before,
+  .decision-impact-flow-card__diagram::after {
+    display: none;
+  }
+
+  .decision-impact-flow-card__diagram {
+    min-height: auto;
+  }
+
+  .decision-flow-node--hub {
+    min-height: auto;
+  }
+
+  .decision-performance-overview,
+  .decision-health-snapshot,
+  .decision-financial-history,
+  .decision-growth-card footer {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-performance-tooltip {
+    position: static;
+    margin-top: 0.75rem;
+  }
+
+  .decision-analysis-folder__content {
+    padding: 0.75rem;
+  }
+
+  .decision-persona-panel {
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .decision-persona-panel__header,
+  .decision-persona-panel__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-persona-quote,
+  .decision-persona-motivations,
+  .decision-persona-engagement {
+    grid-column: auto;
+  }
+
+  .decision-persona-sheet {
+    grid-template-areas:
+      'filter'
+      'photo'
+      'quote'
+      'problems'
+      'goals'
+      'motivations'
+      'engagement';
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .persona-product-filter {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .persona-product-filter__label {
+    width: 100%;
+    padding: 0.2rem 0.25rem;
+  }
+
+  .persona-product-filter__search {
+    width: 100%;
+  }
+
+  .decision-transaction-card li {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .decision-transaction-card li time {
+    grid-column: 2 / 4;
+  }
+}

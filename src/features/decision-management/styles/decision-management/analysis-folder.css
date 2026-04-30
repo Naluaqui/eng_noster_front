@@ -1,0 +1,54 @@
+.decision-analysis-folder {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 0.5rem;
+  background: rgba(255, 253, 255, 0.72);
+  box-shadow: 0 1rem 2.8rem rgba(28, 28, 28, 0.055);
+}
+
+.decision-analysis-folder__tabs {
+  border-bottom: 1px solid rgba(28, 28, 28, 0.08);
+  padding: 0.6rem 0.75rem 0;
+  background:
+    linear-gradient(90deg, rgba(255, 227, 66, 0.18), rgba(0, 255, 195, 0.1)),
+    rgba(255, 253, 255, 0.9);
+}
+
+.decision-analysis-folder__tabs div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.decision-analysis-folder__tabs button {
+  min-height: 2.45rem;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0 1.15rem;
+  background: transparent;
+  color: rgba(28, 28, 28, 0.58);
+  font-size: 0.78rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.decision-analysis-folder__tabs button.is-active {
+  border-color: rgba(28, 28, 28, 0.08);
+  background: #ffffff;
+  color: var(--color-background);
+  box-shadow: 0 -0.4rem 1rem rgba(28, 28, 28, 0.035);
+}
+
+.decision-analysis-folder__tabs button:not(.is-active):hover {
+  background: rgba(255, 253, 255, 0.55);
+  color: var(--color-background);
+}
+
+.decision-analysis-folder__content {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  background: #ffffff;
+}

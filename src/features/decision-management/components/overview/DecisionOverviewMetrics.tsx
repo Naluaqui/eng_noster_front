@@ -1,27 +1,27 @@
-import { Box, CircleDollarSign, Filter, Share2, ShoppingCart, UsersRound } from 'lucide-react';
+import { Activity, CircleDollarSign, Filter, Share2, ShoppingCart, Workflow } from 'lucide-react';
 
 const overviewMetrics = [
   {
-    label: 'Reuniões analisadas',
-    value: '2500',
-    trend: '+4.8%',
-    previous: 'Último mês: 2345',
+    label: 'Aderência Produto x Cliente',
+    value: '80%',
+    trend: '+10%',
+    previous: 'Último mês: 70%',
     icon: ShoppingCart,
     featured: true,
   },
   {
-    label: 'Novos sinais',
-    value: '110',
-    trend: '+7.5%',
-    previous: 'Último mês: 89',
-    icon: UsersRound,
+    label: 'Saúde Comercial',
+    value: '68%',
+    trend: '-7%',
+    previous: 'Último mês: 75%',
+    icon: Activity,
   },
   {
-    label: 'Objeções recorrentes',
-    value: '72',
-    trend: '-6.8%',
-    previous: 'Último mês: 60',
-    icon: Box,
+    label: 'Gargalo Estratégico',
+    value: '24%',
+    trend: '+9%',
+    previous: 'Último mês: 15%',
+    icon: Workflow,
   },
   {
     label: 'Receita em risco',

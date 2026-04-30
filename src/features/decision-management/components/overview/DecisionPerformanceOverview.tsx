@@ -1,82 +1,271 @@
 import type { CSSProperties } from 'react';
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
 
-const performanceMonths = [
-  { month: 'Mai', total: 88, revenue: 43 },
-  { month: 'Jun', total: 36, revenue: 27 },
-  { month: 'Jul', total: 29, revenue: 22 },
-  { month: 'Ago', total: 72, revenue: 58, selected: true },
-  { month: 'Set', total: 46, revenue: 18 },
-  { month: 'Out', total: 62, revenue: 34 },
-  { month: 'Nov', total: 86, revenue: 48 },
-  { month: 'Dez', total: 54, revenue: 21 },
+type PerformanceMonth = {
+  month: string;
+  periodLabel: string;
+  potential: number;
+  converted: number;
+  selected?: boolean;
+};
+
+type ChartTick = {
+  value: number;
+  label: string;
+};
+
+const performanceMonths: PerformanceMonth[] = [
+  { month: 'Mai', periodLabel: 'Maio 2026', potential: 88000, converted: 43000 },
+  { month: 'Jun', periodLabel: 'Junho 2026', potential: 36000, converted: 27000 },
+  { month: 'Jul', periodLabel: 'Julho 2026', potential: 29000, converted: 22000 },
+  { month: 'Ago', periodLabel: 'Agosto 2026', potential: 72000, converted: 58000, selected: true },
+  { month: 'Set', periodLabel: 'Setembro 2026', potential: 46000, converted: 18000 },
+  { month: 'Out', periodLabel: 'Outubro 2026', potential: 62000, converted: 34000 },
+  { month: 'Nov', periodLabel: 'Novembro 2026', potential: 86000, converted: 48000 },
+  { month: 'Dez', periodLabel: 'Dezembro 2026', potential: 54000, converted: 21000 },
 ];
 
-const gaugeSegments = Array.from({ length: 18 }, (_, index) => index);
+const decisionOverview = {
+  actionableRate: 57.3,
+  actionableDecisions: 73,
+  blockedDecisions: 18,
+  actionableTrend: '+12%',
+  blockedTrend: 'atenção',
+};
+
+function formatCurrency(value: number) {
+  return `R$ ${formatInteger(value)}`;
+}
+
+function formatCompactCurrency(value: number) {
+  if (Math.abs(value) >= 1_000_000) {
+    return `R$ ${formatDecimal(value / 1_000_000)} mi`;
+  }
+
+  if (Math.abs(value) >= 1_000) {
+    return `R$ ${formatDecimal(value / 1_000)} mil`;
+  }
+
+  return formatCurrency(value);
+}
+
+function formatInteger(value: number) {
+  return Math.round(value)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function formatDecimal(value: number) {
+  const roundedValue = Math.round(value * 10) / 10;
+
+  if (Number.isInteger(roundedValue)) {
+    return String(roundedValue);
+  }
+
+  return roundedValue.toFixed(1).replace('.', ',');
+}
+
+function getNiceChartMax(value: number) {
+  if (value <= 0) {
+    return 100;
+  }
+
+  const magnitude = 10 ** Math.floor(Math.log10(value));
+  const normalizedValue = value / magnitude;
+
+  if (normalizedValue <= 2) {
+    return 2 * magnitude;
+  }
+
+  if (normalizedValue <= 5) {
+    return 5 * magnitude;
+  }
+
+  return 10 * magnitude;
+}
+
+function getChartTicks(maxValue: number, tickCount = 5): ChartTick[] {
+  return Array.from({ length: tickCount }, (_, index) => {
+    const value = maxValue - (maxValue / (tickCount - 1)) * index;
+
+    return {
+      value,
+      label: formatCompactCurrency(value).replace('R$ ', ''),
+    };
+  });
+}
+
+function getPercent(value: number, maxValue: number) {
+  if (maxValue <= 0) {
+    return 0;
+  }
+
+  return Math.min((value / maxValue) * 100, 100);
+}
+
+function getDecisionTotal() {
+  return decisionOverview.actionableDecisions + decisionOverview.blockedDecisions;
+}
+
+function getDecisionShare(value: number) {
+  const total = getDecisionTotal();
+
+  if (total <= 0) {
+    return 0;
+  }
+
+  return (value / total) * 100;
+}
 
 export function DecisionPerformanceOverview() {
+  const maxPotential = Math.max(...performanceMonths.map((item) => item.potential));
+  const chartMax = getNiceChartMax(maxPotential);
+  const chartTicks = getChartTicks(chartMax);
+
   return (
     <section className="decision-performance-overview" aria-label="Performance da gestão de decisão">
       <article className="decision-performance-card">
         <header>
-          <h2>Performance Overview</h2>
+          <h2>Evolução da Receita Decisória</h2>
+
           <button type="button">
-            This Week
+            Este mês
             <ChevronDown size={15} aria-hidden="true" />
           </button>
         </header>
 
-        <div className="decision-performance-chart" aria-label="Comparativo mensal de vendas e receita">
-          {performanceMonths.map((item) => (
-            <figure className={item.selected ? 'is-selected' : undefined} key={item.month}>
-              <div>
-                <i style={{ '--height': `${item.total}%` } as CSSProperties} />
-                <i style={{ '--height': `${item.revenue}%` } as CSSProperties} />
-              </div>
-              <figcaption>{item.month}</figcaption>
-            </figure>
-          ))}
+        <div
+          className="decision-performance-chart"
+          aria-label="Comparativo mensal entre receita potencial e receita convertida"
+        >
+          <div className="decision-performance-axis" aria-hidden="true">
+            {chartTicks.map((tick) => (
+              <span key={tick.value}>{tick.label}</span>
+            ))}
+          </div>
 
-          <aside className="decision-performance-tooltip" aria-label="Agosto de 2026">
-            <strong>Agosto 2026</strong>
-            <span>Total Sales <b>440</b></span>
-            <span>Total Revenue <b>$4.5k</b></span>
-          </aside>
+          <div className="decision-performance-plot">
+            {chartTicks.map((tick) => (
+              <span
+                className="decision-performance-grid-line"
+                key={tick.value}
+                style={{ '--position': `${100 - getPercent(tick.value, chartMax)}%` } as CSSProperties}
+              />
+            ))}
+
+            <div className="decision-performance-bars">
+              {performanceMonths.map((item) => {
+                const potentialHeight = getPercent(item.potential, chartMax);
+                const convertedHeight = getPercent(item.converted, chartMax);
+                const gap = item.potential - item.converted;
+
+                return (
+                  <figure className={item.selected ? 'is-selected' : undefined} key={item.month} tabIndex={0}>
+                    <div>
+                      <i
+                        aria-label={`Receita potencial em ${item.periodLabel}: ${formatCurrency(item.potential)}`}
+                        style={{ '--height': `${potentialHeight}%` } as CSSProperties}
+                      />
+
+                      <i
+                        aria-label={`Receita convertida em ${item.periodLabel}: ${formatCurrency(item.converted)}`}
+                        style={{ '--height': `${convertedHeight}%` } as CSSProperties}
+                      />
+                    </div>
+
+                    <figcaption>{item.month}</figcaption>
+
+                    <aside className="decision-performance-tooltip" aria-label={`Resumo de ${item.periodLabel}`}>
+                      <strong>{item.periodLabel}</strong>
+
+                      <span>
+                        Potencial identificado <b>{formatCompactCurrency(item.potential)}</b>
+                      </span>
+
+                      <span>
+                        Receita convertida <b>{formatCompactCurrency(item.converted)}</b>
+                      </span>
+
+                      <span>
+                        Gap não capturado <b>{formatCompactCurrency(gap)}</b>
+                      </span>
+                    </aside>
+                  </figure>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </article>
 
       <article className="decision-growth-card">
         <header>
-          <h2>Sales Overview</h2>
+          <h2>Índice de Decisão Acionável</h2>
+
           <button type="button" aria-label="Mais opções">
             <MoreHorizontal size={17} aria-hidden="true" />
           </button>
         </header>
 
-        <div className="decision-growth-gauge" aria-label="70.8 por cento de crescimento">
-          {gaugeSegments.map((segment) => (
-            <i
-              className={segment < 13 ? 'is-active' : undefined}
-              key={segment}
-              style={{ '--segment': segment } as CSSProperties}
-            />
-          ))}
-          <strong>70.8%</strong>
-          <span>Sales Growth</span>
+        <div
+          className="decision-index-chart"
+          aria-label={`${decisionOverview.actionableRate.toFixed(1)} por cento de decisões acionáveis`}
+        >
+          <div className="decision-index-ring" tabIndex={0}>
+            <svg viewBox="0 0 160 160" role="img" aria-hidden="true">
+              <circle className="decision-index-ring-track" cx="80" cy="80" r="58" />
+
+              <circle
+                className="decision-index-ring-value"
+                cx="80"
+                cy="80"
+                r="58"
+                pathLength="100"
+                strokeDasharray={`${decisionOverview.actionableRate} 100`}
+              />
+            </svg>
+
+            <div>
+              <strong>{decisionOverview.actionableRate.toFixed(1)}%</strong>
+              <span>acionável</span>
+            </div>
+
+            <aside className="decision-index-tooltip">
+              <strong>Índice acionável</strong>
+              <span>Decisões com próximo passo claro e responsáveis definidos.</span>
+            </aside>
+          </div>
+
+          <p>Decisões com próximo passo claro, responsáveis definidos e menor risco de bloqueio operacional.</p>
         </div>
 
-        <footer>
+        <div className="decision-index-breakdown">
           <div>
-            <span>Number of Sales</span>
-            <strong>2,343</strong>
-            <em>+5.1%</em>
+            <header>
+              <span>Decisões acionáveis</span>
+              <strong>{decisionOverview.actionableDecisions}</strong>
+            </header>
+
+            <div className="decision-index-progress">
+              <i style={{ '--width': `${getDecisionShare(decisionOverview.actionableDecisions)}%` } as CSSProperties} />
+            </div>
+
+            <em>{decisionOverview.actionableTrend}</em>
           </div>
+
           <div>
-            <span>Total Revenue</span>
-            <strong>$30.9k</strong>
-            <em>+4.5%</em>
+            <header>
+              <span>Bloqueios críticos</span>
+              <strong>{decisionOverview.blockedDecisions}</strong>
+            </header>
+
+            <div className="decision-index-progress is-critical">
+              <i style={{ '--width': `${getDecisionShare(decisionOverview.blockedDecisions)}%` } as CSSProperties} />
+            </div>
+
+            <em>{decisionOverview.blockedTrend}</em>
           </div>
-        </footer>
+        </div>
       </article>
     </section>
   );

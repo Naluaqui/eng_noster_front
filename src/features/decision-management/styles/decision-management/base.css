@@ -1,0 +1,51 @@
+.decision-management-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.decision-management-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.45rem;
+  background: rgba(255, 253, 255, 0.82);
+  box-shadow: 0 0.8rem 2rem rgba(28, 28, 28, 0.04);
+}
+
+.decision-management-navigation__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.decision-management-navigation__tabs button {
+  min-height: 2.35rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  padding: 0 1rem;
+  background: transparent;
+  color: rgba(28, 28, 28, 0.62);
+  font-size: 0.78rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.decision-management-navigation__tabs button.is-active {
+  border-color: rgba(134, 92, 255, 0.18);
+  background: linear-gradient(90deg, rgba(255, 227, 66, 0.58), rgba(0, 255, 195, 0.18));
+  color: var(--color-background);
+}
+
+.decision-management-navigation__tabs button:not(.is-active):hover {
+  border-color: rgba(28, 28, 28, 0.08);
+  background: rgba(28, 28, 28, 0.04);
+  color: var(--color-background);
+}
+
+.decision-management-tab-panel {
+  display: grid;
+  gap: 1rem;
+}
+

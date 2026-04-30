@@ -1,0 +1,624 @@
+.decision-persona-panel {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  min-height: 43rem;
+  padding: clamp(1rem, 2vw, 2rem);
+  background:
+    radial-gradient(circle at 18% 36%, rgba(134, 92, 255, 0.1), transparent 16rem),
+    radial-gradient(circle at 32% 62%, rgba(255, 227, 66, 0.18), transparent 14rem),
+    #ffffff;
+}
+
+.decision-persona-panel__header {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.8fr) minmax(24rem, 1.1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.decision-persona-panel__eyebrow {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.decision-persona-panel__eyebrow span {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 0.85rem;
+  background: rgba(134, 92, 255, 0.1);
+  color: var(--color-accent-purple);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.decision-persona-panel__header h2 {
+  max-width: 39rem;
+  margin: 0;
+  color: var(--color-background);
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 850;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.decision-persona-panel__grid {
+  display: grid;
+  grid-template-columns: minmax(19rem, 0.88fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.decision-persona-profile {
+  position: relative;
+  display: grid;
+  min-height: 31rem;
+  align-content: end;
+  overflow: hidden;
+  border-radius: 1.75rem;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 22% 12%, rgba(255, 227, 66, 0.62), transparent 8rem),
+    radial-gradient(circle at 88% 28%, rgba(134, 92, 255, 0.46), transparent 10rem),
+    #f5f7f5;
+}
+
+.decision-persona-profile::before,
+.decision-persona-profile::after {
+  position: absolute;
+  right: -0.5rem;
+  left: 1.4rem;
+  height: 82%;
+  border-radius: 2rem;
+  content: '';
+}
+
+.decision-persona-profile::before {
+  top: 1.2rem;
+  background: rgba(134, 92, 255, 0.28);
+  transform: rotate(3deg);
+}
+
+.decision-persona-profile::after {
+  top: 2.25rem;
+  background: rgba(255, 253, 255, 0.74);
+}
+
+.decision-persona-profile__meta,
+.decision-persona-profile__portrait,
+.decision-persona-profile footer {
+  position: relative;
+  z-index: 1;
+}
+
+.decision-persona-profile__meta {
+  position: absolute;
+  top: 3.4rem;
+  left: 2rem;
+  display: flex;
+  gap: 0.55rem;
+  z-index: 2;
+}
+
+.decision-persona-profile__meta span {
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: rgba(255, 253, 255, 0.9);
+  color: var(--color-background);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.decision-persona-profile__portrait {
+  position: absolute;
+  inset: 6.1rem 2.7rem 4.5rem;
+  display: grid;
+  place-items: center;
+}
+
+.decision-persona-profile__portrait span {
+  position: absolute;
+  width: min(13rem, 78%);
+  aspect-ratio: 0.74;
+  border-radius: 48% 48% 42% 42%;
+  background:
+    radial-gradient(circle at 31% 38%, #ffffff 0 0.48rem, transparent 0.5rem),
+    radial-gradient(circle at 69% 38%, #ffffff 0 0.48rem, transparent 0.5rem),
+    radial-gradient(circle at 50% 68%, rgba(28, 28, 28, 0.36), transparent 0.55rem),
+    linear-gradient(#151515 0 21%, #d9b399 21% 100%);
+  box-shadow:
+    inset 0 3.2rem 0 #111111,
+    inset 0 -1.4rem 0 rgba(28, 28, 28, 0.12);
+}
+
+.decision-persona-profile__portrait span::before,
+.decision-persona-profile__portrait span::after {
+  position: absolute;
+  top: 37%;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 0.2rem solid #151515;
+  border-radius: 50%;
+  content: '';
+}
+
+.decision-persona-profile__portrait span::before {
+  left: 22%;
+}
+
+.decision-persona-profile__portrait span::after {
+  right: 22%;
+}
+
+.decision-persona-profile__portrait i {
+  position: absolute;
+  bottom: 0;
+  width: min(15rem, 88%);
+  height: 7rem;
+  border-radius: 55% 55% 0 0;
+  background: var(--color-background);
+}
+
+.decision-persona-profile footer {
+  display: grid;
+  justify-items: center;
+  gap: 0.28rem;
+  border-radius: 1.1rem;
+  padding: 1rem;
+  background: rgba(255, 253, 255, 0.76);
+  box-shadow: 0 1rem 2.4rem rgba(28, 28, 28, 0.14);
+  backdrop-filter: blur(14px);
+}
+
+.decision-persona-profile footer strong {
+  color: var(--color-background);
+  font-size: 1.12rem;
+}
+
+.decision-persona-profile footer span {
+  color: rgba(28, 28, 28, 0.62);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.decision-persona-quote {
+  align-self: center;
+  grid-column: span 2;
+  max-width: 34rem;
+  margin: 0;
+  color: var(--color-background);
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 850;
+  line-height: 1.42;
+}
+
+.decision-persona-list,
+.decision-persona-motivations,
+.decision-persona-engagement {
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+}
+
+.decision-persona-list h3,
+.decision-persona-motivations h3,
+.decision-persona-engagement h3 {
+  margin: 0;
+  color: var(--color-background);
+  font-size: 1.05rem;
+}
+
+.decision-persona-list article {
+  display: grid;
+  min-height: 5.15rem;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: center;
+  border: 1px solid rgba(28, 28, 28, 0.04);
+  border-radius: 1.4rem;
+  padding: 0.9rem 1rem;
+  background: rgba(248, 250, 250, 0.92);
+}
+
+.decision-persona-list article i {
+  width: 0.85rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.decision-persona-list--problems article i {
+  background: #ff7474;
+  box-shadow: 0 0 0 0.25rem rgba(255, 116, 116, 0.18);
+}
+
+.decision-persona-list--goals article i {
+  background: #4fca75;
+  box-shadow: 0 0 0 0.25rem rgba(79, 202, 117, 0.18);
+}
+
+.decision-persona-list article span,
+.decision-persona-motivations li,
+.decision-persona-engagement li {
+  color: rgba(28, 28, 28, 0.58);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.decision-persona-motivations,
+.decision-persona-engagement {
+  border-radius: 1.75rem;
+  padding: 1.5rem;
+}
+
+.decision-persona-motivations {
+  grid-column: span 2;
+  background: rgba(248, 250, 250, 0.94);
+}
+
+.decision-persona-engagement {
+  grid-column: span 2;
+  background: var(--color-accent-purple);
+}
+
+.decision-persona-engagement h3,
+.decision-persona-engagement li {
+  color: var(--color-foreground);
+}
+
+.decision-persona-motivations ul,
+.decision-persona-engagement ul {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.decision-persona-motivations li,
+.decision-persona-engagement li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.decision-persona-motivations li::before,
+.decision-persona-engagement li::before {
+  position: absolute;
+  top: 0.45rem;
+  left: 0;
+  width: 0.72rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  content: '';
+}
+
+.decision-persona-motivations li::before {
+  background: var(--color-background);
+  box-shadow: inset 0 0 0 0.16rem #ffffff;
+}
+
+.decision-persona-engagement li::before {
+  background: var(--color-accent-yellow);
+  box-shadow: inset 0 0 0 0.12rem rgba(255, 253, 255, 0.75);
+}
+
+.decision-persona-sheet {
+  display: grid;
+  grid-template-columns: minmax(17rem, 0.78fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    'filter filter filter'
+    'photo quote quote'
+    'photo problems goals'
+    'motivations motivations engagement';
+  gap: 1rem;
+  align-items: stretch;
+  min-height: 41rem;
+  padding: clamp(1rem, 2vw, 2rem);
+  background:
+    radial-gradient(circle at 16% 26%, rgba(255, 227, 66, 0.18), transparent 13rem),
+    radial-gradient(circle at 18% 42%, rgba(134, 92, 255, 0.12), transparent 15rem),
+    #ffffff;
+}
+
+.persona-product-filter {
+  display: flex;
+  grid-area: filter;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  border: 1px solid rgba(28, 28, 28, 0.06);
+  border-radius: 1.1rem;
+  padding: 0.55rem;
+  background: rgba(255, 253, 255, 0.74);
+  box-shadow: 0 0.8rem 2rem rgba(28, 28, 28, 0.05);
+}
+
+.persona-product-filter__label {
+  margin-right: auto;
+  padding: 0 0.75rem;
+  color: var(--color-background);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.persona-product-filter__search,
+.persona-product-filter__select,
+.persona-product-filter__button {
+  display: inline-flex;
+  min-height: 2.45rem;
+  align-items: center;
+  gap: 0.42rem;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 999px;
+  background: #ffffff;
+  color: rgba(28, 28, 28, 0.58);
+  box-shadow: 0 0.45rem 1.2rem rgba(28, 28, 28, 0.035);
+}
+
+.persona-product-filter__search {
+  width: min(19rem, 34vw);
+  padding: 0 0.8rem;
+}
+
+.persona-product-filter__search input,
+.persona-product-filter__select select {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-background);
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.persona-product-filter__search input::placeholder {
+  color: rgba(28, 28, 28, 0.36);
+}
+
+.persona-product-filter__select {
+  padding: 0 0.75rem;
+}
+
+.persona-product-filter__select select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.persona-product-filter__button {
+  border: 0;
+  padding: 0 0.92rem;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-size: 0.75rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.persona-photo-card {
+  position: relative;
+  grid-area: photo;
+  min-height: 31rem;
+  overflow: hidden;
+  border-radius: 1.75rem;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 227, 66, 0.58), transparent 8rem),
+    radial-gradient(circle at 86% 30%, rgba(134, 92, 255, 0.5), transparent 10rem),
+    #f6f8f6;
+  box-shadow: 0 1.2rem 3rem rgba(28, 28, 28, 0.08);
+}
+
+.persona-photo-card::before,
+.persona-photo-card::after {
+  position: absolute;
+  right: -0.4rem;
+  left: 1.1rem;
+  height: 86%;
+  border-radius: 2rem;
+  content: '';
+}
+
+.persona-photo-card::before {
+  top: 0.95rem;
+  background: rgba(134, 92, 255, 0.32);
+  transform: rotate(3deg);
+}
+
+.persona-photo-card::after {
+  top: 2rem;
+  background: rgba(255, 253, 255, 0.72);
+}
+
+.persona-photo-card__tags,
+.persona-photo-card img,
+.persona-photo-card footer {
+  position: relative;
+  z-index: 1;
+}
+
+.persona-photo-card__tags {
+  position: absolute;
+  top: 2.1rem;
+  left: 1.7rem;
+  display: flex;
+  gap: 0.55rem;
+  z-index: 2;
+}
+
+.persona-photo-card__tags span {
+  border-radius: 999px;
+  padding: 0.48rem 0.78rem;
+  background: rgba(255, 253, 255, 0.9);
+  color: var(--color-background);
+  font-size: 0.74rem;
+  font-weight: 850;
+}
+
+.persona-photo-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 31rem;
+  object-fit: cover;
+  object-position: center top;
+  mix-blend-mode: multiply;
+  filter: saturate(0.92) contrast(1.05);
+}
+
+.persona-photo-card footer {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.22rem;
+  border-radius: 1.05rem;
+  padding: 0.95rem;
+  background: rgba(255, 253, 255, 0.74);
+  box-shadow: 0 1rem 2.4rem rgba(28, 28, 28, 0.16);
+  backdrop-filter: blur(14px);
+}
+
+.persona-photo-card footer strong {
+  color: var(--color-background);
+  font-size: 1.05rem;
+}
+
+.persona-photo-card footer span {
+  color: rgba(28, 28, 28, 0.6);
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.persona-analysis-quote {
+  grid-area: quote;
+  align-self: center;
+  max-width: 36rem;
+  margin: 0;
+  color: var(--color-background);
+  font-size: clamp(1.08rem, 1.75vw, 1.45rem);
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.persona-mini-list {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+.persona-mini-list--problems {
+  grid-area: problems;
+}
+
+.persona-mini-list--goals {
+  grid-area: goals;
+}
+
+.persona-mini-list h3,
+.persona-motivation-card h3,
+.persona-engagement-card h3 {
+  margin: 0;
+  color: var(--color-background);
+  font-size: 1rem;
+}
+
+.persona-mini-list article {
+  display: grid;
+  min-height: 4.9rem;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: center;
+  border: 1px solid rgba(28, 28, 28, 0.04);
+  border-radius: 1.35rem;
+  padding: 0.9rem 1rem;
+  background: rgba(248, 250, 250, 0.94);
+}
+
+.persona-mini-list article i {
+  width: 0.72rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.persona-mini-list--problems article i {
+  background: #ff7474;
+  box-shadow: 0 0 0 0.22rem rgba(255, 116, 116, 0.18);
+}
+
+.persona-mini-list--goals article i {
+  background: #4fca75;
+  box-shadow: 0 0 0 0.22rem rgba(79, 202, 117, 0.18);
+}
+
+.persona-mini-list article span,
+.persona-motivation-card li,
+.persona-engagement-card li {
+  color: rgba(28, 28, 28, 0.58);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.48;
+}
+
+.persona-motivation-card,
+.persona-engagement-card {
+  display: grid;
+  align-content: center;
+  gap: 0.9rem;
+  border-radius: 1.75rem;
+  padding: 1.4rem;
+}
+
+.persona-motivation-card {
+  grid-area: motivations;
+  background: rgba(248, 250, 250, 0.95);
+}
+
+.persona-engagement-card {
+  grid-area: engagement;
+  background: var(--color-accent-purple);
+}
+
+.persona-engagement-card h3,
+.persona-engagement-card li {
+  color: var(--color-foreground);
+}
+
+.persona-motivation-card ul,
+.persona-engagement-card ul {
+  display: grid;
+  gap: 0.58rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.persona-motivation-card li,
+.persona-engagement-card li {
+  position: relative;
+  padding-left: 1.35rem;
+}
+
+.persona-motivation-card li::before,
+.persona-engagement-card li::before {
+  position: absolute;
+  top: 0.42rem;
+  left: 0;
+  width: 0.72rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  content: '';
+}
+
+.persona-motivation-card li::before {
+  background: var(--color-background);
+  box-shadow: inset 0 0 0 0.15rem #ffffff;
+}
+
+.persona-engagement-card li::before {
+  background: var(--color-accent-yellow);
+  box-shadow: inset 0 0 0 0.12rem rgba(255, 253, 255, 0.7);
+}
