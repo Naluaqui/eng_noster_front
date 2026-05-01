@@ -1,5 +1,11 @@
 import { ArrowRight, AtSign, Globe, MessageCircle, Pencil, Send, Share2 } from 'lucide-react';
-import { persuasionProfile, persuasionSocials, persuasionTracks } from '../data/persuasionProfile';
+import type {
+  PersuasionProfile,
+  PersuasionSidebarStat,
+  PersuasionSocial,
+  PersuasionTrack,
+  PersuasionWorklistItem,
+} from '../types/persuasion';
 import { PersuasionRightSidebar } from './PersuasionRightSidebar';
 
 const socialIcons = {
@@ -8,21 +14,35 @@ const socialIcons = {
   X: MessageCircle,
   LinkedIn: Globe,
   Telegram: Send,
-} as const;
+} satisfies Record<PersuasionSocial, typeof AtSign>;
 
-export function PersuasionDashboard() {
+type PersuasionDashboardProps = {
+  profile: PersuasionProfile;
+  socials: PersuasionSocial[];
+  tracks: PersuasionTrack[];
+  sidebarStats: PersuasionSidebarStat[];
+  worklist: PersuasionWorklistItem[];
+};
+
+export function PersuasionDashboard({
+  profile,
+  socials,
+  tracks,
+  sidebarStats,
+  worklist,
+}: PersuasionDashboardProps) {
   return (
     <main className="persuasion-page" aria-labelledby="persuasion-title">
       <div className="persuasion-page__main">
         <section className="persuasion-profile-card" aria-label="Perfil de persuasão">
-          <img src={persuasionProfile.avatar} alt={`Retrato de ${persuasionProfile.name}`} />
+          <img src={profile.avatar} alt={`Retrato de ${profile.name}`} />
 
           <div className="persuasion-profile-card__content">
             <header>
               <div>
                 <span>Persuasão</span>
-                <h2 id="persuasion-title">{persuasionProfile.name}</h2>
-                <p>{persuasionProfile.role}</p>
+                <h2 id="persuasion-title">{profile.name}</h2>
+                <p>{profile.role}</p>
               </div>
 
               <button type="button" aria-label="Editar perfil de persuasão">
@@ -33,28 +53,28 @@ export function PersuasionDashboard() {
             <dl>
               <div>
                 <dt>Data de registro:</dt>
-                <dd>{persuasionProfile.registeredAt}</dd>
+                <dd>{profile.registeredAt}</dd>
               </div>
               <div>
                 <dt>País, cidade:</dt>
-                <dd>{persuasionProfile.location}</dd>
+                <dd>{profile.location}</dd>
               </div>
               <div>
                 <dt>Data de nascimento:</dt>
-                <dd>{persuasionProfile.birthDate}</dd>
+                <dd>{profile.birthDate}</dd>
               </div>
               <div>
                 <dt>E-mail:</dt>
-                <dd>{persuasionProfile.email}</dd>
+                <dd>{profile.email}</dd>
               </div>
               <div>
                 <dt>Telefone:</dt>
-                <dd>{persuasionProfile.phone}</dd>
+                <dd>{profile.phone}</dd>
               </div>
             </dl>
 
             <nav className="persuasion-profile-card__socials" aria-label="Canais de persuasão">
-              {persuasionSocials.map((social) => {
+              {socials.map((social) => {
                 const Icon = socialIcons[social];
 
                 return (
@@ -77,13 +97,13 @@ export function PersuasionDashboard() {
 
           <div className="persuasion-tracks-card__body">
             <ol className="persuasion-timeline" aria-hidden="true">
-              {persuasionTracks.map((track) => (
+              {tracks.map((track) => (
                 <li key={track.id} />
               ))}
             </ol>
 
             <div className="persuasion-track-list">
-              {persuasionTracks.map((track) => (
+              {tracks.map((track) => (
                 <article className="persuasion-track-card" data-tone={track.tone} key={track.id}>
                   <div>
                     <h3>{track.title}</h3>
@@ -103,7 +123,7 @@ export function PersuasionDashboard() {
         </section>
       </div>
 
-      <PersuasionRightSidebar />
+      <PersuasionRightSidebar stats={sidebarStats} worklist={worklist} />
     </main>
   );
 }

@@ -1,5 +1,5 @@
-import { PersuasionDashboard } from '@/features/persuasion/components/PersuasionDashboard';
+import { PersuasionScreen } from '@/features/persuasion/screens/PersuasionScreen';
 
 export default function PersuasionRoute() {
-  return <PersuasionDashboard />;
+  return <PersuasionScreen />;
 }

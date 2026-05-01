@@ -6,5 +6,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export function Button({ className, variant = 'primary', type = 'button', ...props }: ButtonProps) {
-  return <button className={cn('ui-button', `ui-button--${variant}`, className)} type={type} {...props} />;
+  return (
+    <button
+      className={cn('ui-button', `ui-button--${variant}`, className)}
+      type={type}
+      {...props}
+    />
+  );
 }

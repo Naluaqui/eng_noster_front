@@ -28,7 +28,7 @@ const openSans = Open_Sans({
 
 export const metadata: Metadata = {
   title: 'Noster',
-  description: 'Noster - Engenharia de decisao com IA.',
+  description: 'Noster - Engenharia de decisão com IA.',
 };
 
 type RootLayoutProps = {
@@ -38,7 +38,9 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt-BR">
-      <body className={`${bungeeInline.variable} ${bungeeShade.variable} ${lexendExa.variable} ${openSans.variable}`}>
+      <body
+        className={`${bungeeInline.variable} ${bungeeShade.variable} ${lexendExa.variable} ${openSans.variable}`}
+      >
         {children}
       </body>
     </html>

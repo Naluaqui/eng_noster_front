@@ -7,6 +7,7 @@ import {
   UserCheck,
   type LucideIcon,
 } from 'lucide-react';
+import { formatCurrency } from '@/shared/lib/formatters';
 
 type SignalType = 'positive' | 'risk' | 'warning';
 
@@ -79,21 +80,8 @@ const chartSize = {
   },
 };
 
-function formatCurrency(value: number) {
-  const signal = value < 0 ? '-' : '';
-
-  return `${signal}${Math.abs(value).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })}`;
-}
-
 function formatFullCurrency(value: number) {
-  return value.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
+  return formatCurrency(value, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -196,7 +184,10 @@ export function DecisionFinancialHistory() {
   const maxSignalAmount = Math.max(...strategicSignals.map((signal) => Math.abs(signal.amount)));
 
   return (
-    <section className="decision-financial-history" aria-label="Movimentação estratégica da empresa">
+    <section
+      className="decision-financial-history"
+      aria-label="Movimentação estratégica da empresa"
+    >
       <article className="decision-balance-card">
         <header>
           <div>
@@ -232,7 +223,11 @@ export function DecisionFinancialHistory() {
         </div>
 
         <div className="decision-balance-chart">
-          <svg viewBox={`0 0 ${chartSize.width} ${chartSize.height}`} role="img" aria-label="Evolução do impacto estratégico mensal">
+          <svg
+            viewBox={`0 0 ${chartSize.width} ${chartSize.height}`}
+            role="img"
+            aria-label="Evolução do impacto estratégico mensal"
+          >
             {chartTicks.map((tick) => {
               const y = getY(tick.value, maxImpact);
 
@@ -246,7 +241,12 @@ export function DecisionFinancialHistory() {
                     y2={y}
                   />
 
-                  <text className="decision-balance-chart__axis" x={chartSize.padding.left - 10} y={y + 4} textAnchor="end">
+                  <text
+                    className="decision-balance-chart__axis"
+                    x={chartSize.padding.left - 10}
+                    y={y + 4}
+                    textAnchor="end"
+                  >
                     {tick.label.replace(',00', '')}
                   </text>
                 </g>
@@ -263,7 +263,12 @@ export function DecisionFinancialHistory() {
               return (
                 <g key={point.label}>
                   <circle className="decision-balance-chart__point" cx={x} cy={y} r="4" />
-                  <text className="decision-balance-chart__label" x={x} y={chartSize.height - 10} textAnchor="middle">
+                  <text
+                    className="decision-balance-chart__label"
+                    x={x}
+                    y={chartSize.height - 10}
+                    textAnchor="middle"
+                  >
                     {point.label}
                   </text>
                 </g>
@@ -275,8 +280,6 @@ export function DecisionFinancialHistory() {
             {impactHistory.map((point, index) => {
               const x = getX(index, impactHistory.length);
               const y = getY(point.value, maxImpact);
-              const previousValue = impactHistory[index - 1]?.value ?? point.value;
-              const variation = point.value - previousValue;
 
               return (
                 <button
@@ -331,7 +334,13 @@ export function DecisionFinancialHistory() {
                   <time>{signal.date}</time>
 
                   <div className="decision-transaction-card__bar">
-                    <b style={{ '--width': `${getSignalImpactPercent(signal.amount, maxSignalAmount)}%` } as CSSProperties} />
+                    <b
+                      style={
+                        {
+                          '--width': `${getSignalImpactPercent(signal.amount, maxSignalAmount)}%`,
+                        } as CSSProperties
+                      }
+                    />
                   </div>
                 </div>
 

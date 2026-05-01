@@ -1,7 +1,6 @@
 import { Eye, FilePenLine, Filter, Trash2 } from 'lucide-react';
 import { formatShortDate } from '@/shared/lib/formatters';
-import { meetings } from '@/features/meetings/data/meetings';
-import type { MeetingStatus } from '@/features/meetings/types/meeting';
+import type { Meeting, MeetingStatus } from '@/features/meetings/types/meeting';
 
 const statusLabels: Record<MeetingStatus, string> = {
   scheduled: 'Agendada',
@@ -19,13 +18,21 @@ function getInitials(name: string) {
 }
 
 type DecisionMeetingsTableProps = {
+  meetings: Meeting[];
   selectedMeetingId: string;
   onOpenMeeting: (meetingId: string) => void;
 };
 
-export function DecisionMeetingsTable({ selectedMeetingId, onOpenMeeting }: DecisionMeetingsTableProps) {
+export function DecisionMeetingsTable({
+  meetings,
+  selectedMeetingId,
+  onOpenMeeting,
+}: DecisionMeetingsTableProps) {
   return (
-    <section className="decision-meetings-table-card" aria-labelledby="decision-meetings-table-title">
+    <section
+      className="decision-meetings-table-card"
+      aria-labelledby="decision-meetings-table-title"
+    >
       <header>
         <div>
           <span>Reuniões</span>
@@ -55,7 +62,10 @@ export function DecisionMeetingsTable({ selectedMeetingId, onOpenMeeting }: Deci
 
           <tbody>
             {meetings.map((meeting) => (
-              <tr className={meeting.id === selectedMeetingId ? 'is-selected' : undefined} key={meeting.id}>
+              <tr
+                className={meeting.id === selectedMeetingId ? 'is-selected' : undefined}
+                key={meeting.id}
+              >
                 <td>
                   <span className="decision-meetings-table-card__avatar" aria-hidden="true">
                     {getInitials(meeting.owner)}
@@ -70,7 +80,10 @@ export function DecisionMeetingsTable({ selectedMeetingId, onOpenMeeting }: Deci
                   <time dateTime={meeting.date}>{formatShortDate(meeting.date)}</time>
                 </td>
                 <td>
-                  <span className="decision-meetings-table-card__status" data-status={meeting.status}>
+                  <span
+                    className="decision-meetings-table-card__status"
+                    data-status={meeting.status}
+                  >
                     {statusLabels[meeting.status]}
                   </span>
                 </td>

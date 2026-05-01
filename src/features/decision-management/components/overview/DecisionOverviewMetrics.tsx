@@ -37,19 +37,19 @@ export function DecisionOverviewMetrics() {
     <section className="decision-overview-metrics" aria-labelledby="decision-overview-title">
       <header>
         <div>
-          <h2 id="decision-overview-title">Sales Overview</h2>
-          <p>Your current sales summary and activity</p>
+          <h2 id="decision-overview-title">Resumo de conversão</h2>
+          <p>Síntese atual de sinais, risco e avanço comercial.</p>
         </div>
 
         <div className="decision-overview-metrics__actions">
-          <button type="button">This Month</button>
+          <button type="button">Este mês</button>
           <button type="button">
             <Share2 size={15} aria-hidden="true" />
-            Export
+            Exportar
           </button>
           <button className="is-active" type="button">
             <Filter size={15} aria-hidden="true" />
-            Filter
+            Filtrar
           </button>
         </div>
       </header>

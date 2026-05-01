@@ -1,5 +1,5 @@
-import { MultiAgentsChat } from '@/features/multi-agents/components/MultiAgentsChat';
+import { MultiAgentsScreen } from '@/features/multi-agents/screens/MultiAgentsScreen';
 
 export default function MultiAgentsRoute() {
-  return <MultiAgentsChat />;
+  return <MultiAgentsScreen />;
 }

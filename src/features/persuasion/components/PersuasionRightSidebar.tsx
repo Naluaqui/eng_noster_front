@@ -1,5 +1,5 @@
 import { ArrowUpRight, FileText, Mail, Phone } from 'lucide-react';
-import { persuasionSidebarStats, persuasionWorklist } from '../data/persuasionProfile';
+import type { PersuasionSidebarStat, PersuasionWorklistItem } from '../types/persuasion';
 
 const channelIcons = {
   document: FileText,
@@ -7,11 +7,16 @@ const channelIcons = {
   email: Mail,
 } as const;
 
-export function PersuasionRightSidebar() {
+type PersuasionRightSidebarProps = {
+  stats: PersuasionSidebarStat[];
+  worklist: PersuasionWorklistItem[];
+};
+
+export function PersuasionRightSidebar({ stats, worklist }: PersuasionRightSidebarProps) {
   return (
     <aside className="persuasion-right-sidebar" aria-labelledby="persuasion-worklist-title">
       <section className="persuasion-sidebar-stats" aria-label="Resumo de persuasão">
-        {persuasionSidebarStats.map((stat) => (
+        {stats.map((stat) => (
           <article className="persuasion-sidebar-stat" data-tone={stat.tone} key={stat.id}>
             <span>{stat.label}</span>
             <strong>{stat.value}</strong>
@@ -31,7 +36,7 @@ export function PersuasionRightSidebar() {
         </header>
 
         <div className="persuasion-worklist__items">
-          {persuasionWorklist.map((item) => {
+          {worklist.map((item) => {
             const Icon = channelIcons[item.channel];
 
             return (

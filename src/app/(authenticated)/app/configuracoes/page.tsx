@@ -1,5 +1,5 @@
-import { AccountSettings } from '@/features/settings/components/AccountSettings';
+import { SettingsScreen } from '@/features/settings/screens/SettingsScreen';
 
 export default function SettingsRoute() {
-  return <AccountSettings />;
+  return <SettingsScreen />;
 }

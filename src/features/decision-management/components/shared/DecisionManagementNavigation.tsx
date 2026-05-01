@@ -10,10 +10,17 @@ type DecisionManagementNavigationProps = {
   onTabChange: (tab: DecisionManagementTab) => void;
 };
 
-export function DecisionManagementNavigation({ activeTab, onTabChange }: DecisionManagementNavigationProps) {
+export function DecisionManagementNavigation({
+  activeTab,
+  onTabChange,
+}: DecisionManagementNavigationProps) {
   return (
     <nav className="decision-management-navigation" aria-label="Navegação da gestão de decisão">
-      <div className="decision-management-navigation__tabs" role="tablist" aria-label="Áreas da gestão de decisão">
+      <div
+        className="decision-management-navigation__tabs"
+        role="tablist"
+        aria-label="Áreas da gestão de decisão"
+      >
         {decisionManagementTabs.map((tab) => (
           <button
             aria-controls={`decision-management-${tab.id}-panel`}

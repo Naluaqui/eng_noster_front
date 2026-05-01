@@ -48,8 +48,11 @@ export function DecisionPersonaPanel() {
         Clareza deve funcionar como benefício de fundo, não como uma tarefa separada.
       </blockquote>
 
-      <section className="persona-mini-list persona-mini-list--problems" aria-labelledby="persona-problems">
-        <h3 id="persona-problems">Problems</h3>
+      <section
+        className="persona-mini-list persona-mini-list--problems"
+        aria-labelledby="persona-problems"
+      >
+        <h3 id="persona-problems">Problemas</h3>
         {personaProblems.map((problem) => (
           <article key={problem}>
             <i />
@@ -58,8 +61,11 @@ export function DecisionPersonaPanel() {
         ))}
       </section>
 
-      <section className="persona-mini-list persona-mini-list--goals" aria-labelledby="persona-goals">
-        <h3 id="persona-goals">Goals</h3>
+      <section
+        className="persona-mini-list persona-mini-list--goals"
+        aria-labelledby="persona-goals"
+      >
+        <h3 id="persona-goals">Objetivos</h3>
         {personaGoals.map((goal) => (
           <article key={goal}>
             <i />
@@ -69,7 +75,7 @@ export function DecisionPersonaPanel() {
       </section>
 
       <section className="persona-motivation-card" aria-labelledby="persona-motivations">
-        <h3 id="persona-motivations">Motivations</h3>
+        <h3 id="persona-motivations">Motivações</h3>
         <ul>
           {personaMotivations.map((motivation) => (
             <li key={motivation}>{motivation}</li>
@@ -78,7 +84,7 @@ export function DecisionPersonaPanel() {
       </section>
 
       <section className="persona-engagement-card" aria-labelledby="persona-engagement">
-        <h3 id="persona-engagement">User engagement</h3>
+        <h3 id="persona-engagement">Engajamento</h3>
         <ul>
           {engagementSignals.map((signal) => (
             <li key={signal}>{signal}</li>

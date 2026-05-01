@@ -66,22 +66,6 @@
     padding: 0.75rem;
   }
 
-  .decision-persona-panel {
-    min-height: auto;
-    padding: 1rem;
-  }
-
-  .decision-persona-panel__header,
-  .decision-persona-panel__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .decision-persona-quote,
-  .decision-persona-motivations,
-  .decision-persona-engagement {
-    grid-column: auto;
-  }
-
   .decision-persona-sheet {
     grid-template-areas:
       'filter'

@@ -6,8 +6,7 @@
     linear-gradient(90deg, rgba(28, 28, 28, 0.045) 1px, transparent 1px),
     linear-gradient(0deg, rgba(28, 28, 28, 0.035) 1px, transparent 1px),
     radial-gradient(circle at 86% 8%, rgba(134, 92, 255, 0.12), transparent 28rem),
-    radial-gradient(circle at 18% 92%, rgba(0, 255, 195, 0.1), transparent 24rem),
-    #fffdff;
+    radial-gradient(circle at 18% 92%, rgba(0, 255, 195, 0.1), transparent 24rem), #fffdff;
   background-size:
     3.8rem 3.8rem,
     3.8rem 3.8rem,
@@ -165,8 +164,6 @@
   gap: 1rem;
 }
 
-.decision-chat,
-.decision-summary,
 .details-panel,
 .settings-form,
 .ui-card {
@@ -177,7 +174,6 @@
   box-shadow: 0 0.8rem 2rem rgba(28, 28, 28, 0.045);
 }
 
-.decision-summary,
 .settings-form {
   display: grid;
   gap: 0.85rem;
@@ -196,4 +192,3 @@
   background: var(--color-accent-purple);
   box-shadow: inset 0 0 0 3px rgba(255, 253, 255, 0.7);
 }
-

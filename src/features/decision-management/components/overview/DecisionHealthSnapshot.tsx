@@ -101,7 +101,6 @@ function createLinePath(values: number[]) {
 }
 
 function createAreaPath(values: number[]) {
-  const bounds = getChartBounds(values);
   const linePath = createLinePath(values);
   const firstX = getX(0, values.length);
   const lastX = getX(values.length - 1, values.length);
@@ -193,7 +192,11 @@ export function DecisionHealthSnapshot() {
         </header>
 
         <div className="decision-health-report__chart">
-          <svg viewBox={`0 0 ${chart.width} ${chart.height}`} role="img" aria-label="Tendência de ROI projetado">
+          <svg
+            viewBox={`0 0 ${chart.width} ${chart.height}`}
+            role="img"
+            aria-label="Tendência de ROI projetado"
+          >
             {roiTicks.map((tick) => (
               <g key={tick.value}>
                 <line
@@ -203,7 +206,12 @@ export function DecisionHealthSnapshot() {
                   y1={tick.y}
                   y2={tick.y}
                 />
-                <text className="decision-health-axis" x={chart.padding.left - 8} y={tick.y + 4} textAnchor="end">
+                <text
+                  className="decision-health-axis"
+                  x={chart.padding.left - 8}
+                  y={tick.y + 4}
+                  textAnchor="end"
+                >
                   {formatRoi(tick.value)}
                 </text>
               </g>
@@ -255,7 +263,10 @@ export function DecisionHealthSnapshot() {
                   <span className="decision-health-report__tooltip">
                     <strong>{formatRoi(item.value)} ROI</strong>
                     <small>{item.label}</small>
-                    <em>{variation >= 0 ? '+' : ''}{formatRoi(variation)} mês</em>
+                    <em>
+                      {variation >= 0 ? '+' : ''}
+                      {formatRoi(variation)} mês
+                    </em>
                   </span>
                 </button>
               );
@@ -272,7 +283,10 @@ export function DecisionHealthSnapshot() {
 
         <div>
           <span>Ameaça Concorrencial</span>
-          <p>12 contas apresentam comparação ativa com concorrentes, alternativas de mercado ou risco de migração.</p>
+          <p>
+            12 contas apresentam comparação ativa com concorrentes, alternativas de mercado ou risco
+            de migração.
+          </p>
         </div>
       </article>
 
@@ -291,7 +305,11 @@ export function DecisionHealthSnapshot() {
         </div>
 
         <div className="decision-trend-card__chart">
-          <svg viewBox={`0 0 ${chart.width} ${chart.height}`} role="img" aria-label="Tendência da clareza de diferencial">
+          <svg
+            viewBox={`0 0 ${chart.width} ${chart.height}`}
+            role="img"
+            aria-label="Tendência da clareza de diferencial"
+          >
             {clarityTicks.map((tick) => (
               <line
                 className="decision-trend-grid"
@@ -310,7 +328,9 @@ export function DecisionHealthSnapshot() {
               const x = getX(index, clarityTrend.length);
               const y = getY(item.value, clarityBounds.min, clarityBounds.max);
 
-              return <circle className="decision-trend-point" cx={x} cy={y} r="3.5" key={item.label} />;
+              return (
+                <circle className="decision-trend-point" cx={x} cy={y} r="3.5" key={item.label} />
+              );
             })}
           </svg>
 
@@ -336,7 +356,10 @@ export function DecisionHealthSnapshot() {
                 >
                   <span className="decision-trend-tooltip">
                     <strong>{item.value}%</strong>
-                    <em>{variation >= 0 ? '+' : ''}{variation}% mês</em>
+                    <em>
+                      {variation >= 0 ? '+' : ''}
+                      {variation}% mês
+                    </em>
                     <small>{item.label}</small>
                   </span>
                 </button>
@@ -367,7 +390,11 @@ export function DecisionHealthSnapshot() {
               <span
                 className="decision-expansion-grid-line"
                 key={tick.value}
-                style={{ '--position': `${100 - getPercent(tick.value, expansionMax)}%` } as CSSProperties}
+                style={
+                  {
+                    '--position': `${100 - getPercent(tick.value, expansionMax)}%`,
+                  } as CSSProperties
+                }
               />
             ))}
 
@@ -378,7 +405,11 @@ export function DecisionHealthSnapshot() {
                     <div className="decision-expansion-bar-wrap">
                       <i
                         className="decision-expansion-bar"
-                        style={{ '--height': `${getPercent(item.amountValue, expansionMax)}%` } as CSSProperties}
+                        style={
+                          {
+                            '--height': `${getPercent(item.amountValue, expansionMax)}%`,
+                          } as CSSProperties
+                        }
                       />
                     </div>
                   </div>

@@ -5,7 +5,10 @@ export function MultiAgentComposer() {
     <form className="multi-agent-composer">
       <label>
         <span className="sr-only">Mensagem para os agentes</span>
-        <textarea name="message" placeholder="Peça uma análise, compare perspectivas ou descreva a decisão..." />
+        <textarea
+          name="message"
+          placeholder="Peça uma análise, compare perspectivas ou descreva a decisão..."
+        />
       </label>
 
       <footer>

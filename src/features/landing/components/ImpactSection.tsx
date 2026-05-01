@@ -89,7 +89,10 @@ function buildImpactLines() {
 const impactLines = buildImpactLines();
 const accessibleText = impactText.map((line) => line.text).join(' ');
 
-function getLetterTransform(letter: Pick<ImpactLetter, 'scatterX' | 'scatterY' | 'scatterRotate' | 'scatterScale'>, progress: number) {
+function getLetterTransform(
+  letter: Pick<ImpactLetter, 'scatterX' | 'scatterY' | 'scatterRotate' | 'scatterScale'>,
+  progress: number,
+) {
   const unresolved = 1 - progress;
   const x = letter.scatterX * unresolved;
   const y = letter.scatterY * unresolved;
@@ -117,9 +120,13 @@ export function ImpactSection() {
       }
 
       const rect = section.getBoundingClientRect();
-      const animationStart = window.innerHeight * 0.40;
+      const animationStart = window.innerHeight * 0.4;
       const animationEnd = window.innerHeight * -0.08;
-      const rawProgress = clamp((animationStart - rect.top) / (animationStart - animationEnd), 0, 1);
+      const rawProgress = clamp(
+        (animationStart - rect.top) / (animationStart - animationEnd),
+        0,
+        1,
+      );
       const progress = easeOutCubic(rawProgress);
       const letters = section.querySelectorAll<HTMLElement>('.impact-letter');
 

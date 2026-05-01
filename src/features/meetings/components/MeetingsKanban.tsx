@@ -1,12 +1,15 @@
-import { meetings } from '../data/meetings';
-import type { MeetingStatus } from '../types/meeting';
+import type { Meeting, MeetingStatus } from '../types/meeting';
 import { CreateMeetingButton } from './CreateMeetingButton';
 import { MeetingsFilterBar } from './MeetingsFilterBar';
 import { MeetingStatusColumn } from './MeetingStatusColumn';
 
 const statuses: MeetingStatus[] = ['scheduled', 'in-review', 'decided'];
 
-export function MeetingsKanban() {
+type MeetingsKanbanProps = {
+  meetings: Meeting[];
+};
+
+export function MeetingsKanban({ meetings }: MeetingsKanbanProps) {
   const totalSignals = meetings.reduce((total, meeting) => total + meeting.signalCount, 0);
 
   return (

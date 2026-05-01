@@ -1219,8 +1219,7 @@
   padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 5vw, 5rem);
   border-top: 1px solid rgba(255, 253, 255, 0.12);
   background:
-    radial-gradient(circle at 12% 8%, rgba(134, 92, 255, 0.22), transparent 18rem),
-    #08080b;
+    radial-gradient(circle at 12% 8%, rgba(134, 92, 255, 0.22), transparent 18rem), #08080b;
   color: var(--color-foreground);
   font-size: clamp(0.72rem, 1.1vw, 0.88rem);
   font-weight: 700;
@@ -1502,4 +1501,3 @@
     grid-column: auto;
   }
 }
-

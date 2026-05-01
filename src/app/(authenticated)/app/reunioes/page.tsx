@@ -1,5 +1,5 @@
-import { MeetingsKanban } from '@/features/meetings/components/MeetingsKanban';
+import { MeetingsScreen } from '@/features/meetings/screens/MeetingsScreen';
 
 export default function MeetingsRoute() {
-  return <MeetingsKanban />;
+  return <MeetingsScreen />;
 }

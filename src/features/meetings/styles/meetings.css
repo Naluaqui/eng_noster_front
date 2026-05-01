@@ -23,8 +23,7 @@
   border-radius: 0.5rem;
   padding: 1rem;
   background:
-    radial-gradient(circle at 90% 10%, rgba(0, 255, 195, 0.22), transparent 5rem),
-    #ffffff;
+    radial-gradient(circle at 90% 10%, rgba(0, 255, 195, 0.22), transparent 5rem), #ffffff;
   box-shadow: 0 1rem 2.8rem rgba(28, 28, 28, 0.055);
 }
 

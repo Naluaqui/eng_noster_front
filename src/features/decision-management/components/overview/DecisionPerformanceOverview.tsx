@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { formatCompactCurrency, formatCurrency } from '@/shared/lib/formatters';
 
 type PerformanceMonth = {
   month: string;
@@ -32,38 +33,6 @@ const decisionOverview = {
   actionableTrend: '+12%',
   blockedTrend: 'atenção',
 };
-
-function formatCurrency(value: number) {
-  return `R$ ${formatInteger(value)}`;
-}
-
-function formatCompactCurrency(value: number) {
-  if (Math.abs(value) >= 1_000_000) {
-    return `R$ ${formatDecimal(value / 1_000_000)} mi`;
-  }
-
-  if (Math.abs(value) >= 1_000) {
-    return `R$ ${formatDecimal(value / 1_000)} mil`;
-  }
-
-  return formatCurrency(value);
-}
-
-function formatInteger(value: number) {
-  return Math.round(value)
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
-
-function formatDecimal(value: number) {
-  const roundedValue = Math.round(value * 10) / 10;
-
-  if (Number.isInteger(roundedValue)) {
-    return String(roundedValue);
-  }
-
-  return roundedValue.toFixed(1).replace('.', ',');
-}
 
 function getNiceChartMax(value: number) {
   if (value <= 0) {
@@ -123,7 +92,10 @@ export function DecisionPerformanceOverview() {
   const chartTicks = getChartTicks(chartMax);
 
   return (
-    <section className="decision-performance-overview" aria-label="Performance da gestão de decisão">
+    <section
+      className="decision-performance-overview"
+      aria-label="Performance da gestão de decisão"
+    >
       <article className="decision-performance-card">
         <header>
           <h2>Evolução da Receita Decisória</h2>
@@ -149,7 +121,9 @@ export function DecisionPerformanceOverview() {
               <span
                 className="decision-performance-grid-line"
                 key={tick.value}
-                style={{ '--position': `${100 - getPercent(tick.value, chartMax)}%` } as CSSProperties}
+                style={
+                  { '--position': `${100 - getPercent(tick.value, chartMax)}%` } as CSSProperties
+                }
               />
             ))}
 
@@ -160,7 +134,11 @@ export function DecisionPerformanceOverview() {
                 const gap = item.potential - item.converted;
 
                 return (
-                  <figure className={item.selected ? 'is-selected' : undefined} key={item.month} tabIndex={0}>
+                  <figure
+                    className={item.selected ? 'is-selected' : undefined}
+                    key={item.month}
+                    tabIndex={0}
+                  >
                     <div>
                       <i
                         aria-label={`Receita potencial em ${item.periodLabel}: ${formatCurrency(item.potential)}`}
@@ -175,7 +153,10 @@ export function DecisionPerformanceOverview() {
 
                     <figcaption>{item.month}</figcaption>
 
-                    <aside className="decision-performance-tooltip" aria-label={`Resumo de ${item.periodLabel}`}>
+                    <aside
+                      className="decision-performance-tooltip"
+                      aria-label={`Resumo de ${item.periodLabel}`}
+                    >
                       <strong>{item.periodLabel}</strong>
 
                       <span>
@@ -236,7 +217,10 @@ export function DecisionPerformanceOverview() {
             </aside>
           </div>
 
-          <p>Decisões com próximo passo claro, responsáveis definidos e menor risco de bloqueio operacional.</p>
+          <p>
+            Decisões com próximo passo claro, responsáveis definidos e menor risco de bloqueio
+            operacional.
+          </p>
         </div>
 
         <div className="decision-index-breakdown">
@@ -247,7 +231,13 @@ export function DecisionPerformanceOverview() {
             </header>
 
             <div className="decision-index-progress">
-              <i style={{ '--width': `${getDecisionShare(decisionOverview.actionableDecisions)}%` } as CSSProperties} />
+              <i
+                style={
+                  {
+                    '--width': `${getDecisionShare(decisionOverview.actionableDecisions)}%`,
+                  } as CSSProperties
+                }
+              />
             </div>
 
             <em>{decisionOverview.actionableTrend}</em>
@@ -260,7 +250,13 @@ export function DecisionPerformanceOverview() {
             </header>
 
             <div className="decision-index-progress is-critical">
-              <i style={{ '--width': `${getDecisionShare(decisionOverview.blockedDecisions)}%` } as CSSProperties} />
+              <i
+                style={
+                  {
+                    '--width': `${getDecisionShare(decisionOverview.blockedDecisions)}%`,
+                  } as CSSProperties
+                }
+              />
             </div>
 
             <em>{decisionOverview.blockedTrend}</em>

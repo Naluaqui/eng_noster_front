@@ -136,12 +136,15 @@ export function LandingHero() {
           </p>
 
           <div className="hero-actions" aria-label="Ações principais">
-            <button type="button" className="hero-secondary-action" 
+            <button
+              type="button"
+              className="hero-secondary-action"
               onClick={() => {
-                document.getElementById('multi-perspectiva')?.scrollIntoView({ 
+                document.getElementById('multi-perspectiva')?.scrollIntoView({
                   behavior: 'smooth',
                 });
-              }}>
+              }}
+            >
               Ver experiência
             </button>
           </div>
@@ -184,7 +187,6 @@ export function LandingHero() {
               ))}
             </div>
           </article>
-
         </div>
       </div>
 

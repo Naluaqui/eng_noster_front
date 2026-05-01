@@ -1,5 +1,5 @@
 import type { Meeting } from '@/features/meetings/types/meeting';
-import type { DecisionImpactFlowData } from '../../data/decisionImpactFlows';
+import type { DecisionImpactFlowData } from '../../types/decision-management';
 
 type DecisionImpactFlowProps = {
   meeting: Meeting;
@@ -8,7 +8,11 @@ type DecisionImpactFlowProps = {
 
 export function DecisionImpactFlow({ meeting, flow }: DecisionImpactFlowProps) {
   return (
-    <section className="decision-impact-flow-card" id="decision-impact-flow" aria-labelledby="decision-impact-flow-title">
+    <section
+      className="decision-impact-flow-card"
+      id="decision-impact-flow"
+      aria-labelledby="decision-impact-flow-title"
+    >
       <header className="decision-impact-flow-card__topbar">
         <span>Fluxograma de decisões e impactos</span>
         <strong>{meeting.title}</strong>
@@ -42,7 +46,10 @@ export function DecisionImpactFlow({ meeting, flow }: DecisionImpactFlowProps) {
 
             <div className="decision-impact-flow-card__stack" aria-label="Decisões derivadas">
               {flow.decisions.map((decision) => (
-                <article className="decision-flow-node decision-flow-node--decision" key={decision.title}>
+                <article
+                  className="decision-flow-node decision-flow-node--decision"
+                  key={decision.title}
+                >
                   <span>Decisão</span>
                   <strong>{decision.title}</strong>
                   <p>{decision.description}</p>
@@ -52,7 +59,10 @@ export function DecisionImpactFlow({ meeting, flow }: DecisionImpactFlowProps) {
 
             <div className="decision-impact-flow-card__stack" aria-label="Impactos mapeados">
               {flow.impacts.map((impact) => (
-                <article className="decision-flow-node decision-flow-node--impact" key={impact.title}>
+                <article
+                  className="decision-flow-node decision-flow-node--impact"
+                  key={impact.title}
+                >
                   <span>Impacto</span>
                   <strong>{impact.title}</strong>
                   <p>{impact.description}</p>

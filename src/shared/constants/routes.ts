@@ -8,7 +8,6 @@ export const authenticatedRoutes = {
   multiAgents: '/app/multi-agentes',
   decisions: '/app/decisoes',
   persuasion: '/app/persuasao',
-  persuasionPersonas: '/app/persuasao/personas',
   settings: '/app/configuracoes',
 } as const;
 

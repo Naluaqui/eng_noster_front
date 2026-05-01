@@ -2,164 +2,19 @@
 
 import type { CSSProperties } from 'react';
 import { useMemo, useState } from 'react';
-import { meetings } from '@/features/meetings/data/meetings';
-import { decisionImpactFlows } from '../../data/decisionImpactFlows';
+import type { Meeting } from '@/features/meetings/types/meeting';
+import type {
+  DecisionImpactFlowData,
+  DecisionWavePoint,
+  DecisionWaveSeriesKey,
+} from '../../types/decision-management';
 import { DecisionImpactFlow } from './DecisionImpactFlow';
 import { DecisionMeetingsTable } from './DecisionMeetingsTable';
 
-type DecisionPoint = {
-  label: string;
-  priorityIntensity: number;
-  pressureIntensity: number;
-  focusArea: string;
-  biggestPain: string;
-  recommendedAction: string;
-  topProduct: string;
-  weakProduct: string;
-  marketReading: string;
-};
-
-type ChartPoint = DecisionPoint & {
+type ChartPoint = DecisionWavePoint & {
   x: number;
   y: number;
 };
-
-type DecisionSeriesKey = 'priority' | 'pressure';
-
-const decisionPoints: DecisionPoint[] = [
-  {
-    label: 'Jan',
-    priorityIntensity: 34,
-    pressureIntensity: 28,
-    focusArea: 'Retenção de contas estratégicas',
-    biggestPain: 'Clientes relevantes sem próximo passo executivo claro.',
-    recommendedAction: 'Concentrar energia nas contas de maior recorrência.',
-    topProduct: 'Gestão de Decisões',
-    weakProduct: 'Chat Assistido',
-    marketReading: 'Mercado valoriza clareza estratégica, não só respostas rápidas.',
-  },
-  {
-    label: 'Fev',
-    priorityIntensity: 42,
-    pressureIntensity: 34,
-    focusArea: 'Clareza de valor para liderança',
-    biggestPain: 'Percepção de valor ainda superficial em reuniões de fechamento.',
-    recommendedAction: 'Traduzir uso da plataforma em impacto de negócio.',
-    topProduct: 'Insights Executivos',
-    weakProduct: 'Chat Assistido',
-    marketReading: 'O produto sobe quando fala de impacto, cai quando parece genérico.',
-  },
-  {
-    label: 'Mar',
-    priorityIntensity: 56,
-    pressureIntensity: 40,
-    focusArea: 'Destravamento de decisões paradas',
-    biggestPain: 'Muitas pautas abertas, poucos donos definidos.',
-    recommendedAction: 'Separar urgência operacional de prioridade real.',
-    topProduct: 'Gestão de Decisões',
-    weakProduct: 'Resumo de Reuniões',
-    marketReading: 'Clientes querem menos registro e mais direcionamento.',
-  },
-  {
-    label: 'Abr',
-    priorityIntensity: 69,
-    pressureIntensity: 47,
-    focusArea: 'Prova de ROI comercial',
-    biggestPain: 'Objeção de retorno ainda aparece cedo demais.',
-    recommendedAction: 'Mostrar evidência de ganhos já no começo da conversa.',
-    topProduct: 'Insights Executivos',
-    weakProduct: 'Chat Assistido',
-    marketReading: 'Produto forte quando amarrado a valor e priorização.',
-  },
-  {
-    label: 'Mai',
-    priorityIntensity: 82,
-    pressureIntensity: 54,
-    focusArea: 'Expansão em contas com alta adesão',
-    biggestPain: 'Upsell identificado sem narrativa forte de expansão.',
-    recommendedAction: 'Atacar contas com dor validada e espaço para crescimento.',
-    topProduct: 'Insights Executivos',
-    weakProduct: 'Módulo de Personas',
-    marketReading: 'Insights ganham espaço quando conectados a expansão.',
-  },
-  {
-    label: 'Jun',
-    priorityIntensity: 90,
-    pressureIntensity: 62,
-    focusArea: 'Defesa contra concorrência ativa',
-    biggestPain: 'Contas estratégicas começaram a comparar alternativas.',
-    recommendedAction: 'Entrar com posicionamento executivo antes da discussão virar preço.',
-    topProduct: 'Gestão de Decisões',
-    weakProduct: 'Chat Assistido',
-    marketReading: 'Ferramenta de decisão sobe; chat puro perde força.',
-  },
-  {
-    label: 'Jul',
-    priorityIntensity: 61,
-    pressureIntensity: 68,
-    focusArea: 'Reorganização de prioridades internas',
-    biggestPain: 'Time disperso em várias frentes de baixo impacto.',
-    recommendedAction: 'Reduzir dispersão e concentrar no gargalo principal.',
-    topProduct: 'Analytics Comercial',
-    weakProduct: 'Gestão de Decisões',
-    marketReading: 'Quando o cenário aperta, clareza operacional ganha espaço.',
-  },
-  {
-    label: 'Ago',
-    priorityIntensity: 58,
-    pressureIntensity: 74,
-    focusArea: 'Reposicionamento da mensagem comercial',
-    biggestPain: 'O discurso atual não evidencia a dor mais urgente do cliente.',
-    recommendedAction: 'Mudar a narrativa de funcionalidade para dor executiva.',
-    topProduct: 'Insights Executivos',
-    weakProduct: 'Módulo de Reuniões',
-    marketReading: 'Produtos analíticos seguram melhor a pressão de mercado.',
-  },
-  {
-    label: 'Set',
-    priorityIntensity: 66,
-    pressureIntensity: 79,
-    focusArea: 'Recuperação de contas em risco',
-    biggestPain: 'Conta de alto potencial começou a esfriar por perda de urgência.',
-    recommendedAction: 'Reativar interesse com visão clara de impacto e timing.',
-    topProduct: 'Gestão de Decisões',
-    weakProduct: 'Chat Assistido',
-    marketReading: 'Mercado pressiona tudo que parece commodity.',
-  },
-  {
-    label: 'Out',
-    priorityIntensity: 79,
-    pressureIntensity: 72,
-    focusArea: 'Fechamento de oportunidades críticas',
-    biggestPain: 'Decisores ainda sem alinhamento final sobre prioridade.',
-    recommendedAction: 'Amarrar dono, prazo e impacto em cada oportunidade-chave.',
-    topProduct: 'Gestão de Decisões',
-    weakProduct: 'Módulo de Personas',
-    marketReading: 'Produto executivo volta a ganhar força quando a venda amadurece.',
-  },
-  {
-    label: 'Nov',
-    priorityIntensity: 92,
-    pressureIntensity: 76,
-    focusArea: 'Proteção de valor premium',
-    biggestPain: 'Cliente quer empurrar a conversa para preço.',
-    recommendedAction: 'Sustentar valor com diferenciação e risco evitado.',
-    topProduct: 'Insights Executivos',
-    weakProduct: 'Chat Assistido',
-    marketReading: 'Mercado segue premiando inteligência acionável.',
-  },
-  {
-    label: 'Dez',
-    priorityIntensity: 98,
-    pressureIntensity: 83,
-    focusArea: 'Fechar o que realmente move receita',
-    biggestPain: 'Volume alto de decisões, mas poucas realmente estratégicas.',
-    recommendedAction: 'Priorizar as frentes com retorno mais claro e efeito imediato.',
-    topProduct: 'Gestão de Decisões',
-    weakProduct: 'Módulo de Reuniões',
-    marketReading: 'Produto forte é o que entrega direção; o fraco é o que só registra.',
-  },
-];
 
 const chartConfig = {
   width: 860,
@@ -172,7 +27,7 @@ const chartConfig = {
   },
 };
 
-function getSeriesValue(point: DecisionPoint, seriesKey: DecisionSeriesKey) {
+function getSeriesValue(point: DecisionWavePoint, seriesKey: DecisionWaveSeriesKey) {
   return seriesKey === 'priority' ? point.priorityIntensity : point.pressureIntensity;
 }
 
@@ -190,14 +45,6 @@ function getY(value: number) {
   const plotHeight = chartConfig.height - chartConfig.padding.top - chartConfig.padding.bottom;
 
   return chartConfig.padding.top + (1 - value / 100) * plotHeight;
-}
-
-function getSeriesPoints(seriesKey: DecisionSeriesKey): ChartPoint[] {
-  return decisionPoints.map((point, index) => ({
-    ...point,
-    x: getX(index, decisionPoints.length),
-    y: getY(getSeriesValue(point, seriesKey)),
-  }));
 }
 
 function createSmoothPath(points: ChartPoint[]) {
@@ -255,17 +102,34 @@ function getTooltipPositionClass(index: number, total: number) {
   return 'is-center';
 }
 
-export function DecisionDecisionsPanel() {
+type DecisionDecisionsPanelProps = {
+  meetings: Meeting[];
+  decisionImpactFlows: Record<string, DecisionImpactFlowData>;
+  decisionPriorityWaves: DecisionWavePoint[];
+};
+
+export function DecisionDecisionsPanel({
+  meetings,
+  decisionImpactFlows,
+  decisionPriorityWaves,
+}: DecisionDecisionsPanelProps) {
   const [selectedMeetingId, setSelectedMeetingId] = useState(meetings[0]?.id ?? '');
 
   const selectedMeeting = useMemo(
     () => meetings.find((meeting) => meeting.id === selectedMeetingId) ?? meetings[0],
-    [selectedMeetingId],
+    [meetings, selectedMeetingId],
   );
 
   const selectedFlow = selectedMeeting ? decisionImpactFlows[selectedMeeting.id] : undefined;
 
-  const latestPoint = decisionPoints[decisionPoints.length - 1];
+  const latestDecisionWavePoint = decisionPriorityWaves[decisionPriorityWaves.length - 1];
+
+  const getSeriesPoints = (seriesKey: DecisionWaveSeriesKey): ChartPoint[] =>
+    decisionPriorityWaves.map((point, index) => ({
+      ...point,
+      x: getX(index, decisionPriorityWaves.length),
+      y: getY(getSeriesValue(point, seriesKey)),
+    }));
 
   const priorityPoints = getSeriesPoints('priority');
   const pressurePoints = getSeriesPoints('pressure');
@@ -278,38 +142,42 @@ export function DecisionDecisionsPanel() {
 
   return (
     <section className="decision-decisions-panel" aria-label="Painel de decisões">
-      <article className="decision-inspiring-chart-card" aria-labelledby="decision-inspiring-chart-title">
+      <article
+        className="decision-priority-wave-card"
+        aria-labelledby="decision-priority-wave-title"
+      >
         <header>
           <div>
             <span>Análise de decisão</span>
 
-            <h2 id="decision-inspiring-chart-title">
+            <h2 id="decision-priority-wave-title">
               Prioridade Executiva <strong>e Produto Sob Pressão</strong>
             </h2>
 
             <p>
-              Empresário entende onde focar primeiro, qual é a maior dor agora e quais produtos estão subindo ou apanhando do mercado.
+              Empresário entende onde focar primeiro, qual é a maior dor agora e quais produtos
+              estão subindo ou apanhando do mercado.
             </p>
           </div>
 
-          <ul className="decision-inspiring-chart-card__legend">
+          <ul className="decision-priority-wave-card__legend">
             <li className="is-priority">
               <i />
               <span>Prioridade Executiva</span>
-              <strong>{latestPoint.focusArea}</strong>
-              <small>{latestPoint.biggestPain}</small>
+              <strong>{latestDecisionWavePoint.focusArea}</strong>
+              <small>{latestDecisionWavePoint.biggestPain}</small>
             </li>
 
             <li className="is-pressure">
               <i />
               <span>Produto Sob Pressão</span>
-              <strong>Em baixa: {latestPoint.weakProduct}</strong>
-              <small>Em alta: {latestPoint.topProduct}</small>
+              <strong>Em baixa: {latestDecisionWavePoint.weakProduct}</strong>
+              <small>Em alta: {latestDecisionWavePoint.topProduct}</small>
             </li>
           </ul>
         </header>
 
-        <div className="decision-inspiring-chart-card__visual">
+        <div className="decision-priority-wave-card__visual">
           <svg
             viewBox={`0 0 ${chartConfig.width} ${chartConfig.height}`}
             role="img"
@@ -357,7 +225,13 @@ export function DecisionDecisionsPanel() {
               <path className="decision-wave-hitbox" d={pressurePath} />
 
               {pressurePoints.map((point) => (
-                <circle className="decision-wave-point" cx={point.x} cy={point.y} r="5" key={`pressure-${point.label}`} />
+                <circle
+                  className="decision-wave-point"
+                  cx={point.x}
+                  cy={point.y}
+                  r="5"
+                  key={`pressure-${point.label}`}
+                />
               ))}
             </g>
 
@@ -367,12 +241,18 @@ export function DecisionDecisionsPanel() {
               <path className="decision-wave-hitbox" d={priorityPath} />
 
               {priorityPoints.map((point) => (
-                <circle className="decision-wave-point" cx={point.x} cy={point.y} r="5.5" key={`priority-${point.label}`} />
+                <circle
+                  className="decision-wave-point"
+                  cx={point.x}
+                  cy={point.y}
+                  r="5.5"
+                  key={`priority-${point.label}`}
+                />
               ))}
             </g>
 
-            {decisionPoints.map((point, index) => {
-              const x = getX(index, decisionPoints.length);
+            {decisionPriorityWaves.map((point, index) => {
+              const x = getX(index, decisionPriorityWaves.length);
 
               return (
                 <text
@@ -389,17 +269,20 @@ export function DecisionDecisionsPanel() {
           </svg>
 
           <div className="decision-wave-point-overlays">
-            {decisionPoints.map((point, index) => {
-              const x = getX(index, decisionPoints.length);
+            {decisionPriorityWaves.map((point, index) => {
+              const x = getX(index, decisionPriorityWaves.length);
               const y = getY(point.priorityIntensity);
-              const tooltipPositionClass = getTooltipPositionClass(index, decisionPoints.length);
+              const tooltipPositionClass = getTooltipPositionClass(
+                index,
+                decisionPriorityWaves.length,
+              );
 
               return (
-                <div
+                <button
                   className={`decision-wave-point-trigger ${tooltipPositionClass}`}
                   key={`priority-trigger-${point.label}`}
-                  tabIndex={0}
-                  role="button"
+                  type="button"
+                  aria-label={`Abrir leitura executiva de ${point.label}`}
                   style={
                     {
                       '--x': `${(x / chartConfig.width) * 100}%`,
@@ -425,21 +308,24 @@ export function DecisionDecisionsPanel() {
                       <b>{point.recommendedAction}</b>
                     </span>
                   </span>
-                </div>
+                </button>
               );
             })}
 
-            {decisionPoints.map((point, index) => {
-              const x = getX(index, decisionPoints.length);
+            {decisionPriorityWaves.map((point, index) => {
+              const x = getX(index, decisionPriorityWaves.length);
               const y = getY(point.pressureIntensity);
-              const tooltipPositionClass = getTooltipPositionClass(index, decisionPoints.length);
+              const tooltipPositionClass = getTooltipPositionClass(
+                index,
+                decisionPriorityWaves.length,
+              );
 
               return (
-                <div
+                <button
                   className={`decision-wave-point-trigger decision-wave-point-trigger--pressure ${tooltipPositionClass}`}
                   key={`pressure-trigger-${point.label}`}
-                  tabIndex={0}
-                  role="button"
+                  type="button"
+                  aria-label={`Abrir leitura de produto de ${point.label}`}
                   style={
                     {
                       '--x': `${(x / chartConfig.width) * 100}%`,
@@ -465,16 +351,22 @@ export function DecisionDecisionsPanel() {
                       <b>{point.marketReading}</b>
                     </span>
                   </span>
-                </div>
+                </button>
               );
             })}
           </div>
         </div>
       </article>
 
-      <DecisionMeetingsTable selectedMeetingId={selectedMeetingId} onOpenMeeting={setSelectedMeetingId} />
+      <DecisionMeetingsTable
+        meetings={meetings}
+        selectedMeetingId={selectedMeetingId}
+        onOpenMeeting={setSelectedMeetingId}
+      />
 
-      {selectedMeeting && selectedFlow ? <DecisionImpactFlow flow={selectedFlow} meeting={selectedMeeting} /> : null}
+      {selectedMeeting && selectedFlow ? (
+        <DecisionImpactFlow flow={selectedFlow} meeting={selectedMeeting} />
+      ) : null}
     </section>
   );
 }

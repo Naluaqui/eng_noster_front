@@ -1,5 +1,5 @@
-import { DecisionManagementWorkspace } from '@/features/decision-management/components/shared/DecisionManagementWorkspace';
+import { DecisionManagementScreen } from '@/features/decision-management/screens/DecisionManagementScreen';
 
 export default function DecisionsRoute() {
-  return <DecisionManagementWorkspace />;
+  return <DecisionManagementScreen />;
 }

@@ -1,6 +1,9 @@
 .decision-health-snapshot {
   display: grid;
-  grid-template-columns: minmax(18rem, 1.35fr) minmax(14rem, 1fr) minmax(13rem, 0.95fr) minmax(14rem, 1fr);
+  grid-template-columns: minmax(18rem, 1.35fr) minmax(14rem, 1fr) minmax(13rem, 0.95fr) minmax(
+      14rem,
+      1fr
+    );
   gap: 1rem;
 }
 
@@ -26,7 +29,7 @@
   font-size: 0.92rem;
   font-weight: 760;
   line-height: 1.2;
-  letter-spacing: -0.025em;
+  letter-spacing: 0;
 }
 
 .decision-health-snapshot button {
@@ -163,7 +166,7 @@
 }
 
 .decision-health-snapshot .decision-health-point-trigger::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0.43rem;
   border-radius: inherit;
@@ -172,7 +175,9 @@
   box-shadow: 0 0 0 0.22rem rgba(45, 140, 255, 0.12);
   opacity: 0;
   transform: scale(0.65);
-  transition: opacity 0.16s ease, transform 0.16s ease;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
 }
 
 .decision-health-snapshot .decision-health-point-trigger:hover::before,
@@ -188,8 +193,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
-    "roi variation"
-    "month month";
+    'roi variation'
+    'month month';
   align-items: center;
   gap: 0.32rem 0.6rem;
   min-width: 10.2rem;
@@ -202,17 +207,21 @@
   pointer-events: none;
   backdrop-filter: blur(12px);
   transform: translateX(-50%) translateY(0.35rem);
-  transition: opacity 0.16s ease, transform 0.16s ease;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
 }
 
 .decision-health-snapshot .decision-health-point-trigger:hover .decision-health-report__tooltip,
-.decision-health-snapshot .decision-health-point-trigger:focus-visible .decision-health-report__tooltip {
+.decision-health-snapshot
+  .decision-health-point-trigger:focus-visible
+  .decision-health-report__tooltip {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
 .decision-health-report__tooltip::before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -0.38rem;
   left: 50%;
@@ -230,7 +239,7 @@
   font-size: 0.74rem;
   font-weight: 820;
   line-height: 1;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 
@@ -273,9 +282,7 @@
   width: 2.2rem;
   aspect-ratio: 1;
   border-radius: 50%;
-  background:
-    radial-gradient(circle, #ffffff 0 38%, transparent 39%),
-    rgba(255, 255, 255, 0.24);
+  background: radial-gradient(circle, #ffffff 0 38%, transparent 39%), rgba(255, 255, 255, 0.24);
 }
 
 .decision-doctor-card button {
@@ -319,7 +326,7 @@
   font-size: 2.25rem;
   font-weight: 760;
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing: 0;
 }
 
 .decision-trend-card__metric em {
@@ -397,8 +404,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
-    "value variation"
-    "month month";
+    'value variation'
+    'month month';
   align-items: center;
   gap: 0.32rem 0.6rem;
   min-width: 9.4rem;
@@ -411,7 +418,9 @@
   pointer-events: none;
   backdrop-filter: blur(12px);
   transform: translateX(-50%) translateY(0.35rem);
-  transition: opacity 0.16s ease, transform 0.16s ease;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
 }
 
 .decision-health-snapshot .decision-trend-point-trigger:hover .decision-trend-tooltip,
@@ -421,7 +430,7 @@
 }
 
 .decision-trend-tooltip::before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -0.38rem;
   left: 50%;
@@ -439,7 +448,7 @@
   font-size: 0.74rem;
   font-weight: 820;
   line-height: 1;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 
@@ -579,7 +588,7 @@
   color: #252233;
   font-size: 0.88rem;
   font-weight: 740;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .decision-expansion-bars small {
@@ -587,4 +596,3 @@
   font-size: 0.6rem;
   font-weight: 700;
 }
-

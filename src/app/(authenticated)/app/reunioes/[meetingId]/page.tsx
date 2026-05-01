@@ -1,4 +1,4 @@
-import { MeetingDetailsPanel } from '@/features/meetings/components/MeetingDetailsPanel';
+import { MeetingDetailsScreen } from '@/features/meetings/screens/MeetingDetailsScreen';
 
 type MeetingDetailsRouteProps = {
   params: Promise<{
@@ -9,5 +9,5 @@ type MeetingDetailsRouteProps = {
 export default async function MeetingDetailsRoute({ params }: MeetingDetailsRouteProps) {
   const { meetingId } = await params;
 
-  return <MeetingDetailsPanel meetingId={meetingId} />;
+  return <MeetingDetailsScreen meetingId={meetingId} />;
 }

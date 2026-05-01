@@ -28,8 +28,7 @@
   padding: clamp(1rem, 2.2vw, 1.35rem);
   background:
     radial-gradient(circle at 8% 16%, rgba(134, 92, 255, 0.18), transparent 12rem),
-    radial-gradient(circle at 100% 2%, rgba(0, 255, 195, 0.11), transparent 18rem),
-    #ffffff;
+    radial-gradient(circle at 100% 2%, rgba(0, 255, 195, 0.11), transparent 18rem), #ffffff;
 }
 
 .persuasion-profile-card > img {
@@ -412,8 +411,7 @@
   border-color: rgba(134, 92, 255, 0.16);
   background:
     radial-gradient(circle at 14% 0%, rgba(255, 227, 66, 0.52), transparent 5rem),
-    linear-gradient(135deg, rgba(255, 227, 66, 0.62), rgba(0, 255, 195, 0.18)),
-    #ffffff;
+    linear-gradient(135deg, rgba(255, 227, 66, 0.62), rgba(0, 255, 195, 0.18)), #ffffff;
 }
 
 .persuasion-worklist-item > img {

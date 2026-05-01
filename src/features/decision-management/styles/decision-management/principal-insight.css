@@ -18,14 +18,13 @@
 .principal-insight-card::before {
   position: absolute;
   inset: 0;
-  background:
-    repeating-linear-gradient(
-      110deg,
-      transparent 0,
-      transparent 0.7rem,
-      rgba(255, 253, 255, 0.16) 0.74rem,
-      transparent 0.82rem
-    );
+  background: repeating-linear-gradient(
+    110deg,
+    transparent 0,
+    transparent 0.7rem,
+    rgba(255, 253, 255, 0.16) 0.74rem,
+    transparent 0.82rem
+  );
   clip-path: polygon(36% 0, 100% 0, 100% 100%, 52% 100%);
   content: '';
 }

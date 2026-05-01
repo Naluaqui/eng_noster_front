@@ -1,8 +1,7 @@
 import { EmptyState } from '@/shared/components/feedback/EmptyState';
 import { Card } from '@/shared/components/ui/Card';
 import { formatShortDate } from '@/shared/lib/formatters';
-import { meetings } from '../data/meetings';
-import type { MeetingStatus } from '../types/meeting';
+import type { Meeting, MeetingStatus } from '../types/meeting';
 
 const statusLabels: Record<MeetingStatus, string> = {
   scheduled: 'Agendada',
@@ -11,16 +10,17 @@ const statusLabels: Record<MeetingStatus, string> = {
 };
 
 type MeetingDetailsPanelProps = {
-  meetingId: string;
+  meeting: Meeting | null;
 };
 
-export function MeetingDetailsPanel({ meetingId }: MeetingDetailsPanelProps) {
-  const meeting = meetings.find((item) => item.id === meetingId);
-
+export function MeetingDetailsPanel({ meeting }: MeetingDetailsPanelProps) {
   if (!meeting) {
     return (
       <main className="feature-page">
-        <EmptyState title="Reunião não encontrada" description="Confira o identificador da reunião." />
+        <EmptyState
+          title="Reunião não encontrada"
+          description="Confira o identificador da reunião."
+        />
       </main>
     );
   }

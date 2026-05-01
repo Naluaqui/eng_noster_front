@@ -1,5 +1,5 @@
 import { Archive, Bot, FileText, Plus } from 'lucide-react';
-import { agentAnalyses } from '../data/multiAgentChat';
+import type { AgentAnalysis } from '../types/multiAgent';
 
 const statusLabels = {
   active: 'Ativa',
@@ -7,7 +7,13 @@ const statusLabels = {
   archived: 'Arquivada',
 } as const;
 
-export function AnalysisNavigation() {
+type AnalysisNavigationProps = {
+  analyses: AgentAnalysis[];
+};
+
+export function AnalysisNavigation({ analyses }: AnalysisNavigationProps) {
+  const activeAgentCount = analyses[0]?.agentCount ?? 0;
+
   return (
     <aside className="analysis-nav" aria-label="Gerenciar análises">
       <header>
@@ -21,7 +27,7 @@ export function AnalysisNavigation() {
       </header>
 
       <nav>
-        {agentAnalyses.map((analysis) => (
+        {analyses.map((analysis) => (
           <a
             className={analysis.status === 'active' ? 'is-active' : undefined}
             href={`#${analysis.id}`}
@@ -39,7 +45,7 @@ export function AnalysisNavigation() {
 
       <footer>
         <Bot size={16} aria-hidden="true" />
-        <span>{agentAnalyses[0].agentCount} agentes nesta análise</span>
+        <span>{activeAgentCount} agentes nesta análise</span>
         <Archive size={15} aria-hidden="true" />
       </footer>
     </aside>
