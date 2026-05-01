@@ -1,4 +1,4 @@
-import type { CreateMeetingInput, Meeting, MeetingStatus } from '../types/meeting';
+import type { CreateMeetingInput, Meeting, MeetingStatus, UpdateMeetingInput } from '../types/meeting';
 import { CreateMeetingButton } from './CreateMeetingButton';
 import { MeetingsFilterBar } from './MeetingsFilterBar';
 import { MeetingStatusColumn } from './MeetingStatusColumn';
@@ -10,6 +10,7 @@ type MeetingsKanbanProps = {
   movingMeetingId: string | null;
   onCreateMeeting: (input: CreateMeetingInput) => Promise<Meeting>;
   onMoveMeeting: (meetingId: string, status: MeetingStatus) => void;
+  onUpdateMeeting: (meetingId: string, input: UpdateMeetingInput) => Promise<Meeting>;
 };
 
 export function MeetingsKanban({
@@ -17,6 +18,7 @@ export function MeetingsKanban({
   movingMeetingId,
   onCreateMeeting,
   onMoveMeeting,
+  onUpdateMeeting,
 }: MeetingsKanbanProps) {
   const totalSignals = meetings.reduce((total, meeting) => total + meeting.signalCount, 0);
 
@@ -54,6 +56,7 @@ export function MeetingsKanban({
             meetings={meetings.filter((meeting) => meeting.status === status)}
             movingMeetingId={movingMeetingId}
             onMoveMeeting={onMoveMeeting}
+            onUpdateMeeting={onUpdateMeeting}
             status={status}
             key={status}
           />

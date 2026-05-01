@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { LogOut, Menu, X } from 'lucide-react';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { publicRoutes } from '@/shared/constants/routes';
 import { SidebarNav } from './SidebarNav';
 import { UserProfileMenu } from './UserProfileMenu';
@@ -12,6 +14,14 @@ type SidebarProps = {
 };
 
 export function Sidebar({ isOpen, onToggle }: SidebarProps) {
+  const router = useRouter();
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    const redirect = await logout();
+    router.replace(redirect);
+  }
+
   return (
     <aside className={isOpen ? 'app-sidebar' : 'app-sidebar app-sidebar--collapsed'}>
       <button
@@ -31,6 +41,12 @@ export function Sidebar({ isOpen, onToggle }: SidebarProps) {
           </Link>
           <UserProfileMenu />
           <SidebarNav />
+          <div className="app-sidebar__footer">
+            <button className="app-sidebar__logout" onClick={handleLogout} type="button">
+              <LogOut size={16} aria-hidden="true" />
+              Sair
+            </button>
+          </div>
         </>
       ) : null}
     </aside>

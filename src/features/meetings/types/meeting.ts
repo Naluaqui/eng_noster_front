@@ -25,3 +25,5 @@ export type CreateMeetingInput = {
   description?: string;
   notes?: string;
 };
+
+export type UpdateMeetingInput = CreateMeetingInput;

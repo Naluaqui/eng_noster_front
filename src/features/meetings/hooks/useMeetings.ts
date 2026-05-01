@@ -4,9 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   createMeeting as createMeetingRepository,
   getMeetings,
+  updateMeeting as updateMeetingRepository,
   updateMeetingStatus as updateMeetingStatusRepository,
 } from '../repositories/meetings.repository';
-import type { CreateMeetingInput, Meeting, MeetingStatus } from '../types/meeting';
+import type { CreateMeetingInput, Meeting, MeetingStatus, UpdateMeetingInput } from '../types/meeting';
 
 export function useMeetings() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -91,12 +92,27 @@ export function useMeetings() {
     return createdMeeting;
   }, []);
 
+  const updateMeeting = useCallback(async (meetingId: string, input: UpdateMeetingInput) => {
+    setError(null);
+
+    const updatedMeeting = await updateMeetingRepository(meetingId, input);
+
+    setMeetings((currentMeetings) =>
+      currentMeetings.map((meeting) =>
+        meeting.id === updatedMeeting.id ? updatedMeeting : meeting,
+      ),
+    );
+
+    return updatedMeeting;
+  }, []);
+
   return {
     meetings,
     isLoading,
     movingMeetingId,
     error,
     createMeeting,
+    updateMeeting,
     moveMeeting,
   };
 }

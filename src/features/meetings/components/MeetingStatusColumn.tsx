@@ -1,5 +1,5 @@
 import { useState, type DragEvent } from 'react';
-import type { Meeting, MeetingStatus } from '../types/meeting';
+import type { Meeting, MeetingStatus, UpdateMeetingInput } from '../types/meeting';
 import { MeetingCard } from './MeetingCard';
 
 const statusLabels: Record<MeetingStatus, string> = {
@@ -13,6 +13,7 @@ type MeetingStatusColumnProps = {
   meetings: Meeting[];
   movingMeetingId: string | null;
   onMoveMeeting: (meetingId: string, status: MeetingStatus) => void;
+  onUpdateMeeting: (meetingId: string, input: UpdateMeetingInput) => Promise<Meeting>;
 };
 
 export function MeetingStatusColumn({
@@ -20,6 +21,7 @@ export function MeetingStatusColumn({
   meetings,
   movingMeetingId,
   onMoveMeeting,
+  onUpdateMeeting,
 }: MeetingStatusColumnProps) {
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -66,6 +68,7 @@ export function MeetingStatusColumn({
             <MeetingCard
               isMoving={movingMeetingId === meeting.id}
               meeting={meeting}
+              onUpdateMeeting={onUpdateMeeting}
               key={meeting.id}
             />
           ))}

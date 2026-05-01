@@ -279,6 +279,26 @@
   text-transform: uppercase;
 }
 
+.meeting-card__edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color-accent-purple);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.meeting-card__edit:hover {
+  color: var(--color-background);
+}
+
 .meeting-card__body h3 {
   margin: 0;
   color: var(--color-background);
