@@ -7,9 +7,11 @@ const statuses: MeetingStatus[] = ['scheduled', 'in-review', 'decided'];
 
 type MeetingsKanbanProps = {
   meetings: Meeting[];
+  movingMeetingId: string | null;
+  onMoveMeeting: (meetingId: string, status: MeetingStatus) => void;
 };
 
-export function MeetingsKanban({ meetings }: MeetingsKanbanProps) {
+export function MeetingsKanban({ meetings, movingMeetingId, onMoveMeeting }: MeetingsKanbanProps) {
   const totalSignals = meetings.reduce((total, meeting) => total + meeting.signalCount, 0);
 
   return (
@@ -44,6 +46,8 @@ export function MeetingsKanban({ meetings }: MeetingsKanbanProps) {
         {statuses.map((status) => (
           <MeetingStatusColumn
             meetings={meetings.filter((meeting) => meeting.status === status)}
+            movingMeetingId={movingMeetingId}
+            onMoveMeeting={onMoveMeeting}
             status={status}
             key={status}
           />

@@ -1,3 +1,4 @@
+import type { DragEvent } from 'react';
 import Link from 'next/link';
 import { CalendarDays, Signal, UsersRound } from 'lucide-react';
 import { Card } from '@/shared/components/ui/Card';
@@ -7,11 +8,23 @@ import type { Meeting } from '../types/meeting';
 
 type MeetingCardProps = {
   meeting: Meeting;
+  isMoving?: boolean;
 };
 
-export function MeetingCard({ meeting }: MeetingCardProps) {
+export function MeetingCard({ meeting, isMoving = false }: MeetingCardProps) {
+  function handleDragStart(event: DragEvent<HTMLElement>) {
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('application/x-noster-meeting-id', meeting.id);
+    event.dataTransfer.setData('text/plain', meeting.id);
+  }
+
   return (
-    <Card className="meeting-card" role="listitem">
+    <Card
+      className={`meeting-card${isMoving ? ' meeting-card--moving' : ''}`}
+      draggable
+      onDragStart={handleDragStart}
+      role="listitem"
+    >
       <header>
         <span className="meeting-card__owner">{meeting.owner}</span>
         <Link href={`${authenticatedRoutes.meetings}/${meeting.id}`}>Editar</Link>
