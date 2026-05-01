@@ -1,4 +1,4 @@
-import type { Meeting, MeetingStatus } from '../types/meeting';
+import type { CreateMeetingInput, Meeting, MeetingStatus } from '../types/meeting';
 
 type ApiResponse<T> = {
   success: boolean;
@@ -41,6 +41,18 @@ export async function updateMeetingStatus(meetingId: string, status: MeetingStat
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ status }),
+  });
+
+  return parseApiResponse<Meeting>(response);
+}
+
+export async function createMeeting(input: CreateMeetingInput) {
+  const response = await fetch(`${apiUrl}/api/meetings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(input),
   });
 
   return parseApiResponse<Meeting>(response);

@@ -1,4 +1,4 @@
-import type { Meeting, MeetingStatus } from '../types/meeting';
+import type { CreateMeetingInput, Meeting, MeetingStatus } from '../types/meeting';
 import { CreateMeetingButton } from './CreateMeetingButton';
 import { MeetingsFilterBar } from './MeetingsFilterBar';
 import { MeetingStatusColumn } from './MeetingStatusColumn';
@@ -8,10 +8,16 @@ const statuses: MeetingStatus[] = ['scheduled', 'in-review', 'decided'];
 type MeetingsKanbanProps = {
   meetings: Meeting[];
   movingMeetingId: string | null;
+  onCreateMeeting: (input: CreateMeetingInput) => Promise<Meeting>;
   onMoveMeeting: (meetingId: string, status: MeetingStatus) => void;
 };
 
-export function MeetingsKanban({ meetings, movingMeetingId, onMoveMeeting }: MeetingsKanbanProps) {
+export function MeetingsKanban({
+  meetings,
+  movingMeetingId,
+  onCreateMeeting,
+  onMoveMeeting,
+}: MeetingsKanbanProps) {
   const totalSignals = meetings.reduce((total, meeting) => total + meeting.signalCount, 0);
 
   return (
@@ -22,7 +28,7 @@ export function MeetingsKanban({ meetings, movingMeetingId, onMoveMeeting }: Mee
           <h2>Kanban de reuniões</h2>
           <p>Organize conversas, sinais e decisões em uma visão operacional limpa.</p>
         </div>
-        <CreateMeetingButton />
+        <CreateMeetingButton onCreateMeeting={onCreateMeeting} />
       </header>
 
       <section className="meetings-overview" aria-label="Resumo de reuniões">

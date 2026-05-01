@@ -372,6 +372,14 @@
   list-style: none;
 }
 
+.meeting-details__content p {
+  margin: 0.85rem 0 0;
+  color: rgba(28, 28, 28, 0.68);
+  font-size: 0.86rem;
+  font-weight: 650;
+  line-height: 1.6;
+}
+
 .meeting-details__content li,
 .meeting-details__tags span {
   border-radius: 999px;
@@ -387,6 +395,172 @@
   flex-wrap: wrap;
   gap: 0.55rem;
   margin-top: 0.85rem;
+}
+
+.meeting-wizard {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(5, 5, 5, 0.56);
+  backdrop-filter: blur(12px);
+}
+
+.meeting-wizard__panel {
+  display: grid;
+  width: min(44rem, 100%);
+  max-height: min(45rem, calc(100vh - 2rem));
+  overflow: auto;
+  gap: 1rem;
+  border: 1px solid rgba(255, 253, 255, 0.22);
+  border-radius: 0.5rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  background: #ffffff;
+  color: var(--color-background);
+  box-shadow: 0 1.6rem 5rem rgba(5, 5, 5, 0.36);
+}
+
+.meeting-wizard__header,
+.meeting-wizard__footer,
+.meeting-wizard__steps {
+  display: flex;
+  align-items: center;
+}
+
+.meeting-wizard__header {
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.meeting-wizard__header span,
+.meeting-wizard__field span {
+  color: rgba(28, 28, 28, 0.56);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.meeting-wizard__header h2 {
+  margin: 0.18rem 0 0;
+  color: var(--color-background);
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.6vw, 3rem);
+  font-weight: 400;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.meeting-wizard__close {
+  display: grid;
+  width: 2.35rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 50%;
+  background: rgba(28, 28, 28, 0.04);
+  color: var(--color-background);
+  cursor: pointer;
+}
+
+.meeting-wizard__steps {
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.meeting-wizard__steps span {
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 999px;
+  padding: 0.42rem 0.7rem;
+  background: rgba(28, 28, 28, 0.04);
+  color: rgba(28, 28, 28, 0.56);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.meeting-wizard__steps .meeting-wizard__step--active {
+  border-color: rgba(0, 255, 195, 0.44);
+  background: rgba(0, 255, 195, 0.16);
+  color: var(--color-background);
+}
+
+.meeting-wizard__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.meeting-wizard__stack,
+.meeting-wizard__field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.meeting-wizard__field--wide {
+  grid-column: 1 / -1;
+}
+
+.meeting-wizard__field .ui-input,
+.meeting-wizard__textarea {
+  border-color: rgba(28, 28, 28, 0.1);
+  background: rgba(240, 250, 250, 0.88);
+  color: var(--color-background);
+}
+
+.meeting-wizard__field .ui-input[aria-invalid='true'],
+.meeting-wizard__textarea[aria-invalid='true'] {
+  border-color: #c93535;
+  box-shadow: 0 0 0 3px rgba(201, 53, 53, 0.12);
+}
+
+.meeting-wizard__textarea {
+  min-height: 8rem;
+  resize: vertical;
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.8rem 1rem;
+  outline: 0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.meeting-wizard__textarea--large {
+  min-height: 10rem;
+}
+
+.meeting-wizard__field small,
+.meeting-wizard__error {
+  margin: 0;
+  color: #c93535;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.meeting-wizard__field em {
+  color: rgba(28, 28, 28, 0.46);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.meeting-wizard__footer {
+  justify-content: flex-end;
+  gap: 0.7rem;
+  border-top: 1px solid rgba(28, 28, 28, 0.08);
+  padding-top: 1rem;
+}
+
+.meeting-wizard .ui-button:disabled,
+.meeting-wizard__close:disabled {
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
+.meeting-wizard .ui-button--ghost {
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  color: var(--color-background);
 }
 
 @media (max-width: 900px) {
@@ -415,5 +589,9 @@
 
   .meeting-details__content {
     grid-column: auto;
+  }
+
+  .meeting-wizard__grid {
+    grid-template-columns: 1fr;
   }
 }

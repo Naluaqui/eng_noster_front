@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import {
+  createMeeting as createMeetingRepository,
   getMeetings,
   updateMeetingStatus as updateMeetingStatusRepository,
 } from '../repositories/meetings.repository';
-import type { Meeting, MeetingStatus } from '../types/meeting';
+import type { CreateMeetingInput, Meeting, MeetingStatus } from '../types/meeting';
 
 export function useMeetings() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
@@ -80,11 +81,22 @@ export function useMeetings() {
     [meetings],
   );
 
+  const createMeeting = useCallback(async (input: CreateMeetingInput) => {
+    setError(null);
+
+    const createdMeeting = await createMeetingRepository(input);
+
+    setMeetings((currentMeetings) => [createdMeeting, ...currentMeetings]);
+
+    return createdMeeting;
+  }, []);
+
   return {
     meetings,
     isLoading,
     movingMeetingId,
     error,
+    createMeeting,
     moveMeeting,
   };
 }

@@ -44,7 +44,9 @@ export function MeetingDetailsPanel({ meeting }: MeetingDetailsPanelProps) {
         <Card className="meeting-details__summary">
           <span>Data</span>
           <strong>
-            <time dateTime={meeting.date}>{formatShortDate(meeting.date)}</time>
+            <time dateTime={`${meeting.date}T${meeting.time}`}>
+              {formatShortDate(meeting.date)} {meeting.time}
+            </time>
           </strong>
         </Card>
 
@@ -61,6 +63,27 @@ export function MeetingDetailsPanel({ meeting }: MeetingDetailsPanelProps) {
             ))}
           </ul>
         </Card>
+
+        {meeting.product ? (
+          <Card className="meeting-details__content">
+            <h3>Produto</h3>
+            <p>{meeting.product}</p>
+          </Card>
+        ) : null}
+
+        {meeting.description ? (
+          <Card className="meeting-details__content">
+            <h3>Descricao</h3>
+            <p>{meeting.description}</p>
+          </Card>
+        ) : null}
+
+        {meeting.notes ? (
+          <Card className="meeting-details__content">
+            <h3>Anotacoes</h3>
+            <p>{meeting.notes}</p>
+          </Card>
+        ) : null}
 
         <Card className="meeting-details__content">
           <h3>Etiquetas</h3>

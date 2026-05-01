@@ -6,7 +6,8 @@ import { MeetingsKanban } from '../components/MeetingsKanban';
 import { useMeetings } from '../hooks/useMeetings';
 
 export function MeetingsScreen() {
-  const { meetings, isLoading, movingMeetingId, error, moveMeeting } = useMeetings();
+  const { meetings, isLoading, movingMeetingId, error, createMeeting, moveMeeting } =
+    useMeetings();
 
   if (isLoading) {
     return <LoadingState label="Carregando reunioes..." />;
@@ -24,6 +25,7 @@ export function MeetingsScreen() {
     <MeetingsKanban
       meetings={meetings}
       movingMeetingId={movingMeetingId}
+      onCreateMeeting={createMeeting}
       onMoveMeeting={moveMeeting}
     />
   );

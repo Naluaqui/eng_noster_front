@@ -44,7 +44,9 @@ export function MeetingCard({ meeting, isMoving = false }: MeetingCardProps) {
       <footer>
         <span>
           <CalendarDays size={15} aria-hidden="true" />
-          <time dateTime={meeting.date}>{formatShortDate(meeting.date)}</time>
+          <time dateTime={`${meeting.date}T${meeting.time}`}>
+            {formatShortDate(meeting.date)} {meeting.time}
+          </time>
         </span>
         <span>
           <UsersRound size={15} aria-hidden="true" />
