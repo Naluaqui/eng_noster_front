@@ -15,6 +15,11 @@
     auto;
   color: var(--color-background);
   font-family: var(--font-app), 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+  transition: grid-template-columns 180ms ease;
+}
+
+.app-shell--sidebar-collapsed {
+  grid-template-columns: 4.35rem minmax(0, 1fr);
 }
 
 .app-sidebar {
@@ -29,6 +34,41 @@
   background: rgba(255, 253, 255, 0.78);
   box-shadow: 1rem 0 3rem rgba(28, 28, 28, 0.045);
   backdrop-filter: blur(18px);
+}
+
+.app-sidebar--collapsed {
+  justify-items: center;
+  gap: 0;
+  padding: 1rem 0.65rem;
+}
+
+.app-sidebar__toggle {
+  display: grid;
+  width: 2.75rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  border-radius: 0.5rem;
+  background: #ffffff;
+  color: var(--color-background);
+  cursor: pointer;
+  box-shadow: 0 0.8rem 1.8rem rgba(28, 28, 28, 0.06);
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.app-sidebar__toggle:hover {
+  border-color: rgba(134, 92, 255, 0.28);
+  background: linear-gradient(135deg, rgba(255, 227, 66, 0.72), rgba(0, 255, 195, 0.18));
+  transform: translateY(-0.08rem);
+}
+
+.app-sidebar__toggle:focus-visible {
+  outline: 3px solid var(--color-accent-mint);
+  outline-offset: 3px;
 }
 
 .app-sidebar__brand,

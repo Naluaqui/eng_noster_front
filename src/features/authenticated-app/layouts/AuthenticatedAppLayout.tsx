@@ -1,4 +1,6 @@
-import type { ReactNode } from 'react';
+'use client';
+
+import { useState, type ReactNode } from 'react';
 import { AppHeader } from '../components/AppHeader';
 import { Sidebar } from '../components/Sidebar';
 
@@ -7,9 +9,14 @@ type AuthenticatedAppLayoutProps = {
 };
 
 export function AuthenticatedAppLayout({ children }: AuthenticatedAppLayoutProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
-    <div className="app-shell">
-      <Sidebar />
+    <div className={isSidebarOpen ? 'app-shell' : 'app-shell app-shell--sidebar-collapsed'}>
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen((currentValue) => !currentValue)}
+      />
       <div className="app-content">
         <AppHeader />
         {children}
