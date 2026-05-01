@@ -1,50 +1,100 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { getCompanySettingsById } from '@/features/settings/repositories/settings.repository';
+import {
+  getSelectedCompanyId,
+  selectedCompanyChangedEvent,
+} from '@/features/settings/repositories/workspace.repository';
 import {
   createMeeting as createMeetingRepository,
+  deleteMeeting as deleteMeetingRepository,
   getMeetings,
   updateMeeting as updateMeetingRepository,
   updateMeetingStatus as updateMeetingStatusRepository,
 } from '../repositories/meetings.repository';
-import type { CreateMeetingInput, Meeting, MeetingStatus, UpdateMeetingInput } from '../types/meeting';
+import type {
+  CreateMeetingInput,
+  Meeting,
+  MeetingCatalog,
+  MeetingStatus,
+  UpdateMeetingInput,
+} from '../types/meeting';
+
+const emptyCatalog: MeetingCatalog = {
+  products: [],
+  people: [],
+};
+
+function toUniqueOptions(values: string[]) {
+  const options = new Map<string, string>();
+
+  values.forEach((value) => {
+    const label = value.trim();
+    const key = label.toLowerCase();
+
+    if (label && !options.has(key)) {
+      options.set(key, label);
+    }
+  });
+
+  return Array.from(options, ([value, label]) => ({
+    label,
+    value,
+  })).sort((first, second) => first.label.localeCompare(second.label, 'pt-BR'));
+}
 
 export function useMeetings() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [catalog, setCatalog] = useState<MeetingCatalog>(emptyCatalog);
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [movingMeetingId, setMovingMeetingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let isMounted = true;
+  const loadMeetings = useCallback(async () => {
+    const companyId = getSelectedCompanyId();
 
-    async function loadMeetings() {
-      try {
-        setIsLoading(true);
-        setError(null);
+    try {
+      setIsLoading(true);
+      setError(null);
+      setSelectedCompanyId(companyId);
 
-        const data = await getMeetings();
-
-        if (isMounted) {
-          setMeetings(data);
-        }
-      } catch {
-        if (isMounted) {
-          setError('Nao foi possivel carregar as reunioes.');
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
+      if (!companyId) {
+        setMeetings([]);
+        setCatalog(emptyCatalog);
+        return;
       }
-    }
 
-    loadMeetings();
+      const [data, settings] = await Promise.all([getMeetings(), getCompanySettingsById(companyId)]);
+      const people = settings.teams.flatMap((team) => [
+        ...team.people.map((person) => person.email),
+        ...team.groups.flatMap((group) => group.people.map((person) => person.email)),
+      ]);
+
+      setMeetings(data);
+      setCatalog({
+        products: toUniqueOptions(settings.products.map((product) => product.name)),
+        people: toUniqueOptions(people),
+      });
+    } catch {
+      setError('Nao foi possivel carregar as reunioes.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void Promise.resolve().then(loadMeetings);
+  }, [loadMeetings]);
+
+  useEffect(() => {
+    window.addEventListener(selectedCompanyChangedEvent, loadMeetings);
 
     return () => {
-      isMounted = false;
+      window.removeEventListener(selectedCompanyChangedEvent, loadMeetings);
     };
-  }, []);
+  }, [loadMeetings]);
 
   const moveMeeting = useCallback(
     async (meetingId: string, status: MeetingStatus) => {
@@ -106,13 +156,29 @@ export function useMeetings() {
     return updatedMeeting;
   }, []);
 
+  const deleteMeeting = useCallback(async (meetingId: string) => {
+    setError(null);
+
+    const deletedMeeting = await deleteMeetingRepository(meetingId);
+
+    setMeetings((currentMeetings) =>
+      currentMeetings.filter((meeting) => meeting.id !== deletedMeeting.id),
+    );
+
+    return deletedMeeting;
+  }, []);
+
   return {
     meetings,
+    catalog,
+    selectedCompanyId,
+    hasCompany: Boolean(selectedCompanyId),
     isLoading,
     movingMeetingId,
     error,
     createMeeting,
     updateMeeting,
+    deleteMeeting,
     moveMeeting,
   };
 }

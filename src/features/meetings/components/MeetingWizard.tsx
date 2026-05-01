@@ -4,13 +4,14 @@ import { useMemo, useState } from 'react';
 import { Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Button } from '@/shared/components/ui/Button';
 import { Input } from '@/shared/components/ui/Input';
-import type { CreateMeetingInput, Meeting, UpdateMeetingInput } from '../types/meeting';
+import type { CreateMeetingInput, Meeting, MeetingCatalog, MeetingOption, UpdateMeetingInput } from '../types/meeting';
 
 const steps = ['Agenda', 'Pessoas', 'Contexto'] as const;
 
 type MeetingWizardMode = 'create' | 'edit';
 
 type MeetingWizardProps = {
+  catalog: MeetingCatalog;
   errorMessage: string;
   isOpen: boolean;
   meeting?: Meeting;
@@ -23,7 +24,7 @@ type MeetingForm = {
   title: string;
   date: string;
   time: string;
-  participants: string;
+  participants: string[];
   product: string;
   description: string;
   notes: string;
@@ -35,7 +36,7 @@ const initialForm: MeetingForm = {
   title: '',
   date: '',
   time: '',
-  participants: '',
+  participants: [],
   product: '',
   description: '',
   notes: '',
@@ -50,7 +51,7 @@ function getInitialForm(meeting?: Meeting): MeetingForm {
     title: meeting.title,
     date: meeting.date,
     time: meeting.time,
-    participants: meeting.participants.join('\n'),
+    participants: meeting.participants,
     product: meeting.product ?? '',
     description: meeting.description ?? '',
     notes: meeting.notes ?? '',
@@ -76,18 +77,11 @@ function isValidTime(value: string) {
   return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
 }
 
-function parseParticipants(value: string) {
-  return value
-    .split(/[\n,;]+/)
-    .map((participant) => participant.trim())
-    .filter(Boolean);
-}
-
 function validateForm(form: MeetingForm, step: number) {
   const errors: MeetingFormErrors = {};
   const title = form.title.trim();
   const product = form.product.trim();
-  const participants = parseParticipants(form.participants);
+  const participants = form.participants;
   const description = form.description.trim();
   const notes = form.notes.trim();
 
@@ -137,6 +131,7 @@ function validateForm(form: MeetingForm, step: number) {
 }
 
 export function MeetingWizard({
+  catalog,
   errorMessage,
   isOpen,
   meeting,
@@ -149,7 +144,15 @@ export function MeetingWizard({
   const [errors, setErrors] = useState<MeetingFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const participants = useMemo(() => parseParticipants(form.participants), [form.participants]);
+  const participants = form.participants;
+  const productOptions = useMemo(
+    () => includeCurrentOption(catalog.products, form.product),
+    [catalog.products, form.product],
+  );
+  const peopleOptions = useMemo(
+    () => includeCurrentOptions(catalog.people, form.participants),
+    [catalog.people, form.participants],
+  );
   const actionLabel = mode === 'edit' ? 'Salvar edicao' : 'Criar reuniao';
   const submittingLabel = mode === 'edit' ? 'Salvando' : 'Criando';
 
@@ -167,6 +170,20 @@ export function MeetingWizard({
     setErrors((currentErrors) => ({
       ...currentErrors,
       [field]: undefined,
+      form: undefined,
+    }));
+  }
+
+  function toggleParticipant(participant: string) {
+    setForm((currentForm) => ({
+      ...currentForm,
+      participants: currentForm.participants.includes(participant)
+        ? currentForm.participants.filter((currentParticipant) => currentParticipant !== participant)
+        : [...currentForm.participants, participant],
+    }));
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      participants: undefined,
       form: undefined,
     }));
   }
@@ -300,31 +317,46 @@ export function MeetingWizard({
 
             <label className="meeting-wizard__field meeting-wizard__field--wide">
               <span>Produto</span>
-              <Input
+              <select
                 aria-invalid={Boolean(errors.product)}
-                maxLength={80}
                 onChange={(event) => updateField('product', event.target.value)}
-                placeholder="Ex.: NOSTER"
                 value={form.product}
-              />
+              >
+                <option value="">Sem produto selecionado</option>
+                {productOptions.map((product) => (
+                  <option key={product.value} value={product.label}>
+                    {product.label}
+                  </option>
+                ))}
+              </select>
+              {catalog.products.length === 0 ? <em>Cadastre produtos em Configuracoes.</em> : null}
               {errors.product ? <small>{errors.product}</small> : null}
             </label>
           </div>
         ) : null}
 
         {step === 1 ? (
-          <label className="meeting-wizard__field">
+          <div className="meeting-wizard__field">
             <span>Pessoas envolvidas</span>
-            <textarea
-              aria-invalid={Boolean(errors.participants)}
-              className="meeting-wizard__textarea"
-              onChange={(event) => updateField('participants', event.target.value)}
-              placeholder="Ana Lu, Produto, Comercial"
-              value={form.participants}
-            />
+            {peopleOptions.length > 0 ? (
+              <div className="meeting-wizard__options">
+                {peopleOptions.map((person) => (
+                  <label key={person.value}>
+                    <input
+                      checked={form.participants.includes(person.label)}
+                      onChange={() => toggleParticipant(person.label)}
+                      type="checkbox"
+                    />
+                    {person.label}
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <p className="meeting-wizard__empty">Cadastre pessoas em Configuracoes para selecionar participantes.</p>
+            )}
             <em>{participants.length} pessoas identificadas</em>
             {errors.participants ? <small>{errors.participants}</small> : null}
-          </label>
+          </div>
         ) : null}
 
         {step === 2 ? (
@@ -380,4 +412,34 @@ export function MeetingWizard({
       </div>
     </div>
   );
+}
+
+function includeCurrentOption(options: MeetingOption[], currentValue: string) {
+  const normalizedCurrentValue = currentValue.trim().toLowerCase();
+
+  if (!normalizedCurrentValue || options.some((option) => option.label.toLowerCase() === normalizedCurrentValue)) {
+    return options;
+  }
+
+  return [{ label: currentValue, value: normalizedCurrentValue }, ...options];
+}
+
+function includeCurrentOptions(options: MeetingOption[], currentValues: string[]) {
+  const nextOptions = [...options];
+
+  currentValues.forEach((currentValue) => {
+    const normalizedCurrentValue = currentValue.trim().toLowerCase();
+
+    if (
+      normalizedCurrentValue &&
+      !nextOptions.some((option) => option.label.toLowerCase() === normalizedCurrentValue)
+    ) {
+      nextOptions.unshift({
+        label: currentValue,
+        value: normalizedCurrentValue,
+      });
+    }
+  });
+
+  return nextOptions;
 }

@@ -1,4 +1,5 @@
 import type { CreateMeetingInput, Meeting, MeetingStatus, UpdateMeetingInput } from '../types/meeting';
+import { getSelectedCompanyHeaders } from '@/features/settings/repositories/workspace.repository';
 
 type ApiResponse<T> = {
   success: boolean;
@@ -19,13 +20,17 @@ async function parseApiResponse<T>(response: Response): Promise<T> {
 }
 
 export async function getMeetings() {
-  const response = await fetch(`${apiUrl}/api/meetings`);
+  const response = await fetch(`${apiUrl}/api/meetings`, {
+    headers: getSelectedCompanyHeaders(),
+  });
 
   return parseApiResponse<Meeting[]>(response);
 }
 
 export async function getMeetingById(meetingId: string) {
-  const response = await fetch(`${apiUrl}/api/meetings/${meetingId}`);
+  const response = await fetch(`${apiUrl}/api/meetings/${meetingId}`, {
+    headers: getSelectedCompanyHeaders(),
+  });
 
   if (response.status === 404) {
     return null;
@@ -38,6 +43,7 @@ export async function updateMeetingStatus(meetingId: string, status: MeetingStat
   const response = await fetch(`${apiUrl}/api/meetings/${meetingId}/status`, {
     method: 'PATCH',
     headers: {
+      ...getSelectedCompanyHeaders(),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ status }),
@@ -50,6 +56,7 @@ export async function createMeeting(input: CreateMeetingInput) {
   const response = await fetch(`${apiUrl}/api/meetings`, {
     method: 'POST',
     headers: {
+      ...getSelectedCompanyHeaders(),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(input),
@@ -62,9 +69,19 @@ export async function updateMeeting(meetingId: string, input: UpdateMeetingInput
   const response = await fetch(`${apiUrl}/api/meetings/${meetingId}`, {
     method: 'PUT',
     headers: {
+      ...getSelectedCompanyHeaders(),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(input),
+  });
+
+  return parseApiResponse<Meeting>(response);
+}
+
+export async function deleteMeeting(meetingId: string) {
+  const response = await fetch(`${apiUrl}/api/meetings/${meetingId}`, {
+    method: 'DELETE',
+    headers: getSelectedCompanyHeaders(),
   });
 
   return parseApiResponse<Meeting>(response);

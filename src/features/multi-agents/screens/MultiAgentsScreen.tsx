@@ -6,7 +6,16 @@ import { MultiAgentsChat } from '../components/MultiAgentsChat';
 import { useMultiAgents } from '../hooks/useMultiAgents';
 
 export function MultiAgentsScreen() {
-  const { data, isLoading, error } = useMultiAgents();
+  const {
+    data,
+    isLoading,
+    error,
+    attachMeeting,
+    createAnalysis,
+    detachMeeting,
+    selectAnalysis,
+    sendMessage,
+  } = useMultiAgents();
 
   if (isLoading) {
     return <LoadingState label="Carregando multi-agentes..." />;
@@ -20,5 +29,18 @@ export function MultiAgentsScreen() {
     return <EmptyState title="Nenhuma analise encontrada" />;
   }
 
-  return <MultiAgentsChat analyses={data.analyses} messages={data.messages} />;
+  return (
+    <MultiAgentsChat
+      activeAnalysisId={data.activeAnalysisId}
+      analyses={data.analyses}
+      attachedMeetings={data.attachedMeetings}
+      meetings={data.meetings}
+      messages={data.messages}
+      onAttachMeeting={attachMeeting}
+      onCreateAnalysis={createAnalysis}
+      onDetachMeeting={detachMeeting}
+      onSelectAnalysis={selectAnalysis}
+      onSendMessage={sendMessage}
+    />
+  );
 }

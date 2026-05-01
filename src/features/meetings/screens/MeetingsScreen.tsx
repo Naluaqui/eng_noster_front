@@ -6,7 +6,7 @@ import { MeetingsKanban } from '../components/MeetingsKanban';
 import { useMeetings } from '../hooks/useMeetings';
 
 export function MeetingsScreen() {
-  const { meetings, isLoading, movingMeetingId, error, createMeeting, updateMeeting, moveMeeting } =
+  const { meetings, catalog, hasCompany, isLoading, movingMeetingId, error, createMeeting, updateMeeting, deleteMeeting, moveMeeting } =
     useMeetings();
 
   if (isLoading) {
@@ -17,15 +17,22 @@ export function MeetingsScreen() {
     return <EmptyState title="Erro ao carregar reunioes" description={error} />;
   }
 
-  if (meetings.length === 0) {
-    return <EmptyState title="Nenhuma reuniao encontrada" />;
+  if (!hasCompany) {
+    return (
+      <EmptyState
+        title="Selecione uma empresa"
+        description="Crie ou selecione uma empresa em Configuracoes para cadastrar reunioes."
+      />
+    );
   }
 
   return (
     <MeetingsKanban
+      catalog={catalog}
       meetings={meetings}
       movingMeetingId={movingMeetingId}
       onCreateMeeting={createMeeting}
+      onDeleteMeeting={deleteMeeting}
       onMoveMeeting={moveMeeting}
       onUpdateMeeting={updateMeeting}
     />

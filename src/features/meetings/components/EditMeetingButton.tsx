@@ -2,15 +2,16 @@
 
 import { useState } from 'react';
 import { Pencil } from 'lucide-react';
-import type { Meeting, UpdateMeetingInput } from '../types/meeting';
+import type { Meeting, MeetingCatalog, UpdateMeetingInput } from '../types/meeting';
 import { MeetingWizard } from './MeetingWizard';
 
 type EditMeetingButtonProps = {
   meeting: Meeting;
+  catalog: MeetingCatalog;
   onUpdateMeeting: (meetingId: string, input: UpdateMeetingInput) => Promise<Meeting>;
 };
 
-export function EditMeetingButton({ meeting, onUpdateMeeting }: EditMeetingButtonProps) {
+export function EditMeetingButton({ meeting, catalog, onUpdateMeeting }: EditMeetingButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -23,6 +24,7 @@ export function EditMeetingButton({ meeting, onUpdateMeeting }: EditMeetingButto
       {isOpen ? (
         <MeetingWizard
           errorMessage="Nao foi possivel salvar a edicao."
+          catalog={catalog}
           isOpen={isOpen}
           meeting={meeting}
           mode="edit"

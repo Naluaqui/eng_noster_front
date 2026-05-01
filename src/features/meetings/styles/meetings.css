@@ -48,6 +48,7 @@
 .meetings-filter-bar {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
   border: 1px solid rgba(28, 28, 28, 0.08);
   border-radius: 0.5rem;
@@ -57,7 +58,7 @@
 }
 
 .meetings-filter-bar__search,
-.meetings-filter-bar__sort label,
+.meetings-filter-bar__select,
 .meetings-filter-bar__button {
   display: inline-flex;
   min-height: 2.45rem;
@@ -90,24 +91,29 @@
   color: rgba(28, 28, 28, 0.36);
 }
 
-.meetings-filter-bar__sort {
+.meetings-filter-bar__select {
   display: inline-flex;
+  position: relative;
   align-items: center;
-  gap: 0.45rem;
+  flex: 0 1 11rem;
+  gap: 0.5rem;
+  padding: 0 0.72rem;
   color: rgba(28, 28, 28, 0.54);
   font-size: 0.78rem;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.meetings-filter-bar__sort label {
-  position: relative;
-  min-width: 8.25rem;
-  padding: 0 0.8rem;
+.meetings-filter-bar__select span {
+  color: rgba(28, 28, 28, 0.48);
+  font-size: 0.68rem;
+  font-weight: 950;
+  text-transform: uppercase;
 }
 
-.meetings-filter-bar__sort select {
+.meetings-filter-bar__select select {
   width: 100%;
+  min-width: 0;
   border: 0;
   outline: 0;
   appearance: none;
@@ -115,6 +121,10 @@
   color: var(--color-background);
   font-size: 0.78rem;
   font-weight: 900;
+}
+
+.meetings-filter-bar__select svg {
+  flex: 0 0 auto;
 }
 
 .meetings-filter-bar__button {
@@ -264,6 +274,12 @@
   justify-content: space-between;
 }
 
+.meeting-card__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .meeting-card__owner {
   color: rgba(28, 28, 28, 0.52);
   font-size: 0.7rem;
@@ -295,8 +311,28 @@
   cursor: pointer;
 }
 
+.meetings-filter-bar__button:hover {
+  background: linear-gradient(135deg, rgba(255, 227, 66, 0.7), rgba(0, 255, 195, 0.18));
+}
+
 .meeting-card__edit:hover {
   color: var(--color-background);
+}
+
+.meeting-card__delete {
+  display: grid;
+  width: 1.75rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(201, 53, 53, 0.1);
+  color: #a02626;
+  cursor: pointer;
+}
+
+.meeting-card__delete:hover {
+  background: rgba(201, 53, 53, 0.16);
 }
 
 .meeting-card__body h3 {
@@ -522,6 +558,7 @@
 }
 
 .meeting-wizard__field .ui-input,
+.meeting-wizard__field select,
 .meeting-wizard__textarea {
   border-color: rgba(28, 28, 28, 0.1);
   background: rgba(240, 250, 250, 0.88);
@@ -529,9 +566,20 @@
 }
 
 .meeting-wizard__field .ui-input[aria-invalid='true'],
+.meeting-wizard__field select[aria-invalid='true'],
 .meeting-wizard__textarea[aria-invalid='true'] {
   border-color: #c93535;
   box-shadow: 0 0 0 3px rgba(201, 53, 53, 0.12);
+}
+
+.meeting-wizard__field select {
+  min-height: 2.85rem;
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  border-radius: 0.5rem;
+  padding: 0 0.85rem;
+  outline: 0;
+  font-size: 0.86rem;
+  font-weight: 800;
 }
 
 .meeting-wizard__textarea {
@@ -551,11 +599,25 @@
 }
 
 .meeting-wizard__field small,
-.meeting-wizard__error {
+.meeting-wizard__error,
+.meeting-wizard__empty {
   margin: 0;
+}
+
+.meeting-wizard__field small,
+.meeting-wizard__error {
   color: #c93535;
   font-size: 0.72rem;
   font-weight: 850;
+}
+
+.meeting-wizard__empty {
+  border: 1px dashed rgba(28, 28, 28, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.9rem;
+  color: rgba(28, 28, 28, 0.56);
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .meeting-wizard__field em {
@@ -563,6 +625,26 @@
   font-size: 0.72rem;
   font-style: normal;
   font-weight: 800;
+}
+
+.meeting-wizard__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.55rem;
+}
+
+.meeting-wizard__options label {
+  display: flex;
+  min-height: 2.4rem;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(240, 250, 250, 0.76);
+  color: var(--color-background);
+  font-size: 0.78rem;
+  font-weight: 850;
 }
 
 .meeting-wizard__footer {
@@ -598,7 +680,7 @@
     max-width: none;
   }
 
-  .meetings-filter-bar__sort {
+  .meetings-filter-bar__select {
     justify-content: space-between;
   }
 

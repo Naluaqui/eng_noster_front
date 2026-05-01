@@ -8,30 +8,40 @@ const statusLabels = {
 } as const;
 
 type AnalysisNavigationProps = {
+  activeAnalysisId: string;
   analyses: AgentAnalysis[];
+  onCreateAnalysis: () => void;
+  onSelectAnalysis: (analysisId: string) => void;
 };
 
-export function AnalysisNavigation({ analyses }: AnalysisNavigationProps) {
-  const activeAgentCount = analyses[0]?.agentCount ?? 0;
+export function AnalysisNavigation({
+  activeAnalysisId,
+  analyses,
+  onCreateAnalysis,
+  onSelectAnalysis,
+}: AnalysisNavigationProps) {
+  const activeAnalysis = analyses.find((analysis) => analysis.id === activeAnalysisId);
+  const activeAgentCount = activeAnalysis?.agentCount ?? 0;
 
   return (
-    <aside className="analysis-nav" aria-label="Gerenciar análises">
+    <aside className="analysis-nav" aria-label="Gerenciar analises">
       <header>
         <div>
-          <span>Análises</span>
+          <span>Analises</span>
           <h2>Gerenciar</h2>
         </div>
-        <button type="button" aria-label="Criar análise">
+        <button type="button" aria-label="Criar analise" onClick={onCreateAnalysis}>
           <Plus size={16} aria-hidden="true" />
         </button>
       </header>
 
       <nav>
         {analyses.map((analysis) => (
-          <a
-            className={analysis.status === 'active' ? 'is-active' : undefined}
-            href={`#${analysis.id}`}
+          <button
+            className={analysis.id === activeAnalysisId ? 'is-active' : undefined}
             key={analysis.id}
+            onClick={() => onSelectAnalysis(analysis.id)}
+            type="button"
           >
             <FileText size={16} aria-hidden="true" />
             <span>
@@ -39,13 +49,13 @@ export function AnalysisNavigation({ analyses }: AnalysisNavigationProps) {
               <small>{analysis.description}</small>
             </span>
             <em>{statusLabels[analysis.status]}</em>
-          </a>
+          </button>
         ))}
       </nav>
 
       <footer>
         <Bot size={16} aria-hidden="true" />
-        <span>{activeAgentCount} agentes nesta análise</span>
+        <span>{activeAgentCount} agentes nesta analise</span>
         <Archive size={15} aria-hidden="true" />
       </footer>
     </aside>

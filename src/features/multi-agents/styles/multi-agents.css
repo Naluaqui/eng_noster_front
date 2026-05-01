@@ -35,7 +35,7 @@
 
 .analysis-nav header,
 .analysis-nav footer,
-.analysis-nav a {
+.analysis-nav nav button {
   display: flex;
   align-items: center;
 }
@@ -60,7 +60,8 @@
 
 .analysis-nav button,
 .multi-agent-composer button,
-.agent-suggestions button {
+.agent-suggestions button,
+.meeting-attachment-picker button {
   font: inherit;
   cursor: pointer;
 }
@@ -81,23 +82,25 @@
   gap: 0.55rem;
 }
 
-.analysis-nav a {
+.analysis-nav nav button {
+  width: 100%;
   gap: 0.65rem;
   border: 1px solid transparent;
   border-radius: 0.5rem;
   padding: 0.75rem;
+  background: transparent;
   color: rgba(28, 28, 28, 0.68);
-  text-decoration: none;
+  text-align: left;
 }
 
-.analysis-nav a.is-active,
-.analysis-nav a:hover {
+.analysis-nav nav button.is-active,
+.analysis-nav nav button:hover {
   border-color: rgba(134, 92, 255, 0.2);
   background: linear-gradient(90deg, rgba(255, 227, 66, 0.5), rgba(0, 255, 195, 0.14));
   color: var(--color-background);
 }
 
-.analysis-nav a span {
+.analysis-nav nav button span {
   display: grid;
   min-width: 0;
   flex: 1;
@@ -256,6 +259,48 @@
   line-height: 1.55;
 }
 
+.multi-agent-message__attachments {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.multi-agent-message__attachments li {
+  display: grid;
+  gap: 0.15rem;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(255, 253, 255, 0.12);
+}
+
+.multi-agent-message[data-role='agent'] .multi-agent-message__attachments li {
+  background: rgba(134, 92, 255, 0.08);
+}
+
+.multi-agent-message__attachments strong,
+.multi-agent-message__attachments small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.multi-agent-message__attachments strong {
+  color: currentColor;
+  font-size: 0.76rem;
+}
+
+.multi-agent-message__attachments small {
+  color: rgba(255, 253, 255, 0.68);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.multi-agent-message[data-role='agent'] .multi-agent-message__attachments small {
+  color: rgba(28, 28, 28, 0.54);
+}
+
 .multi-agent-composer {
   display: grid;
   max-width: 48rem;
@@ -265,6 +310,37 @@
   border-radius: 0.5rem;
   background: #ffffff;
   box-shadow: 0 1.2rem 3rem rgba(28, 28, 28, 0.07);
+}
+
+.multi-agent-composer__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.08);
+  padding: 0.7rem 0.75rem 0;
+}
+
+.multi-agent-composer__attachments span {
+  display: inline-flex;
+  min-height: 1.8rem;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0 0.35rem 0 0.72rem;
+  background: rgba(134, 92, 255, 0.1);
+  color: var(--color-background);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.multi-agent-composer__attachments button {
+  display: grid;
+  width: 1.35rem;
+  min-height: auto;
+  aspect-ratio: 1;
+  place-items: center;
+  padding: 0;
+  background: rgba(28, 28, 28, 0.1);
 }
 
 .multi-agent-composer label {
@@ -319,6 +395,172 @@
   padding: 0;
   background: var(--color-background);
   color: var(--color-foreground);
+}
+
+.multi-agent-composer button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.meeting-attachment-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(5, 5, 5, 0.56);
+  backdrop-filter: blur(12px);
+}
+
+.meeting-attachment-picker__panel {
+  display: grid;
+  width: min(42rem, 100%);
+  max-height: min(42rem, calc(100vh - 2rem));
+  overflow: hidden;
+  gap: 1rem;
+  border: 1px solid rgba(255, 253, 255, 0.22);
+  border-radius: 0.5rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
+  background: #ffffff;
+  color: var(--color-background);
+  box-shadow: 0 1.6rem 5rem rgba(5, 5, 5, 0.36);
+}
+
+.meeting-attachment-picker header,
+.meeting-attachment-picker__search,
+.meeting-attachment-picker article {
+  display: flex;
+  align-items: center;
+}
+
+.meeting-attachment-picker header {
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.meeting-attachment-picker header span {
+  color: rgba(28, 28, 28, 0.56);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.meeting-attachment-picker h2 {
+  margin: 0.18rem 0 0;
+  color: var(--color-background);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.meeting-attachment-picker__close {
+  display: grid;
+  width: 2.35rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 50%;
+  background: rgba(28, 28, 28, 0.04);
+  color: var(--color-background);
+}
+
+.meeting-attachment-picker__search {
+  min-height: 2.6rem;
+  gap: 0.5rem;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 999px;
+  padding: 0 0.85rem;
+  background: rgba(240, 250, 250, 0.88);
+  color: rgba(28, 28, 28, 0.48);
+}
+
+.meeting-attachment-picker__search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-background);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.meeting-attachment-picker__list {
+  display: grid;
+  gap: 0.65rem;
+  overflow: auto;
+  padding-right: 0.25rem;
+}
+
+.meeting-attachment-picker article {
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(28, 28, 28, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(255, 253, 255, 0.8);
+}
+
+.meeting-attachment-picker article div {
+  display: grid;
+  min-width: 0;
+  gap: 0.25rem;
+}
+
+.meeting-attachment-picker strong,
+.meeting-attachment-picker small,
+.meeting-attachment-picker p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meeting-attachment-picker strong {
+  color: var(--color-background);
+  font-size: 0.88rem;
+}
+
+.meeting-attachment-picker small {
+  color: rgba(28, 28, 28, 0.5);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.meeting-attachment-picker p {
+  margin: 0;
+  color: rgba(28, 28, 28, 0.6);
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.meeting-attachment-picker article button {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.58rem 0.85rem;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.meeting-attachment-picker article button:disabled {
+  background: rgba(28, 28, 28, 0.1);
+  color: rgba(28, 28, 28, 0.46);
+  cursor: not-allowed;
+}
+
+.meeting-attachment-picker__empty {
+  margin: 0;
+  border: 1px dashed rgba(28, 28, 28, 0.16);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: rgba(28, 28, 28, 0.56);
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
 .agent-suggestions {

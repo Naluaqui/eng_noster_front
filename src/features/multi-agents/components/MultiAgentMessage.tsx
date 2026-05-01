@@ -14,8 +14,20 @@ export function MultiAgentMessage({ message }: MultiAgentMessageProps) {
         {isUser ? <UserRound size={17} /> : <Bot size={17} />}
       </div>
       <div>
-        <span>{isUser ? 'Você' : message.agent}</span>
+        <span>{isUser ? 'Voce' : message.agent}</span>
         <p>{message.content}</p>
+        {message.attachments && message.attachments.length > 0 ? (
+          <ul className="multi-agent-message__attachments" aria-label="Reunioes anexadas">
+            {message.attachments.map((meeting) => (
+              <li key={meeting.id}>
+                <strong>{meeting.title}</strong>
+                <small>
+                  {meeting.date} as {meeting.time}
+                </small>
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </article>
   );

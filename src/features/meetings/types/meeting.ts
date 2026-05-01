@@ -1,5 +1,10 @@
 export type MeetingStatus = 'scheduled' | 'in-review' | 'decided';
 
+export type MeetingStatusFilter = MeetingStatus | 'all';
+export type MeetingPeriodFilter = 'all' | 'today' | 'upcoming' | 'past' | 'next-7' | 'next-30';
+export type MeetingSignalFilter = 'all' | 'none' | 'with-signals' | 'high-signals';
+export type MeetingSort = 'stage' | 'date-asc' | 'date-desc' | 'signals-desc' | 'signals-asc' | 'title';
+
 export type Meeting = {
   id: string;
   title: string;
@@ -27,3 +32,23 @@ export type CreateMeetingInput = {
 };
 
 export type UpdateMeetingInput = CreateMeetingInput;
+
+export type MeetingFilters = {
+  search: string;
+  status: MeetingStatusFilter;
+  product: string;
+  participant: string;
+  period: MeetingPeriodFilter;
+  signals: MeetingSignalFilter;
+  sortBy: MeetingSort;
+};
+
+export type MeetingOption = {
+  label: string;
+  value: string;
+};
+
+export type MeetingCatalog = {
+  products: MeetingOption[];
+  people: MeetingOption[];
+};

@@ -6,6 +6,7 @@
 @import '../features/decision-management/styles/decision-management.css';
 @import '../features/multi-agents/styles/multi-agents.css';
 @import '../features/persuasion/styles/persuasion.css';
+@import '../features/settings/styles/settings.css';
 
 * {
   box-sizing: border-box;
@@ -89,4 +90,83 @@ select {
   display: grid;
   gap: 0.5rem;
   color: rgba(255, 253, 255, 0.72);
+}
+
+.confirm-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(5, 5, 5, 0.58);
+  backdrop-filter: blur(12px);
+}
+
+.confirm-dialog__panel {
+  display: grid;
+  width: min(27rem, 100%);
+  gap: 1rem;
+  border: 1px solid rgba(255, 253, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #ffffff;
+  color: var(--color-background);
+  box-shadow: 0 1.6rem 5rem rgba(5, 5, 5, 0.36);
+}
+
+.confirm-dialog header,
+.confirm-dialog footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.confirm-dialog header span {
+  display: grid;
+  width: 2.1rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(201, 53, 53, 0.1);
+  color: #a02626;
+}
+
+.confirm-dialog header button {
+  display: grid;
+  width: 2rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(28, 28, 28, 0.06);
+  color: var(--color-background);
+  cursor: pointer;
+}
+
+.confirm-dialog h2,
+.confirm-dialog p {
+  margin: 0;
+}
+
+.confirm-dialog h2 {
+  font-size: 1.1rem;
+}
+
+.confirm-dialog p {
+  margin-top: 0.4rem;
+  color: rgba(28, 28, 28, 0.62);
+  font-size: 0.86rem;
+  font-weight: 650;
+  line-height: 1.55;
+}
+
+.confirm-dialog footer {
+  justify-content: flex-end;
+}
+
+.confirm-dialog .ui-button--ghost {
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  color: var(--color-background);
 }
