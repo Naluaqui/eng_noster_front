@@ -1,4 +1,7 @@
+'use client';
+
 import { Avatar } from '@/shared/components/ui/Avatar';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import type { User } from '@/shared/types/user';
 
 const defaultUser: User = {
@@ -8,12 +11,15 @@ const defaultUser: User = {
 };
 
 export function UserProfileMenu() {
+  const { user } = useAuth();
+  const profileUser = user ?? defaultUser;
+
   return (
     <section className="user-profile-menu" aria-label="Perfil do usuário">
-      <Avatar name={defaultUser.name} src={defaultUser.avatarUrl} />
+      <Avatar name={profileUser.name} src={profileUser.avatarUrl} />
       <div>
-        <strong>{defaultUser.name}</strong>
-        <span>{defaultUser.email}</span>
+        <strong>{profileUser.name}</strong>
+        <span>{profileUser.email}</span>
       </div>
     </section>
   );

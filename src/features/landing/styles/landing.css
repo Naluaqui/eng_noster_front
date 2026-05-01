@@ -119,9 +119,15 @@
 .hero-login {
   background: var(--color-accent-yellow);
   color: var(--color-background);
+  cursor: pointer;
   box-shadow:
     0 0 0 0.28rem rgba(255, 253, 255, 0.06),
     0 1.1rem 2.7rem rgba(255, 227, 66, 0.18);
+}
+
+.hero-login:disabled {
+  cursor: wait;
+  opacity: 0.78;
 }
 
 .hero-login--compact {

@@ -6,21 +6,22 @@ export type AuthUser = {
   id: string;
   name: string;
   email: string;
-  avatar?: string;
-  permissions: AuthPermission[];
-};
-
-export type AuthToken = {
-  accessToken: string;
-  expiresAt: string;
+  avatarUrl?: string;
+  permissions?: AuthPermission[];
 };
 
 export type AuthSession = {
   user: AuthUser;
-  token: AuthToken;
+  accessToken: string;
 };
 
 export type AuthLoginRedirect = {
   provider: AuthProvider;
   redirectTo: string;
+};
+
+export type AuthApiResponse<T> = {
+  success: boolean;
+  message: string;
+  data: T;
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { useAuth } from '../hooks/useAuth';
@@ -11,15 +11,24 @@ type GoogleLoginButtonProps = {
 };
 
 export function GoogleLoginButton({ className, compact = false }: GoogleLoginButtonProps) {
-  const { googleLoginHref } = useAuth();
+  const { googleLoginHref, loginWithGoogle } = useAuth();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  async function handleLoginClick() {
+    setIsRedirecting(true);
+    const redirectTo = await loginWithGoogle();
+    window.location.href = redirectTo || googleLoginHref;
+  }
 
   return (
-    <Link
+    <button
       className={cn('hero-login', compact && 'hero-login--compact', className)}
-      href={googleLoginHref}
+      disabled={isRedirecting}
+      onClick={handleLoginClick}
+      type="button"
     >
       <LogIn size={18} aria-hidden="true" />
-      Login
-    </Link>
+      {isRedirecting ? 'Entrando' : 'Login'}
+    </button>
   );
 }

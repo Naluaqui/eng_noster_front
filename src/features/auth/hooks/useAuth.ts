@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import {
+  authSessionChangedEvent,
+  completeGoogleLogin as completeGoogleLoginRepository,
   getCurrentSession,
   loginWithGoogle as loginWithGoogleRepository,
   logout as logoutRepository,
@@ -17,9 +19,12 @@ export function useAuth() {
   useEffect(() => {
     let isMounted = true;
 
-    async function loadAuthState() {
+    async function loadAuthState(showLoading = true) {
       try {
-        setIsLoading(true);
+        if (showLoading) {
+          setIsLoading(true);
+        }
+
         setError(null);
 
         const [currentSession, googleRedirect] = await Promise.all([
@@ -49,6 +54,21 @@ export function useAuth() {
     };
   }, []);
 
+  useEffect(() => {
+    async function syncSession() {
+      const currentSession = await getCurrentSession();
+      setSession(currentSession);
+    }
+
+    window.addEventListener(authSessionChangedEvent, syncSession);
+    window.addEventListener('storage', syncSession);
+
+    return () => {
+      window.removeEventListener(authSessionChangedEvent, syncSession);
+      window.removeEventListener('storage', syncSession);
+    };
+  }, []);
+
   const loginWithGoogle = useCallback(async () => {
     const redirect = await loginWithGoogleRepository();
     return redirect.redirectTo;
@@ -60,6 +80,12 @@ export function useAuth() {
     return redirect.redirectTo;
   }, []);
 
+  const completeGoogleLogin = useCallback(async (code: string) => {
+    const authenticatedSession = await completeGoogleLoginRepository(code);
+    setSession(authenticatedSession);
+    return authenticatedSession;
+  }, []);
+
   return {
     session,
     user: session?.user ?? null,
@@ -68,6 +94,7 @@ export function useAuth() {
     isLoading,
     error,
     loginWithGoogle,
+    completeGoogleLogin,
     logout,
   };
 }
