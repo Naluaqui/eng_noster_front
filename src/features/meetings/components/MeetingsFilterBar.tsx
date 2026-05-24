@@ -36,7 +36,7 @@ export function MeetingsFilterBar({
         <input
           type="search"
           name="search"
-          placeholder="Buscar por titulo, pessoa, produto"
+          placeholder="Buscar por titulo, pessoa, produto ou serviço"
           value={filters.search}
           onChange={(event) => onChange('search', event.target.value)}
         />
@@ -53,12 +53,13 @@ export function MeetingsFilterBar({
           <option value="scheduled">Agendadas</option>
           <option value="in-review">Em analise</option>
           <option value="decided">Decididas</option>
+          <option value="analyzed">Analisadas</option>
         </select>
         <ChevronDown size={15} aria-hidden="true" />
       </label>
 
       <label className="meetings-filter-bar__select">
-        <span>Produto</span>
+        <span>Produto, serviço ou linha</span>
         <select
           name="product"
           value={filters.product}

@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 import type { Meeting } from '@/features/meetings/types/meeting';
 import type { AgentAnalysis, AiAnalysis, MultiAgentMessage as MultiAgentMessageType } from '../types/multiAgent';
-import { AgentSuggestionGrid } from './AgentSuggestionGrid';
 import { AnalysisEntityTags } from './AnalysisEntityTags';
 import { AnalysisNavigation } from './AnalysisNavigation';
 import { AnalysisResultPanel } from './AnalysisResultPanel';
 import { MultiAgentComposer } from './MultiAgentComposer';
-import { MultiAgentMessage } from './MultiAgentMessage';
+import { MultiAgentMessage, MultiAgentTypingIndicator } from './MultiAgentMessage';
 
 type MultiAgentsChatProps = {
   activeAnalysisId: string;
@@ -24,6 +24,7 @@ type MultiAgentsChatProps = {
   onDetachMeeting: (meetingId: string) => void;
   onSelectAnalysis: (analysisId: string) => void;
   onSendMessage: (content: string) => Promise<boolean>;
+  typingAgent: string | null;
 };
 
 export function MultiAgentsChat({
@@ -40,8 +41,10 @@ export function MultiAgentsChat({
   onDetachMeeting,
   onSelectAnalysis,
   onSendMessage,
+  typingAgent,
 }: MultiAgentsChatProps) {
   const timelineRef = useRef<HTMLDivElement>(null);
+  const [isAnalysisOpen, setIsAnalysisOpen] = useState(false);
 
   useEffect(() => {
     const timeline = timelineRef.current;
@@ -54,7 +57,28 @@ export function MultiAgentsChat({
       behavior: 'smooth',
       top: timeline.scrollHeight,
     });
-  }, [analysisError, analysisResult, isAnalyzing, messages.length]);
+  }, [analysisError, analysisResult, isAnalyzing, messages.length, typingAgent]);
+
+  useEffect(() => {
+    if (!isAnalysisOpen) {
+      return;
+    }
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsAnalysisOpen(false);
+      }
+    }
+
+    window.addEventListener('keydown', closeOnEscape);
+
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [isAnalysisOpen]);
+
+  function handleSelectAnalysis(analysisId: string) {
+    setIsAnalysisOpen(false);
+    onSelectAnalysis(analysisId);
+  }
 
   return (
     <main className="feature-page multi-agents-page">
@@ -63,7 +87,7 @@ export function MultiAgentsChat({
           activeAnalysisId={activeAnalysisId}
           analyses={analyses}
           onCreateAnalysis={onCreateAnalysis}
-          onSelectAnalysis={onSelectAnalysis}
+          onSelectAnalysis={handleSelectAnalysis}
         />
 
         <div className="multi-agents-chat">
@@ -79,6 +103,7 @@ export function MultiAgentsChat({
               {messages.map((message) => (
                 <MultiAgentMessage message={message} key={message.id} />
               ))}
+              {typingAgent ? <MultiAgentTypingIndicator agent={typingAgent} /> : null}
             </section>
 
             {analysisError ? (
@@ -88,10 +113,13 @@ export function MultiAgentsChat({
             ) : null}
 
             {analysisResult ? (
-              <>
-                <AnalysisEntityTags analysis={analysisResult} />
-                <AnalysisResultPanel analysis={analysisResult} />
-              </>
+              <article className="multi-agents-chat__diagnosis">
+                <span>Diagnostico central</span>
+                <p>{analysisResult.diagnostico_central}</p>
+                <button onClick={() => setIsAnalysisOpen(true)} type="button">
+                  Ver analise completa
+                </button>
+              </article>
             ) : null}
           </div>
 
@@ -104,9 +132,28 @@ export function MultiAgentsChat({
             onDetachMeeting={onDetachMeeting}
             onSendMessage={onSendMessage}
           />
-          <AgentSuggestionGrid />
         </div>
       </section>
+
+      {analysisResult && isAnalysisOpen ? (
+        <div className="analysis-modal" role="dialog" aria-modal="true" aria-label="Analise completa">
+          <div className="analysis-modal__panel">
+            <header>
+              <div>
+                <span>Multi-agentes</span>
+                <h2>Analise completa</h2>
+              </div>
+              <button aria-label="Fechar analise" onClick={() => setIsAnalysisOpen(false)} type="button">
+                <X size={18} aria-hidden="true" />
+              </button>
+            </header>
+            <div className="analysis-modal__content">
+              <AnalysisEntityTags analysis={analysisResult} />
+              <AnalysisResultPanel analysis={analysisResult} />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

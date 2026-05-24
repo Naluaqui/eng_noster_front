@@ -12,6 +12,7 @@ export function MultiAgentsScreen() {
     isAnalyzing,
     error,
     analysisError,
+    typingAgent,
     attachMeeting,
     createAnalysis,
     detachMeeting,
@@ -46,6 +47,7 @@ export function MultiAgentsScreen() {
       onDetachMeeting={detachMeeting}
       onSelectAnalysis={selectAnalysis}
       onSendMessage={sendMessage}
+      typingAgent={typingAgent}
     />
   );
 }

@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Eye, FilePenLine, Filter, Trash2 } from 'lucide-react';
 import { formatShortDate } from '@/shared/lib/formatters';
 import type { Meeting, MeetingStatus } from '@/features/meetings/types/meeting';
+import type { DecisionFilters, DecisionOfferingOption } from '../../types/decision-management';
 
 const statusLabels: Record<MeetingStatus, string> = {
   scheduled: 'Agendada',
   'in-review': 'Em análise',
   decided: 'Decidida',
+  analyzed: 'Analisada',
 };
 
 function getInitials(name: string) {
@@ -21,13 +24,36 @@ type DecisionMeetingsTableProps = {
   meetings: Meeting[];
   selectedMeetingId: string;
   onOpenMeeting: (meetingId: string) => void;
+  filters: DecisionFilters;
+  offeringOptions: DecisionOfferingOption[];
+  onFiltersChange: (nextFilters: DecisionFilters) => void;
 };
 
 export function DecisionMeetingsTable({
   meetings,
   selectedMeetingId,
   onOpenMeeting,
+  filters,
+  offeringOptions,
+  onFiltersChange,
 }: DecisionMeetingsTableProps) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  function updateFilter(field: keyof DecisionFilters, value: string) {
+    onFiltersChange({
+      ...filters,
+      [field]: value,
+    });
+  }
+
+  function clearFilters() {
+    onFiltersChange({
+      startDate: '',
+      endDate: '',
+      offering: '',
+    });
+  }
+
   return (
     <section
       className="decision-meetings-table-card"
@@ -39,11 +65,57 @@ export function DecisionMeetingsTable({
           <h2 id="decision-meetings-table-title">Lista de reuniões analisadas</h2>
         </div>
 
-        <button type="button">
+        <button
+          aria-controls="decision-table-filter-menu"
+          aria-expanded={isFilterOpen}
+          onClick={() => setIsFilterOpen((current) => !current)}
+          type="button"
+        >
           <Filter size={15} aria-hidden="true" />
           Filtrar
         </button>
       </header>
+
+      {isFilterOpen ? (
+        <div className="decision-table-filter-menu" id="decision-table-filter-menu">
+          <label>
+            <span>Data inicial</span>
+            <input
+              type="date"
+              value={filters.startDate}
+              onChange={(event) => updateFilter('startDate', event.target.value)}
+            />
+          </label>
+
+          <label>
+            <span>Data final</span>
+            <input
+              type="date"
+              value={filters.endDate}
+              onChange={(event) => updateFilter('endDate', event.target.value)}
+            />
+          </label>
+
+          <label className="decision-table-filter-menu__offering">
+            <span>Produtos e Serviços, linhas e segmento</span>
+            <select
+              value={filters.offering}
+              onChange={(event) => updateFilter('offering', event.target.value)}
+            >
+              <option value="">Portfólio completo TOTVS</option>
+              {offeringOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label} - {option.category}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <button className="decision-table-filter-menu__clear" onClick={clearFilters} type="button">
+            Limpar filtros
+          </button>
+        </div>
+      ) : null}
 
       <div className="decision-meetings-table-card__scroll">
         <table>

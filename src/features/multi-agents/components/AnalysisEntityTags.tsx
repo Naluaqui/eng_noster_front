@@ -8,7 +8,7 @@ export function AnalysisEntityTags({ analysis }: AnalysisEntityTagsProps) {
   const groups: Array<{ label: string; values: Array<string | AiDetectedCompany | AiDetectedProduct | AiDetectedTheme> }> = [
     { label: 'Temas', values: analysis.entidades_detectadas.temas },
     { label: 'Empresas', values: analysis.entidades_detectadas.empresas },
-    { label: 'Produtos', values: analysis.entidades_detectadas.produtos },
+    { label: 'Produtos e serviços', values: analysis.entidades_detectadas.produtos },
   ].filter((group) => group.values.length > 0);
 
   if (groups.length === 0) {

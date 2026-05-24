@@ -22,6 +22,10 @@
     justify-content: flex-start;
   }
 
+  .decision-overview-filter-menu {
+    grid-template-columns: 1fr;
+  }
+
   .decision-overview-metrics__grid {
     grid-template-columns: 1fr;
   }
@@ -33,6 +37,10 @@
 
   .decision-impact-flow-card__map,
   .decision-impact-flow-card__diagram {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-table-filter-menu {
     grid-template-columns: 1fr;
   }
 

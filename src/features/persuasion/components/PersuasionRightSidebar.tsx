@@ -8,11 +8,18 @@ const channelIcons = {
 } as const;
 
 type PersuasionRightSidebarProps = {
+  activeProfileId: string;
+  onSelectProfile: (profileId: string) => void;
   stats: PersuasionSidebarStat[];
   worklist: PersuasionWorklistItem[];
 };
 
-export function PersuasionRightSidebar({ stats, worklist }: PersuasionRightSidebarProps) {
+export function PersuasionRightSidebar({
+  activeProfileId,
+  onSelectProfile,
+  stats,
+  worklist,
+}: PersuasionRightSidebarProps) {
   return (
     <aside className="persuasion-right-sidebar" aria-labelledby="persuasion-worklist-title">
       <section className="persuasion-sidebar-stats" aria-label="Resumo de persuasão">
@@ -28,7 +35,7 @@ export function PersuasionRightSidebar({ stats, worklist }: PersuasionRightSideb
         <header>
           <div>
             <span>Worklist</span>
-            <h2 id="persuasion-worklist-title">Leads persuasivos</h2>
+            <h2 id="persuasion-worklist-title">Empresas persuasivas</h2>
           </div>
           <button type="button" aria-label="Expandir worklist">
             <ArrowUpRight size={15} aria-hidden="true" />
@@ -40,8 +47,13 @@ export function PersuasionRightSidebar({ stats, worklist }: PersuasionRightSideb
             const Icon = channelIcons[item.channel];
 
             return (
-              <article className="persuasion-worklist-item" key={item.id}>
-                <img src={item.avatar} alt={`Retrato de ${item.name}`} />
+              <button
+                className={`persuasion-worklist-item${item.profileId === activeProfileId ? ' is-active' : ''}`}
+                key={item.id}
+                onClick={() => onSelectProfile(item.profileId)}
+                type="button"
+              >
+                <img src={item.avatar} alt={`Identidade de ${item.name}`} />
 
                 <div className="persuasion-worklist-item__content">
                   <header>
@@ -60,7 +72,7 @@ export function PersuasionRightSidebar({ stats, worklist }: PersuasionRightSideb
                     <strong data-priority={item.priority}>{item.priority}</strong>
                   </footer>
                 </div>
-              </article>
+              </button>
             );
           })}
         </div>

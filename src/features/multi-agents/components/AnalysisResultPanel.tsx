@@ -96,7 +96,7 @@ function DetectedEntitiesCard({ analysis }: { analysis: AiAnalysis }) {
       ) : null}
       {produtos.length > 0 ? (
         <EntityGroup
-          label="Produtos"
+          label="Produtos e serviços"
           values={produtos.map((product) => ({
             name: getEntityName(product),
             detail: typeof product === 'string' ? undefined : product.descricao,

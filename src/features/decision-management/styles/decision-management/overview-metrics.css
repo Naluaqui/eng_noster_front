@@ -56,6 +56,61 @@
   color: var(--color-foreground);
 }
 
+.decision-overview-filter-menu {
+  display: grid;
+  grid-template-columns: minmax(9.5rem, 0.52fr) minmax(9.5rem, 0.52fr) minmax(18rem, 1fr) auto;
+  gap: 0.7rem;
+  align-items: end;
+  border: 1px solid rgba(134, 92, 255, 0.16);
+  border-radius: 0.75rem;
+  padding: 0.8rem;
+  background: #ffffff;
+  box-shadow: 0 0.8rem 2rem rgba(28, 28, 28, 0.045);
+}
+
+.decision-overview-filter-menu label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.decision-overview-filter-menu label span {
+  color: rgba(28, 28, 28, 0.52);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.decision-overview-filter-menu input,
+.decision-overview-filter-menu select {
+  min-height: 2.35rem;
+  min-width: 0;
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  border-radius: 0.48rem;
+  padding: 0 0.7rem;
+  background: #ffffff;
+  color: var(--color-background);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 820;
+}
+
+.decision-overview-filter-menu input:focus,
+.decision-overview-filter-menu select:focus {
+  border-color: rgba(134, 92, 255, 0.58);
+  outline: 2px solid rgba(134, 92, 255, 0.14);
+}
+
+.decision-overview-filter-menu__clear {
+  min-height: 2.35rem;
+  border: 1px solid rgba(134, 92, 255, 0.18);
+  border-radius: 999px;
+  padding: 0 0.9rem;
+  background: #ffffff;
+  color: var(--color-accent-purple);
+  font-size: 0.72rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
 .decision-overview-metrics__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -13,6 +13,7 @@ import {
   updateMeeting as updateMeetingRepository,
   updateMeetingStatus as updateMeetingStatusRepository,
 } from '../repositories/meetings.repository';
+import { getStoredMeetingAnalyses, storedMeetingAnalysesChangedEvent } from '../repositories/meeting-analyses.repository';
 import type {
   CreateMeetingInput,
   Meeting,
@@ -44,6 +45,29 @@ function toUniqueOptions(values: string[]) {
   })).sort((first, second) => first.label.localeCompare(second.label, 'pt-BR'));
 }
 
+function enrichMeetingsWithAnalyses(meetings: Meeting[], companyId: string | null): Meeting[] {
+  if (!companyId) {
+    return meetings;
+  }
+
+  const analyses = getStoredMeetingAnalyses(companyId);
+
+  return meetings.map((meeting) => {
+    const analysis = analyses[meeting.id];
+
+    if (!analysis) {
+      return meeting;
+    }
+
+    return {
+      ...meeting,
+      analysis,
+      description: meeting.description?.trim() || analysis.resumo_executivo,
+      status: 'analyzed' as const,
+    };
+  });
+}
+
 export function useMeetings() {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [catalog, setCatalog] = useState<MeetingCatalog>(emptyCatalog);
@@ -72,7 +96,7 @@ export function useMeetings() {
         ...team.groups.flatMap((group) => group.people.map((person) => person.email)),
       ]);
 
-      setMeetings(data);
+      setMeetings(enrichMeetingsWithAnalyses(data, companyId));
       setCatalog({
         products: toUniqueOptions(settings.products.map((product) => product.name)),
         people: toUniqueOptions(people),
@@ -90,9 +114,11 @@ export function useMeetings() {
 
   useEffect(() => {
     window.addEventListener(selectedCompanyChangedEvent, loadMeetings);
+    window.addEventListener(storedMeetingAnalysesChangedEvent, loadMeetings);
 
     return () => {
       window.removeEventListener(selectedCompanyChangedEvent, loadMeetings);
+      window.removeEventListener(storedMeetingAnalysesChangedEvent, loadMeetings);
     };
   }, [loadMeetings]);
 
@@ -100,7 +126,7 @@ export function useMeetings() {
     async (meetingId: string, status: MeetingStatus) => {
       const currentMeeting = meetings.find((meeting) => meeting.id === meetingId);
 
-      if (!currentMeeting || currentMeeting.status === status) {
+      if (!currentMeeting || currentMeeting.status === status || status === 'analyzed' || currentMeeting.status === 'analyzed') {
         return;
       }
 
@@ -119,7 +145,9 @@ export function useMeetings() {
 
         setMeetings((currentMeetings) =>
           currentMeetings.map((meeting) =>
-            meeting.id === updatedMeeting.id ? updatedMeeting : meeting,
+            meeting.id === updatedMeeting.id
+              ? enrichMeetingsWithAnalyses([updatedMeeting], selectedCompanyId)[0]
+              : meeting,
           ),
         );
       } catch {
@@ -129,7 +157,7 @@ export function useMeetings() {
         setMovingMeetingId(null);
       }
     },
-    [meetings],
+    [meetings, selectedCompanyId],
   );
 
   const createMeeting = useCallback(async (input: CreateMeetingInput) => {
@@ -147,14 +175,16 @@ export function useMeetings() {
 
     const updatedMeeting = await updateMeetingRepository(meetingId, input);
 
+    const enrichedMeeting = enrichMeetingsWithAnalyses([updatedMeeting], selectedCompanyId)[0];
+
     setMeetings((currentMeetings) =>
       currentMeetings.map((meeting) =>
-        meeting.id === updatedMeeting.id ? updatedMeeting : meeting,
+        meeting.id === enrichedMeeting.id ? enrichedMeeting : meeting,
       ),
     );
 
-    return updatedMeeting;
-  }, []);
+    return enrichedMeeting;
+  }, [selectedCompanyId]);
 
   const deleteMeeting = useCallback(async (meetingId: string) => {
     setError(null);

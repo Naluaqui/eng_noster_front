@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getMeetings } from '@/features/meetings/repositories/meetings.repository';
+import { storedMeetingAnalysesChangedEvent } from '@/features/meetings/repositories/meeting-analyses.repository';
 import type { Meeting } from '@/features/meetings/types/meeting';
+import { saveDetectedCompanyProfiles } from '@/features/persuasion/repositories/persuasion.repository';
 import {
   getSelectedCompanyId,
   selectedCompanyChangedEvent,
@@ -13,6 +15,10 @@ import type { AgentAnalysis, AiAnalysis, MultiAgentMeetingAttachment, MultiAgent
 type MessagesByAnalysis = Record<string, MultiAgentMessage[]>;
 type AttachmentsByAnalysis = Record<string, string[]>;
 type ResultsByAnalysis = Record<string, AiAnalysis | null>;
+type TypingState = {
+  analysisId: string;
+  agent: string;
+} | null;
 type StoredMultiAgentWorkspace = {
   activeAnalysisId: string | null;
   analyses: AgentAnalysis[];
@@ -37,6 +43,7 @@ function getStoredWorkspace(companyId: string): StoredMultiAgentWorkspace | null
 
 function saveStoredWorkspace(companyId: string, workspace: StoredMultiAgentWorkspace) {
   window.localStorage.setItem(getStorageKey(companyId), JSON.stringify(workspace));
+  window.dispatchEvent(new Event(storedMeetingAnalysesChangedEvent));
 }
 
 function createClientId(prefix: string) {
@@ -66,6 +73,14 @@ function createWelcomeMessage(content: string): MultiAgentMessage {
   };
 }
 
+function wait(milliseconds: number) {
+  return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+function getTypingDelay(content: string) {
+  return Math.min(1350, 700 + content.length * 2);
+}
+
 export function useMultiAgents() {
   const [analyses, setAnalyses] = useState<AgentAnalysis[]>([]);
   const [activeAnalysisId, setActiveAnalysisId] = useState<string | null>(null);
@@ -78,6 +93,7 @@ export function useMultiAgents() {
   const [error, setError] = useState<string | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [typingState, setTypingState] = useState<TypingState>(null);
 
   const loadMultiAgents = useCallback(async () => {
     const companyId = getSelectedCompanyId();
@@ -208,6 +224,7 @@ export function useMultiAgents() {
       [analysisId]: null,
     }));
     setAnalysisError(null);
+    setTypingState(null);
   }, []);
 
   const selectAnalysis = useCallback((analysisId: string) => {
@@ -297,6 +314,7 @@ export function useMultiAgents() {
         [targetAnalysisId]: null,
       }));
       setAnalysisError(null);
+      setTypingState(null);
       setIsAnalyzing(true);
 
       try {
@@ -304,17 +322,33 @@ export function useMultiAgents() {
           attachments.map((meeting) => meeting.id),
           normalizedContent || undefined,
         );
-        const personaMessages = response.analise.comentarios_relevantes_das_personas.map((comment) => ({
-          id: createClientId('message'),
-          role: 'agent' as const,
-          agent: comment.persona,
-          content: comment.comentario_direcionador,
-        }));
 
-        setMessagesByAnalysis((currentMessages) => ({
-          ...currentMessages,
-          [targetAnalysisId]: [...(currentMessages[targetAnalysisId] ?? []), ...personaMessages],
-        }));
+        if (selectedCompanyId) {
+          saveDetectedCompanyProfiles(selectedCompanyId, response.analise, attachedMeetings);
+        }
+
+        for (const comment of response.analise.comentarios_relevantes_das_personas) {
+          setTypingState({
+            analysisId: targetAnalysisId,
+            agent: comment.persona,
+          });
+          await wait(getTypingDelay(comment.comentario_direcionador));
+          setMessagesByAnalysis((currentMessages) => ({
+            ...currentMessages,
+            [targetAnalysisId]: [
+              ...(currentMessages[targetAnalysisId] ?? []),
+              {
+                id: createClientId('message'),
+                role: 'agent',
+                agent: comment.persona,
+                content: comment.comentario_direcionador,
+              },
+            ],
+          }));
+          setTypingState(null);
+          await wait(160);
+        }
+
         setResultsByAnalysis((currentResults) => ({
           ...currentResults,
           [targetAnalysisId]: response.analise,
@@ -340,10 +374,11 @@ export function useMultiAgents() {
         setAnalysisError(message);
         return false;
       } finally {
+        setTypingState(null);
         setIsAnalyzing(false);
       }
     },
-    [activeAnalysisId, attachedMeetings, isAnalyzing],
+    [activeAnalysisId, attachedMeetings, isAnalyzing, selectedCompanyId],
   );
 
   return {
@@ -363,6 +398,7 @@ export function useMultiAgents() {
     isAnalyzing,
     error,
     analysisError,
+    typingAgent: typingState?.analysisId === activeAnalysisId ? typingState.agent : null,
     attachMeeting,
     createAnalysis,
     detachMeeting,

@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
 import { formatCompactCurrency, formatCurrency } from '@/shared/lib/formatters';
+import type { DecisionPerformanceData } from '../../types/decision-management';
 
 type PerformanceMonth = {
   month: string;
@@ -15,7 +16,7 @@ type ChartTick = {
   label: string;
 };
 
-const performanceMonths: PerformanceMonth[] = [
+const basePerformanceMonths: PerformanceMonth[] = [
   { month: 'Mai', periodLabel: 'Maio 2026', potential: 88000, converted: 43000 },
   { month: 'Jun', periodLabel: 'Junho 2026', potential: 36000, converted: 27000 },
   { month: 'Jul', periodLabel: 'Julho 2026', potential: 29000, converted: 22000 },
@@ -26,7 +27,7 @@ const performanceMonths: PerformanceMonth[] = [
   { month: 'Dez', periodLabel: 'Dezembro 2026', potential: 54000, converted: 21000 },
 ];
 
-const decisionOverview = {
+const baseDecisionOverview = {
   actionableRate: 57.3,
   actionableDecisions: 73,
   blockedDecisions: 18,
@@ -72,12 +73,12 @@ function getPercent(value: number, maxValue: number) {
   return Math.min((value / maxValue) * 100, 100);
 }
 
-function getDecisionTotal() {
+function getDecisionTotal(decisionOverview: DecisionPerformanceData['overview']) {
   return decisionOverview.actionableDecisions + decisionOverview.blockedDecisions;
 }
 
-function getDecisionShare(value: number) {
-  const total = getDecisionTotal();
+function getDecisionShare(value: number, decisionOverview: DecisionPerformanceData['overview']) {
+  const total = getDecisionTotal(decisionOverview);
 
   if (total <= 0) {
     return 0;
@@ -86,7 +87,9 @@ function getDecisionShare(value: number) {
   return (value / total) * 100;
 }
 
-export function DecisionPerformanceOverview() {
+export function DecisionPerformanceOverview({ data }: { data?: DecisionPerformanceData }) {
+  const performanceMonths = data?.months ?? basePerformanceMonths;
+  const decisionOverview = data?.overview ?? baseDecisionOverview;
   const maxPotential = Math.max(...performanceMonths.map((item) => item.potential));
   const chartMax = getNiceChartMax(maxPotential);
   const chartTicks = getChartTicks(chartMax);
@@ -234,7 +237,7 @@ export function DecisionPerformanceOverview() {
               <i
                 style={
                   {
-                    '--width': `${getDecisionShare(decisionOverview.actionableDecisions)}%`,
+                    '--width': `${getDecisionShare(decisionOverview.actionableDecisions, decisionOverview)}%`,
                   } as CSSProperties
                 }
               />
@@ -253,7 +256,7 @@ export function DecisionPerformanceOverview() {
               <i
                 style={
                   {
-                    '--width': `${getDecisionShare(decisionOverview.blockedDecisions)}%`,
+                    '--width': `${getDecisionShare(decisionOverview.blockedDecisions, decisionOverview)}%`,
                   } as CSSProperties
                 }
               />

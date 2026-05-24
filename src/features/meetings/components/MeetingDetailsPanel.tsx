@@ -7,6 +7,7 @@ const statusLabels: Record<MeetingStatus, string> = {
   scheduled: 'Agendada',
   'in-review': 'Em análise',
   decided: 'Decidida',
+  analyzed: 'Analisada',
 };
 
 type MeetingDetailsPanelProps = {
@@ -66,21 +67,28 @@ export function MeetingDetailsPanel({ meeting }: MeetingDetailsPanelProps) {
 
         {meeting.product ? (
           <Card className="meeting-details__content">
-            <h3>Produto</h3>
+            <h3>Produto, serviço ou linha</h3>
             <p>{meeting.product}</p>
           </Card>
         ) : null}
 
         {meeting.description ? (
           <Card className="meeting-details__content">
-            <h3>Descricao</h3>
+            <h3>Descrição</h3>
             <p>{meeting.description}</p>
+          </Card>
+        ) : null}
+
+        {meeting.transcription ? (
+          <Card className="meeting-details__content">
+            <h3>Transcrição</h3>
+            <p>{meeting.transcription}</p>
           </Card>
         ) : null}
 
         {meeting.notes ? (
           <Card className="meeting-details__content">
-            <h3>Anotacoes</h3>
+            <h3>Anotações</h3>
             <p>{meeting.notes}</p>
           </Card>
         ) : null}

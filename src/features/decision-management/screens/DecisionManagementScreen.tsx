@@ -25,6 +25,7 @@ export function DecisionManagementScreen() {
       meetings={data.meetings}
       decisionImpactFlows={data.decisionImpactFlows}
       decisionPriorityWaves={data.decisionPriorityWaves}
+      offeringOptions={data.offeringOptions}
     />
   );
 }

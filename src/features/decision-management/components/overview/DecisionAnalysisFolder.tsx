@@ -6,6 +6,11 @@ import { DecisionHealthSnapshot } from './DecisionHealthSnapshot';
 import { DecisionOverviewMetrics } from './DecisionOverviewMetrics';
 import { DecisionPerformanceOverview } from './DecisionPerformanceOverview';
 import { DecisionPersonaPanel } from '../personas/DecisionPersonaPanel';
+import type {
+  DecisionFilters,
+  DecisionOfferingOption,
+  DecisionOverviewData,
+} from '../../types/decision-management';
 
 const analysisTabs = [
   { id: 'totvs', label: 'TOTVS' },
@@ -14,7 +19,19 @@ const analysisTabs = [
 
 type AnalysisTab = (typeof analysisTabs)[number]['id'];
 
-export function DecisionAnalysisFolder() {
+type DecisionAnalysisFolderProps = {
+  filters: DecisionFilters;
+  offeringOptions: DecisionOfferingOption[];
+  overview?: DecisionOverviewData;
+  onFiltersChange: (nextFilters: DecisionFilters) => void;
+};
+
+export function DecisionAnalysisFolder({
+  filters,
+  offeringOptions,
+  overview,
+  onFiltersChange,
+}: DecisionAnalysisFolderProps) {
   const [activeTab, setActiveTab] = useState<AnalysisTab>('totvs');
   const isTotvs = activeTab === 'totvs';
 
@@ -46,13 +63,18 @@ export function DecisionAnalysisFolder() {
       >
         {isTotvs ? (
           <>
-            <DecisionOverviewMetrics />
-            <DecisionPerformanceOverview />
-            <DecisionHealthSnapshot />
-            <DecisionFinancialHistory />
+            <DecisionOverviewMetrics
+              data={overview?.metrics}
+              filters={filters}
+              offeringOptions={offeringOptions}
+              onFiltersChange={onFiltersChange}
+            />
+            <DecisionPerformanceOverview data={overview?.performance} />
+            <DecisionHealthSnapshot data={overview?.health} />
+            <DecisionFinancialHistory data={overview?.financial} />
           </>
         ) : (
-          <DecisionPersonaPanel />
+          <DecisionPersonaPanel data={overview?.persona} />
         )}
       </div>
     </section>

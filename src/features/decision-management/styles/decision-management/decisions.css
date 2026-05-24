@@ -440,6 +440,53 @@
   overflow-x: auto;
 }
 
+.decision-table-filter-menu {
+  display: grid;
+  grid-template-columns: minmax(9.5rem, 0.52fr) minmax(9.5rem, 0.52fr) minmax(18rem, 1fr) auto;
+  gap: 0.7rem;
+  align-items: end;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.06);
+  padding: 0.8rem 1rem;
+  background: rgba(248, 246, 255, 0.5);
+}
+
+.decision-table-filter-menu label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.decision-table-filter-menu label span {
+  color: rgba(28, 28, 28, 0.52);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.decision-table-filter-menu input,
+.decision-table-filter-menu select {
+  min-height: 2.35rem;
+  min-width: 0;
+  border: 1px solid rgba(28, 28, 28, 0.1);
+  border-radius: 0.48rem;
+  padding: 0 0.7rem;
+  background: #ffffff;
+  color: var(--color-background);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 820;
+}
+
+.decision-table-filter-menu__clear {
+  min-height: 2.35rem;
+  border: 1px solid rgba(134, 92, 255, 0.18);
+  border-radius: 999px;
+  padding: 0 0.9rem;
+  background: #ffffff;
+  color: var(--color-accent-purple);
+  font-size: 0.72rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
 .decision-meetings-table-card table {
   width: 100%;
   min-width: 58rem;
@@ -525,6 +572,11 @@
 .decision-meetings-table-card__status[data-status='decided'] {
   background: rgba(41, 204, 106, 0.12);
   color: #1e9c52;
+}
+
+.decision-meetings-table-card__status[data-status='analyzed'] {
+  background: rgba(134, 92, 255, 0.12);
+  color: var(--color-accent-purple);
 }
 
 .decision-meetings-table-card__operations {

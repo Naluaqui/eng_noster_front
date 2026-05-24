@@ -398,6 +398,7 @@
 .persuasion-worklist-item {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
+  width: 100%;
   gap: 0.65rem;
   align-items: start;
   border: 1px solid rgba(28, 28, 28, 0.08);
@@ -405,9 +406,13 @@
   padding: 0.62rem;
   background: #ffffff;
   box-shadow: 0 0.65rem 1.6rem rgba(28, 28, 28, 0.04);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
 }
 
-.persuasion-worklist-item:first-child {
+.persuasion-worklist-item.is-active {
   border-color: rgba(134, 92, 255, 0.16);
   background:
     radial-gradient(circle at 14% 0%, rgba(255, 227, 66, 0.52), transparent 5rem),
@@ -441,7 +446,7 @@
   line-height: 1.2;
 }
 
-.persuasion-worklist-item:first-child h3 {
+.persuasion-worklist-item.is-active h3 {
   color: var(--color-background);
 }
 
@@ -455,7 +460,7 @@
   white-space: nowrap;
 }
 
-.persuasion-worklist-item:first-child p {
+.persuasion-worklist-item.is-active p {
   color: rgba(28, 28, 28, 0.58);
 }
 
@@ -464,7 +469,7 @@
   color: rgba(134, 92, 255, 0.72);
 }
 
-.persuasion-worklist-item:first-child .persuasion-worklist-item__content header > svg {
+.persuasion-worklist-item.is-active .persuasion-worklist-item__content header > svg {
   color: rgba(28, 28, 28, 0.52);
 }
 
@@ -488,7 +493,7 @@
   white-space: nowrap;
 }
 
-.persuasion-worklist-item:first-child footer span {
+.persuasion-worklist-item.is-active footer span {
   color: rgba(28, 28, 28, 0.64);
 }
 

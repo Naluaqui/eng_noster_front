@@ -7,15 +7,17 @@ import type {
 } from '../types/persuasion';
 
 export const persuasionProfile: PersuasionProfile = {
-  name: 'Nicole Prokhorova',
-  role: 'Especialista em persuasão estratégica',
+  id: 'mock-microsoft',
+  name: 'Microsoft',
+  role: 'Tecnologia',
   registeredAt: '24 novembro 2022',
   location: 'São Paulo, Brasil',
-  birthDate: '08 abril 1993',
-  email: 'nicole@noster.ai',
-  phone: '+55 (11) 2565 236 25',
+  industry: 'Tecnologia',
+  email: '-',
+  phone: '-',
+  source: 'mock',
   avatar:
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=720&q=80',
+    'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=720&q=80',
 };
 
 export const persuasionSocials: PersuasionSocial[] = [
@@ -51,64 +53,25 @@ export const persuasionTracks: PersuasionTrack[] = [
     status: 'Iniciar: 13.06.2026',
     tone: 'pink',
   },
-] ;
+];
 
 export const persuasionSidebarStats: PersuasionSidebarStat[] = [
-  { id: 'worklist', label: 'Worklist', value: 6, tone: 'lime' },
-  { id: 'new-leads', label: 'Novos leads', value: 27, tone: 'rose' },
-  { id: 'updates', label: 'Atualizações', value: 22, tone: 'blue' },
-  { id: 'assigned', label: 'Atribuídos', value: 3, tone: 'purple' },
+  { id: 'worklist', label: 'Worklist', value: 1, tone: 'lime' },
+  { id: 'new-leads', label: 'Novos leads', value: 0, tone: 'rose' },
+  { id: 'updates', label: 'Atualizações', value: 0, tone: 'blue' },
+  { id: 'assigned', label: 'Atribuídos', value: 0, tone: 'purple' },
 ];
 
 export const persuasionWorklist: PersuasionWorklistItem[] = [
   {
-    id: 'jessica-caballero',
-    name: 'Jessica Caballero',
-    role: 'Product manager - Microsoft',
+    id: 'microsoft',
+    profileId: persuasionProfile.id,
+    name: persuasionProfile.name,
+    role: persuasionProfile.role,
     status: 'Aguardando proposta',
     priority: 'Alta',
     channel: 'document',
     avatar:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80',
-  },
-  {
-    id: 'jane-doe',
-    name: 'Jane Doe',
-    role: 'Marketing manager - Nike',
-    status: 'Aguardando proposta',
-    priority: 'Alta',
-    channel: 'document',
-    avatar:
-      'https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=crop&w=240&q=80',
-  },
-  {
-    id: 'jack-donovan',
-    name: 'Jack Donovan',
-    role: 'CEO - ACME',
-    status: 'Ligação marcada',
-    priority: 'Média',
-    channel: 'phone',
-    avatar:
-      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80',
-  },
-  {
-    id: 'barry-white',
-    name: 'Barry White',
-    role: 'CEO - Avocado',
-    status: 'Follow-up',
-    priority: 'Baixa',
-    channel: 'email',
-    avatar:
-      'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80',
-  },
-  {
-    id: 'lisa-gun',
-    name: 'Lisa Gun',
-    role: 'Head of sales - Totvs',
-    status: 'Revisar objeções',
-    priority: 'Média',
-    channel: 'document',
-    avatar:
-      'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=240&q=80',
+      'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=240&q=80',
   },
 ];

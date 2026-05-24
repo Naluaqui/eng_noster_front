@@ -1,4 +1,6 @@
-export type MeetingStatus = 'scheduled' | 'in-review' | 'decided';
+import type { AiAnalysis } from '@/features/multi-agents/types/multiAgent';
+
+export type MeetingStatus = 'scheduled' | 'in-review' | 'decided' | 'analyzed';
 
 export type MeetingStatusFilter = MeetingStatus | 'all';
 export type MeetingPeriodFilter = 'all' | 'today' | 'upcoming' | 'past' | 'next-7' | 'next-30';
@@ -18,7 +20,9 @@ export type Meeting = {
   signalCount: number;
   product?: string;
   description?: string;
+  transcription?: string;
   notes?: string;
+  analysis?: AiAnalysis;
 };
 
 export type CreateMeetingInput = {
@@ -28,6 +32,7 @@ export type CreateMeetingInput = {
   participants: string[];
   product?: string;
   description?: string;
+  transcription?: string;
   notes?: string;
 };
 

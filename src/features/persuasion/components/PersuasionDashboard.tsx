@@ -22,6 +22,7 @@ type PersuasionDashboardProps = {
   tracks: PersuasionTrack[];
   sidebarStats: PersuasionSidebarStat[];
   worklist: PersuasionWorklistItem[];
+  onSelectProfile: (profileId: string) => void;
 };
 
 export function PersuasionDashboard({
@@ -30,12 +31,13 @@ export function PersuasionDashboard({
   tracks,
   sidebarStats,
   worklist,
+  onSelectProfile,
 }: PersuasionDashboardProps) {
   return (
     <main className="persuasion-page" aria-labelledby="persuasion-title">
       <div className="persuasion-page__main">
-        <section className="persuasion-profile-card" aria-label="Perfil de persuasão">
-          <img src={profile.avatar} alt={`Retrato de ${profile.name}`} />
+        <section className="persuasion-profile-card" aria-label="Perfil de persuasão da empresa">
+          <img src={profile.avatar} alt={`Identidade de ${profile.name}`} />
 
           <div className="persuasion-profile-card__content">
             <header>
@@ -60,8 +62,8 @@ export function PersuasionDashboard({
                 <dd>{profile.location}</dd>
               </div>
               <div>
-                <dt>Data de nascimento:</dt>
-                <dd>{profile.birthDate}</dd>
+                <dt>Setor:</dt>
+                <dd>{profile.industry}</dd>
               </div>
               <div>
                 <dt>E-mail:</dt>
@@ -71,6 +73,12 @@ export function PersuasionDashboard({
                 <dt>Telefone:</dt>
                 <dd>{profile.phone}</dd>
               </div>
+              {profile.linkedMeetings && profile.linkedMeetings.length > 0 ? (
+                <div>
+                  <dt>Reunião vinculada:</dt>
+                  <dd>{profile.linkedMeetings.map((meeting) => meeting.title).join(', ')}</dd>
+                </div>
+              ) : null}
             </dl>
 
             <nav className="persuasion-profile-card__socials" aria-label="Canais de persuasão">
@@ -123,7 +131,12 @@ export function PersuasionDashboard({
         </section>
       </div>
 
-      <PersuasionRightSidebar stats={sidebarStats} worklist={worklist} />
+      <PersuasionRightSidebar
+        activeProfileId={profile.id}
+        onSelectProfile={onSelectProfile}
+        stats={sidebarStats}
+        worklist={worklist}
+      />
     </main>
   );
 }

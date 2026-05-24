@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getPersuasionDashboard } from '../repositories/persuasion.repository';
+import { selectedCompanyChangedEvent } from '@/features/settings/repositories/workspace.repository';
+import { getPersuasionDashboard, persuasionProfilesChangedEvent } from '../repositories/persuasion.repository';
 
 type PersuasionDashboardData = Awaited<ReturnType<typeof getPersuasionDashboard>>;
 
@@ -34,10 +35,14 @@ export function usePersuasion() {
       }
     }
 
-    loadPersuasion();
+    void loadPersuasion();
+    window.addEventListener(persuasionProfilesChangedEvent, loadPersuasion);
+    window.addEventListener(selectedCompanyChangedEvent, loadPersuasion);
 
     return () => {
       isMounted = false;
+      window.removeEventListener(persuasionProfilesChangedEvent, loadPersuasion);
+      window.removeEventListener(selectedCompanyChangedEvent, loadPersuasion);
     };
   }, []);
 

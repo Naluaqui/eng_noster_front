@@ -155,15 +155,15 @@ function validateDraft(draft: SettingsDraft) {
 
   draft.products.forEach((product, productIndex) => {
     if (!required(product.name)) errors[`products.${productIndex}.name`] = 'Nome obrigatorio.';
-    if (!required(product.about)) errors[`products.${productIndex}.about`] = 'Sobre obrigatorio.';
+    if (!required(product.about)) errors[`products.${productIndex}.about`] = 'Informe para que serve.';
     if (!required(product.solutionObjective)) {
       errors[`products.${productIndex}.solutionObjective`] = 'Objetivo obrigatorio.';
     }
     if (!required(product.technology)) {
-      errors[`products.${productIndex}.technology`] = 'Tecnologia obrigatoria.';
+      errors[`products.${productIndex}.technology`] = 'Linha ou segmento obrigatorio.';
     }
     if (!required(product.targetAudience)) {
-      errors[`products.${productIndex}.targetAudience`] = 'Publico alvo obrigatorio.';
+      errors[`products.${productIndex}.targetAudience`] = 'Informe para quem e.';
     }
     if (!required(product.averagePrice)) {
       errors[`products.${productIndex}.averagePrice`] = 'Media de preco obrigatoria.';
@@ -520,7 +520,7 @@ export function AccountSettings({
         <div>
           <span>Configuracoes</span>
           <h2>Perfil da empresa</h2>
-          <p>Organize a empresa, os produtos, os times, os grupos e as pessoas usadas pelo NOSTER.</p>
+          <p>Organize a empresa, os produtos e serviços, linhas, segmentos, times, grupos e pessoas usadas pelo NOSTER.</p>
         </div>
         {settings ? (
           <Button disabled={isSaving} type="submit">
@@ -586,7 +586,7 @@ export function AccountSettings({
 
       {!settings ? (
         <p className="company-settings__empty">
-          Crie uma empresa para liberar produtos, times, grupos, pessoas, reunioes e analises.
+          Crie uma empresa para liberar produtos e serviços, linhas, segmentos, times, grupos, pessoas, reunioes e analises.
         </p>
       ) : null}
 
@@ -627,7 +627,7 @@ export function AccountSettings({
         <div className="company-settings__section-heading">
           <div>
             <span>Empresa</span>
-            <h3>Produtos</h3>
+            <h3>Produtos e Serviços, linhas e segmento</h3>
           </div>
           <Button
             onClick={() =>
@@ -640,7 +640,7 @@ export function AccountSettings({
             variant="secondary"
           >
             <Plus size={16} aria-hidden="true" />
-            Produto
+            Novo item
           </Button>
         </div>
 
@@ -648,17 +648,17 @@ export function AccountSettings({
           {draft.products.map((product, productIndex) => (
             <article className="company-settings__card" key={product.id ?? productIndex}>
               <CardHeader
-                title={`Produto ${productIndex + 1}`}
+                title={`Produto ou serviço ${productIndex + 1}`}
                 onRemove={() =>
                   requestDelete({
-                    title: 'Excluir produto?',
-                    description: `O produto "${product.name || `Produto ${productIndex + 1}`}" sera removido deste workspace ao salvar.`,
+                    title: 'Excluir produto ou serviço?',
+                    description: `O item "${product.name || `Produto ou serviço ${productIndex + 1}`}" sera removido deste workspace ao salvar.`,
                     onConfirm: () => removeProduct(productIndex),
                   })
                 }
               />
               <div className="company-settings__grid">
-                <Field error={errors[`products.${productIndex}.name`]} label="Nome *">
+                <Field error={errors[`products.${productIndex}.name`]} label="Nome do produto ou serviço *">
                   <Input value={product.name} onChange={(event) => updateProduct(productIndex, 'name', event.target.value)} />
                 </Field>
                 <Field error={errors[`products.${productIndex}.averagePrice`]} label="Media de preco *">
@@ -670,32 +670,32 @@ export function AccountSettings({
                 </Field>
                 <TextAreaField
                   error={errors[`products.${productIndex}.about`]}
-                  label="Sobre *"
+                  label="Para que serve *"
                   value={product.about}
                   onChange={(value) => updateProduct(productIndex, 'about', value)}
                 />
                 <TextAreaField
                   error={errors[`products.${productIndex}.solutionObjective`]}
-                  label="Objetivo da solucao *"
+                  label="Objetivo *"
                   value={product.solutionObjective}
                   onChange={(value) => updateProduct(productIndex, 'solutionObjective', value)}
                 />
                 <TextAreaField
                   error={errors[`products.${productIndex}.technology`]}
-                  label="Tecnologia *"
+                  label="Linha ou segmento *"
                   value={product.technology}
                   onChange={(value) => updateProduct(productIndex, 'technology', value)}
                 />
                 <TextAreaField
                   error={errors[`products.${productIndex}.targetAudience`]}
-                  label="Publico alvo *"
+                  label="Para quem é *"
                   value={product.targetAudience}
                   onChange={(value) => updateProduct(productIndex, 'targetAudience', value)}
                 />
               </div>
             </article>
           ))}
-          {draft.products.length === 0 ? <EmptyBlock label="Nenhum produto cadastrado." /> : null}
+          {draft.products.length === 0 ? <EmptyBlock label="Nenhum produto ou serviço cadastrado." /> : null}
         </div>
       </section>
       ) : null}

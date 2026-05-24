@@ -6,6 +6,7 @@ const statusLabels: Record<MeetingStatus, string> = {
   scheduled: 'Agendadas',
   'in-review': 'Em análise',
   decided: 'Decididas',
+  analyzed: 'Analisadas',
 };
 
 type MeetingStatusColumnProps = {
@@ -30,6 +31,10 @@ export function MeetingStatusColumn({
   const [isDragOver, setIsDragOver] = useState(false);
 
   function handleDragOver(event: DragEvent<HTMLElement>) {
+    if (status === 'analyzed') {
+      return;
+    }
+
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
     setIsDragOver(true);
@@ -44,6 +49,10 @@ export function MeetingStatusColumn({
   function handleDrop(event: DragEvent<HTMLElement>) {
     event.preventDefault();
     setIsDragOver(false);
+
+    if (status === 'analyzed') {
+      return;
+    }
 
     const meetingId = event.dataTransfer.getData('application/x-noster-meeting-id');
 

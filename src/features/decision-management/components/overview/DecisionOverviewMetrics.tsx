@@ -1,12 +1,19 @@
-import { Activity, CircleDollarSign, Filter, Share2, ShoppingCart, Workflow } from 'lucide-react';
+'use client';
 
-const overviewMetrics = [
+import { useState } from 'react';
+import { Activity, CircleDollarSign, Filter, Share2, ShoppingCart, Workflow } from 'lucide-react';
+import type {
+  DecisionFilters,
+  DecisionOfferingOption,
+  DecisionOverviewMetric,
+} from '../../types/decision-management';
+
+const overviewMetrics: DecisionOverviewMetric[] = [
   {
-    label: 'Aderência Produto x Cliente',
+    label: 'Aderência Oferta x Cliente',
     value: '80%',
     trend: '+10%',
     previous: 'Último mês: 70%',
-    icon: ShoppingCart,
     featured: true,
   },
   {
@@ -14,25 +21,54 @@ const overviewMetrics = [
     value: '68%',
     trend: '-7%',
     previous: 'Último mês: 75%',
-    icon: Activity,
   },
   {
     label: 'Gargalo Estratégico',
     value: '24%',
     trend: '+9%',
     previous: 'Último mês: 15%',
-    icon: Workflow,
   },
   {
     label: 'Receita em risco',
     value: 'R$ 8.220,64',
     trend: 'crítico',
     previous: 'Último mês: R$ 520,00',
-    icon: CircleDollarSign,
   },
 ];
 
-export function DecisionOverviewMetrics() {
+const metricIcons = [ShoppingCart, Activity, Workflow, CircleDollarSign];
+
+type DecisionOverviewMetricsProps = {
+  data?: DecisionOverviewMetric[];
+  filters: DecisionFilters;
+  offeringOptions: DecisionOfferingOption[];
+  onFiltersChange: (nextFilters: DecisionFilters) => void;
+};
+
+export function DecisionOverviewMetrics({
+  data,
+  filters,
+  offeringOptions,
+  onFiltersChange,
+}: DecisionOverviewMetricsProps) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const metrics = data ?? overviewMetrics;
+
+  function updateFilter(field: keyof DecisionFilters, value: string) {
+    onFiltersChange({
+      ...filters,
+      [field]: value,
+    });
+  }
+
+  function clearFilters() {
+    onFiltersChange({
+      startDate: '',
+      endDate: '',
+      offering: '',
+    });
+  }
+
   return (
     <section className="decision-overview-metrics" aria-labelledby="decision-overview-title">
       <header>
@@ -47,16 +83,63 @@ export function DecisionOverviewMetrics() {
             <Share2 size={15} aria-hidden="true" />
             Exportar
           </button>
-          <button className="is-active" type="button">
+          <button
+            aria-expanded={isFilterOpen}
+            aria-controls="decision-overview-filter-menu"
+            className="is-active"
+            type="button"
+            onClick={() => setIsFilterOpen((current) => !current)}
+          >
             <Filter size={15} aria-hidden="true" />
             Filtrar
           </button>
         </div>
       </header>
 
+      {isFilterOpen ? (
+        <div className="decision-overview-filter-menu" id="decision-overview-filter-menu">
+          <label>
+            <span>Data inicial</span>
+            <input
+              type="date"
+              value={filters.startDate}
+              onChange={(event) => updateFilter('startDate', event.target.value)}
+            />
+          </label>
+
+          <label>
+            <span>Data final</span>
+            <input
+              type="date"
+              value={filters.endDate}
+              onChange={(event) => updateFilter('endDate', event.target.value)}
+            />
+          </label>
+
+          <label className="decision-overview-filter-menu__offering">
+            <span>Produtos e Serviços, linhas e segmento</span>
+            <select
+              value={filters.offering}
+              onChange={(event) => updateFilter('offering', event.target.value)}
+            >
+              <option value="">Portfólio completo TOTVS</option>
+              {offeringOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label} - {option.category}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <button className="decision-overview-filter-menu__clear" onClick={clearFilters} type="button">
+            Limpar filtros
+          </button>
+        </div>
+      ) : null}
+
       <div className="decision-overview-metrics__grid">
-        {overviewMetrics.map((metric) => {
-          const Icon = metric.icon;
+        {metrics.map((metric, index) => {
+          const Icon = metricIcons[index] ?? ShoppingCart;
 
           return (
             <article className={metric.featured ? 'is-featured' : undefined} key={metric.label}>

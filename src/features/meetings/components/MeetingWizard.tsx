@@ -27,6 +27,7 @@ type MeetingForm = {
   participants: string[];
   product: string;
   description: string;
+  transcription: string;
   notes: string;
 };
 
@@ -39,6 +40,7 @@ const initialForm: MeetingForm = {
   participants: [],
   product: '',
   description: '',
+  transcription: '',
   notes: '',
 };
 
@@ -54,6 +56,7 @@ function getInitialForm(meeting?: Meeting): MeetingForm {
     participants: meeting.participants,
     product: meeting.product ?? '',
     description: meeting.description ?? '',
+    transcription: meeting.transcription ?? '',
     notes: meeting.notes ?? '',
   };
 }
@@ -83,6 +86,7 @@ function validateForm(form: MeetingForm, step: number) {
   const product = form.product.trim();
   const participants = form.participants;
   const notes = form.notes.trim();
+  const description = form.description.trim();
 
   if (step >= 0) {
     if (title.length < 3) {
@@ -104,7 +108,7 @@ function validateForm(form: MeetingForm, step: number) {
     }
 
     if (product.length > 80) {
-      errors.product = 'Use ate 80 caracteres no produto.';
+      errors.product = 'Use ate 80 caracteres no produto, serviço ou linha.';
     }
   }
 
@@ -117,6 +121,10 @@ function validateForm(form: MeetingForm, step: number) {
   }
 
   if (step >= 2) {
+    if (description.length > 500) {
+      errors.description = 'Use ate 500 caracteres na descricao.';
+    }
+
     if (notes.length > 1000) {
       errors.notes = 'Use ate 1000 caracteres nas anotacoes.';
     }
@@ -227,6 +235,7 @@ export function MeetingWizard({
         participants,
         product: form.product.trim() || undefined,
         description: form.description.trim() || undefined,
+        transcription: form.transcription.trim() || undefined,
         notes: form.notes.trim() || undefined,
       });
 
@@ -311,20 +320,20 @@ export function MeetingWizard({
             </label>
 
             <label className="meeting-wizard__field meeting-wizard__field--wide">
-              <span>Produto</span>
+              <span>Produto, serviço ou linha</span>
               <select
                 aria-invalid={Boolean(errors.product)}
                 onChange={(event) => updateField('product', event.target.value)}
                 value={form.product}
               >
-                <option value="">Sem produto selecionado</option>
+                <option value="">Sem oferta selecionada</option>
                 {productOptions.map((product) => (
                   <option key={product.value} value={product.label}>
                     {product.label}
                   </option>
                 ))}
               </select>
-              {catalog.products.length === 0 ? <em>Cadastre produtos em Configuracoes.</em> : null}
+              {catalog.products.length === 0 ? <em>Cadastre produtos e serviços em Configuracoes.</em> : null}
               {errors.product ? <small>{errors.product}</small> : null}
             </label>
           </div>
@@ -357,12 +366,26 @@ export function MeetingWizard({
         {step === 2 ? (
           <div className="meeting-wizard__stack">
             <label className="meeting-wizard__field">
-              <span>Descricao / transcricao</span>
+              <span>Descricao</span>
               <textarea
+                aria-invalid={Boolean(errors.description)}
                 className="meeting-wizard__textarea"
+                maxLength={500}
                 onChange={(event) => updateField('description', event.target.value)}
-                placeholder="Cole aqui a transcricao completa da reuniao."
+                placeholder="Resumo curto exibido no card da reuniao."
                 value={form.description}
+              />
+              <em>{form.description.trim().length}/500</em>
+              {errors.description ? <small>{errors.description}</small> : null}
+            </label>
+
+            <label className="meeting-wizard__field">
+              <span>Transcricao</span>
+              <textarea
+                className="meeting-wizard__textarea meeting-wizard__textarea--large"
+                onChange={(event) => updateField('transcription', event.target.value)}
+                placeholder="Cole aqui a transcricao completa que sera enviada para a IA."
+                value={form.transcription}
               />
             </label>
 

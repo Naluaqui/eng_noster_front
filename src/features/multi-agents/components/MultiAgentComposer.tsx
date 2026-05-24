@@ -75,6 +75,7 @@ export function MultiAgentComposer({
                 {meeting.title}
                 <button
                   aria-label={`Remover ${meeting.title}`}
+                  className="multi-agent-composer__detach"
                   disabled={isAnalyzing}
                   onClick={() => onDetachMeeting(meeting.id)}
                   type="button"
@@ -154,7 +155,7 @@ export function MultiAgentComposer({
               <span className="sr-only">Buscar reuniao</span>
               <input
                 onChange={(event) => setMeetingSearch(event.target.value)}
-                placeholder="Buscar por titulo, pessoa ou produto"
+                placeholder="Buscar por titulo, pessoa, produto ou serviço"
                 type="search"
                 value={meetingSearch}
               />

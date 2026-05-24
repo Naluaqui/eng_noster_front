@@ -4,7 +4,9 @@ import type { CSSProperties } from 'react';
 import { useMemo, useState } from 'react';
 import type { Meeting } from '@/features/meetings/types/meeting';
 import type {
+  DecisionFilters,
   DecisionImpactFlowData,
+  DecisionOfferingOption,
   DecisionWavePoint,
   DecisionWaveSeriesKey,
 } from '../../types/decision-management';
@@ -106,18 +108,27 @@ type DecisionDecisionsPanelProps = {
   meetings: Meeting[];
   decisionImpactFlows: Record<string, DecisionImpactFlowData>;
   decisionPriorityWaves: DecisionWavePoint[];
+  filters: DecisionFilters;
+  offeringOptions: DecisionOfferingOption[];
+  onFiltersChange: (nextFilters: DecisionFilters) => void;
 };
 
 export function DecisionDecisionsPanel({
   meetings,
   decisionImpactFlows,
   decisionPriorityWaves,
+  filters,
+  offeringOptions,
+  onFiltersChange,
 }: DecisionDecisionsPanelProps) {
   const [selectedMeetingId, setSelectedMeetingId] = useState(meetings[0]?.id ?? '');
+  const activeMeetingId = meetings.some((meeting) => meeting.id === selectedMeetingId)
+    ? selectedMeetingId
+    : (meetings[0]?.id ?? '');
 
   const selectedMeeting = useMemo(
-    () => meetings.find((meeting) => meeting.id === selectedMeetingId) ?? meetings[0],
-    [meetings, selectedMeetingId],
+    () => meetings.find((meeting) => meeting.id === activeMeetingId) ?? meetings[0],
+    [activeMeetingId, meetings],
   );
 
   const selectedFlow = selectedMeeting ? decisionImpactFlows[selectedMeeting.id] : undefined;
@@ -151,12 +162,12 @@ export function DecisionDecisionsPanel({
             <span>Análise de decisão</span>
 
             <h2 id="decision-priority-wave-title">
-              Prioridade Executiva <strong>e Produto Sob Pressão</strong>
+              Prioridade Executiva <strong>e Oferta Sob Pressão</strong>
             </h2>
 
             <p>
-              Empresário entende onde focar primeiro, qual é a maior dor agora e quais produtos
-              estão subindo ou apanhando do mercado.
+              Empresário entende onde focar primeiro, qual é a maior dor agora e quais produtos,
+              serviços ou linhas estão ganhando ou perdendo força no mercado.
             </p>
           </div>
 
@@ -170,7 +181,7 @@ export function DecisionDecisionsPanel({
 
             <li className="is-pressure">
               <i />
-              <span>Produto Sob Pressão</span>
+              <span>Produto, serviço ou linha sob pressão</span>
               <strong>Em baixa: {latestDecisionWavePoint.weakProduct}</strong>
               <small>Em alta: {latestDecisionWavePoint.topProduct}</small>
             </li>
@@ -181,7 +192,7 @@ export function DecisionDecisionsPanel({
           <svg
             viewBox={`0 0 ${chartConfig.width} ${chartConfig.height}`}
             role="img"
-            aria-label="Ondas de prioridade executiva e produto sob pressão"
+            aria-label="Ondas de prioridade executiva e oferta sob pressão"
           >
             <defs>
               <linearGradient id="priorityAreaGradient" x1="0" x2="0" y1="0" y2="1">
@@ -325,7 +336,7 @@ export function DecisionDecisionsPanel({
                   className={`decision-wave-point-trigger decision-wave-point-trigger--pressure ${tooltipPositionClass}`}
                   key={`pressure-trigger-${point.label}`}
                   type="button"
-                  aria-label={`Abrir leitura de produto de ${point.label}`}
+                  aria-label={`Abrir leitura de oferta de ${point.label}`}
                   style={
                     {
                       '--x': `${(x / chartConfig.width) * 100}%`,
@@ -337,12 +348,12 @@ export function DecisionDecisionsPanel({
                     <strong>{point.label}</strong>
 
                     <span>
-                      <em>Produto em alta</em>
+                      <em>Oferta em alta</em>
                       <b>{point.topProduct}</b>
                     </span>
 
                     <span>
-                      <em>Produto em baixa</em>
+                      <em>Oferta em baixa</em>
                       <b>{point.weakProduct}</b>
                     </span>
 
@@ -360,8 +371,11 @@ export function DecisionDecisionsPanel({
 
       <DecisionMeetingsTable
         meetings={meetings}
-        selectedMeetingId={selectedMeetingId}
+        selectedMeetingId={activeMeetingId}
         onOpenMeeting={setSelectedMeetingId}
+        filters={filters}
+        offeringOptions={offeringOptions}
+        onFiltersChange={onFiltersChange}
       />
 
       {selectedMeeting && selectedFlow ? (

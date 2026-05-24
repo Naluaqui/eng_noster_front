@@ -4,20 +4,13 @@ import {
   ChevronDown,
   Clock,
   TrendingUp,
-  UserCheck,
-  type LucideIcon,
 } from 'lucide-react';
 import { formatCurrency } from '@/shared/lib/formatters';
+import type { DecisionFinancialData } from '../../types/decision-management';
 
 type SignalType = 'positive' | 'risk' | 'warning';
 
-type StrategicSignal = {
-  label: string;
-  date: string;
-  amount: number;
-  type: SignalType;
-  icon: LucideIcon;
-};
+type StrategicSignal = DecisionFinancialData['strategicSignals'][number];
 
 type ImpactPoint = {
   label: string;
@@ -29,38 +22,34 @@ type ChartTick = {
   label: string;
 };
 
-const strategicSignals: StrategicSignal[] = [
+const baseStrategicSignals: StrategicSignal[] = [
   {
     label: 'Objeção de ROI resolvida',
     date: '05 Junho 2026',
     amount: 12400,
     type: 'positive',
-    icon: TrendingUp,
   },
   {
     label: 'Concorrente citado',
     date: '04 Junho 2026',
     amount: -8200,
     type: 'risk',
-    icon: AlertTriangle,
   },
   {
     label: 'Decisor identificado',
     date: '03 Junho 2026',
     amount: 9750,
     type: 'positive',
-    icon: UserCheck,
   },
   {
     label: 'Follow-up crítico atrasado',
     date: '02 Junho 2026',
     amount: -4100,
     type: 'warning',
-    icon: Clock,
   },
 ];
 
-const impactHistory: ImpactPoint[] = [
+const baseImpactHistory: ImpactPoint[] = [
   { label: 'Jan', value: 8200 },
   { label: 'Fev', value: 11800 },
   { label: 'Mar', value: 9400 },
@@ -163,7 +152,15 @@ function getSignalImpactPercent(amount: number, maxAmount: number) {
   return Math.min((Math.abs(amount) / maxAmount) * 100, 100);
 }
 
-export function DecisionFinancialHistory() {
+const signalIcons = {
+  positive: TrendingUp,
+  risk: AlertTriangle,
+  warning: Clock,
+} satisfies Record<SignalType, typeof TrendingUp>;
+
+export function DecisionFinancialHistory({ data }: { data?: DecisionFinancialData }) {
+  const strategicSignals = data?.strategicSignals ?? baseStrategicSignals;
+  const impactHistory = data?.impactHistory ?? baseImpactHistory;
   const currentImpact = impactHistory[impactHistory.length - 1];
   const previousImpact = impactHistory[impactHistory.length - 2];
   const impactDelta = currentImpact.value - previousImpact.value;
@@ -321,7 +318,7 @@ export function DecisionFinancialHistory() {
 
         <ul>
           {strategicSignals.map((signal) => {
-            const Icon = signal.icon;
+            const Icon = signalIcons[signal.type];
 
             return (
               <li className={`is-${signal.type}`} key={signal.label}>

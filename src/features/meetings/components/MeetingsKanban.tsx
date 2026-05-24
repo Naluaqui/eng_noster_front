@@ -13,11 +13,12 @@ import { CreateMeetingButton } from './CreateMeetingButton';
 import { MeetingsFilterBar } from './MeetingsFilterBar';
 import { MeetingStatusColumn } from './MeetingStatusColumn';
 
-const statuses: MeetingStatus[] = ['scheduled', 'in-review', 'decided'];
+const statuses: MeetingStatus[] = ['scheduled', 'in-review', 'analyzed', 'decided'];
 const statusOrder: Record<MeetingStatus, number> = {
   scheduled: 0,
   'in-review': 1,
-  decided: 2,
+  analyzed: 2,
+  decided: 3,
 };
 
 const defaultFilters: MeetingFilters = {
@@ -126,6 +127,10 @@ export function MeetingsKanban({
         <article>
           <span>Em análise</span>
           <strong>{meetings.filter((meeting) => meeting.status === 'in-review').length}</strong>
+        </article>
+        <article>
+          <span>Analisadas</span>
+          <strong>{meetings.filter((meeting) => meeting.status === 'analyzed').length}</strong>
         </article>
       </section>
 

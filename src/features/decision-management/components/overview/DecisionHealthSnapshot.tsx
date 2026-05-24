@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { MoreHorizontal } from 'lucide-react';
+import type { DecisionHealthData } from '../../types/decision-management';
 
 type RoiPoint = {
   label: string;
@@ -23,7 +24,7 @@ type LinearTick = {
   label: string;
 };
 
-const roiTrend: RoiPoint[] = [
+const baseRoiTrend: RoiPoint[] = [
   { label: 'Mai', value: 2.1 },
   { label: 'Jun', value: 2.2 },
   { label: 'Jul', value: 2.5 },
@@ -34,7 +35,7 @@ const roiTrend: RoiPoint[] = [
   { label: 'Dez', value: 3.2 },
 ];
 
-const clarityTrend: ClarityPoint[] = [
+const baseClarityTrend: ClarityPoint[] = [
   { label: 'Mai', value: 78 },
   { label: 'Jun', value: 72 },
   { label: 'Jul', value: 69 },
@@ -42,7 +43,7 @@ const clarityTrend: ClarityPoint[] = [
   { label: 'Set', value: 61 },
 ];
 
-const expansionItems: ExpansionItem[] = [
+const baseExpansionItems: ExpansionItem[] = [
   { label: 'Upsell identificado', value: 72, amountLabel: 'R$ 21,4 mil', amountValue: 21.4 },
   { label: 'Cross-sell possível', value: 58, amountLabel: 'R$ 15,5 mil', amountValue: 15.5 },
 ];
@@ -164,7 +165,13 @@ function getLinearTicks(maxValue: number, tickCount = 4): LinearTick[] {
   });
 }
 
-export function DecisionHealthSnapshot() {
+export function DecisionHealthSnapshot({ data }: { data?: DecisionHealthData }) {
+  const roiTrend = data?.roiTrend ?? baseRoiTrend;
+  const clarityTrend = data?.clarityTrend ?? baseClarityTrend;
+  const expansionItems = data?.expansionItems ?? baseExpansionItems;
+  const competitiveAlert =
+    data?.competitiveAlert ??
+    '12 contas apresentam comparação ativa com concorrentes, alternativas de mercado ou risco de migração.';
   const roiValues = roiTrend.map((item) => item.value);
   const clarityValues = clarityTrend.map((item) => item.value);
 
@@ -283,10 +290,7 @@ export function DecisionHealthSnapshot() {
 
         <div>
           <span>Ameaça Concorrencial</span>
-          <p>
-            12 contas apresentam comparação ativa com concorrentes, alternativas de mercado ou risco
-            de migração.
-          </p>
+          <p>{competitiveAlert}</p>
         </div>
       </article>
 
