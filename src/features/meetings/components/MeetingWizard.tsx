@@ -82,7 +82,6 @@ function validateForm(form: MeetingForm, step: number) {
   const title = form.title.trim();
   const product = form.product.trim();
   const participants = form.participants;
-  const description = form.description.trim();
   const notes = form.notes.trim();
 
   if (step >= 0) {
@@ -118,10 +117,6 @@ function validateForm(form: MeetingForm, step: number) {
   }
 
   if (step >= 2) {
-    if (description.length > 500) {
-      errors.description = 'Use ate 500 caracteres na descricao.';
-    }
-
     if (notes.length > 1000) {
       errors.notes = 'Use ate 1000 caracteres nas anotacoes.';
     }
@@ -362,17 +357,13 @@ export function MeetingWizard({
         {step === 2 ? (
           <div className="meeting-wizard__stack">
             <label className="meeting-wizard__field">
-              <span>Descricao</span>
+              <span>Descricao / transcricao</span>
               <textarea
-                aria-invalid={Boolean(errors.description)}
                 className="meeting-wizard__textarea"
-                maxLength={500}
                 onChange={(event) => updateField('description', event.target.value)}
-                placeholder="Contexto, objetivo e criterio de sucesso."
+                placeholder="Cole aqui a transcricao completa da reuniao."
                 value={form.description}
               />
-              <em>{form.description.trim().length}/500</em>
-              {errors.description ? <small>{errors.description}</small> : null}
             </label>
 
             <label className="meeting-wizard__field">

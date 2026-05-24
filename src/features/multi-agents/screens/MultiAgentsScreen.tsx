@@ -9,7 +9,9 @@ export function MultiAgentsScreen() {
   const {
     data,
     isLoading,
+    isAnalyzing,
     error,
+    analysisError,
     attachMeeting,
     createAnalysis,
     detachMeeting,
@@ -33,7 +35,10 @@ export function MultiAgentsScreen() {
     <MultiAgentsChat
       activeAnalysisId={data.activeAnalysisId}
       analyses={data.analyses}
+      analysisError={analysisError}
+      analysisResult={data.analysisResult}
       attachedMeetings={data.attachedMeetings}
+      isAnalyzing={isAnalyzing}
       meetings={data.meetings}
       messages={data.messages}
       onAttachMeeting={attachMeeting}

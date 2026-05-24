@@ -3,10 +3,11 @@ import type { AuthApiResponse, AuthLoginRedirect, AuthProvider, AuthSession } fr
 
 const authStorageKey = 'noster.auth.session';
 export const authSessionChangedEvent = 'noster.auth.session.changed';
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3334';
 const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '';
 const googleRedirectUri =
   process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI ?? 'http://localhost:3000/app';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 function isBrowser() {
   return typeof window !== 'undefined';
@@ -68,21 +69,90 @@ export async function loginWithGoogle() {
 }
 
 export async function completeGoogleLogin(code: string): Promise<AuthSession> {
-  const response = await fetch(`${apiUrl}/api/auth/google/code`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      code,
-      redirectUri: googleRedirectUri,
-    }),
-  });
+  const loginCompletionUrl = `${apiUrl}/api/auth/google/code`;
+  let response: Response;
 
-  const result = (await response.json()) as AuthApiResponse<AuthSession>;
+  if (isDevelopment) {
+    console.info('[auth] Finalizando login Google.', { url: loginCompletionUrl });
+  }
+
+  try {
+    response = await fetch(loginCompletionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code,
+        redirectUri: googleRedirectUri,
+      }),
+    });
+  } catch (error) {
+    if (isDevelopment) {
+      console.error('[auth] Falha ao acessar a API durante o login.', {
+        url: loginCompletionUrl,
+        error: error instanceof Error ? error.message : 'Erro desconhecido.',
+      });
+    }
+
+    throw new Error(
+      `Nao foi possivel acessar a API NOSTER em ${loginCompletionUrl}. Verifique se o backend esta disponivel.`,
+      { cause: error },
+    );
+  }
+
+  if (isDevelopment) {
+    console.info('[auth] Resposta da conclusao do login recebida.', {
+      url: loginCompletionUrl,
+      status: response.status,
+    });
+  }
+
+  const contentType = response.headers.get('content-type') ?? '';
+
+  if (!contentType.toLowerCase().includes('application/json')) {
+    if (isDevelopment) {
+      console.error('[auth] Resposta nao JSON ao concluir login.', {
+        url: loginCompletionUrl,
+        status: response.status,
+        contentType: contentType || 'nao informado',
+      });
+    }
+
+    throw new Error(
+      `Resposta invalida da API ao concluir login (HTTP ${response.status} em ${loginCompletionUrl}). Esperado JSON, recebido ${contentType || 'tipo nao informado'}.`,
+    );
+  }
+
+  let result: AuthApiResponse<AuthSession>;
+
+  try {
+    result = (await response.json()) as AuthApiResponse<AuthSession>;
+  } catch (error) {
+    if (isDevelopment) {
+      console.error('[auth] Erro ao interpretar JSON da conclusao do login.', {
+        url: loginCompletionUrl,
+        status: response.status,
+        error: error instanceof Error ? error.message : 'Erro desconhecido.',
+      });
+    }
+
+    throw new Error(
+      `Resposta JSON invalida da API ao concluir login (HTTP ${response.status} em ${loginCompletionUrl}).`,
+      { cause: error },
+    );
+  }
 
   if (!response.ok || !result.success) {
-    throw new Error(result.message || 'Nao foi possivel fazer login com Google.');
+    throw new Error(
+      `${result.message || 'Nao foi possivel fazer login com Google.'} (HTTP ${response.status} em ${loginCompletionUrl})`,
+    );
+  }
+
+  if (!result.data?.user || !result.data.accessToken) {
+    throw new Error(
+      `A API retornou uma sessao incompleta ao concluir login (HTTP ${response.status} em ${loginCompletionUrl}).`,
+    );
   }
 
   saveSession(result.data);

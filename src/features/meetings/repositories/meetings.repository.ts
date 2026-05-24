@@ -7,7 +7,7 @@ type ApiResponse<T> = {
   data: T;
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3333';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3334';
 
 async function parseApiResponse<T>(response: Response): Promise<T> {
   const result = (await response.json()) as ApiResponse<T>;

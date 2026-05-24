@@ -7,16 +7,18 @@ import {
   getSelectedCompanyId,
   selectedCompanyChangedEvent,
 } from '@/features/settings/repositories/workspace.repository';
-import { getMultiAgentWorkspace } from '../repositories/multi-agents.repository';
-import type { AgentAnalysis, MultiAgentMeetingAttachment, MultiAgentMessage } from '../types/multiAgent';
+import { analyzeMeetings, getMultiAgentWorkspace } from '../repositories/multi-agents.repository';
+import type { AgentAnalysis, AiAnalysis, MultiAgentMeetingAttachment, MultiAgentMessage } from '../types/multiAgent';
 
 type MessagesByAnalysis = Record<string, MultiAgentMessage[]>;
 type AttachmentsByAnalysis = Record<string, string[]>;
+type ResultsByAnalysis = Record<string, AiAnalysis | null>;
 type StoredMultiAgentWorkspace = {
   activeAnalysisId: string | null;
   analyses: AgentAnalysis[];
   attachmentsByAnalysis: AttachmentsByAnalysis;
   messagesByAnalysis: MessagesByAnalysis;
+  resultsByAnalysis?: ResultsByAnalysis;
 };
 
 function getStorageKey(companyId: string) {
@@ -69,10 +71,13 @@ export function useMultiAgents() {
   const [activeAnalysisId, setActiveAnalysisId] = useState<string | null>(null);
   const [messagesByAnalysis, setMessagesByAnalysis] = useState<MessagesByAnalysis>({});
   const [attachmentsByAnalysis, setAttachmentsByAnalysis] = useState<AttachmentsByAnalysis>({});
+  const [resultsByAnalysis, setResultsByAnalysis] = useState<ResultsByAnalysis>({});
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const loadMultiAgents = useCallback(async () => {
     const companyId = getSelectedCompanyId();
@@ -87,6 +92,7 @@ export function useMultiAgents() {
         setActiveAnalysisId(null);
         setMessagesByAnalysis({});
         setAttachmentsByAnalysis({});
+        setResultsByAnalysis({});
         setMeetings([]);
         return;
       }
@@ -117,6 +123,7 @@ export function useMultiAgents() {
       setActiveAnalysisId(nextActiveAnalysisId);
       setMessagesByAnalysis(nextMessagesByAnalysis);
       setAttachmentsByAnalysis(storedWorkspace?.attachmentsByAnalysis ?? {});
+      setResultsByAnalysis(storedWorkspace?.resultsByAnalysis ?? {});
       setMeetings(meetingsData);
     } catch {
       setError('Nao foi possivel carregar os agentes.');
@@ -147,8 +154,9 @@ export function useMultiAgents() {
       analyses,
       attachmentsByAnalysis,
       messagesByAnalysis,
+      resultsByAnalysis,
     });
-  }, [activeAnalysisId, analyses, attachmentsByAnalysis, isLoading, messagesByAnalysis, selectedCompanyId]);
+  }, [activeAnalysisId, analyses, attachmentsByAnalysis, isLoading, messagesByAnalysis, resultsByAnalysis, selectedCompanyId]);
 
   const activeAnalysis = useMemo(
     () => analyses.find((analysis) => analysis.id === activeAnalysisId) ?? null,
@@ -164,6 +172,7 @@ export function useMultiAgents() {
     () => meetings.filter((meeting) => attachedMeetingIds.includes(meeting.id)),
     [attachedMeetingIds, meetings],
   );
+  const analysisResult = activeAnalysisId ? (resultsByAnalysis[activeAnalysisId] ?? null) : null;
 
   const createAnalysis = useCallback(() => {
     const analysisId = createClientId('analise');
@@ -194,10 +203,16 @@ export function useMultiAgents() {
       ...currentAttachments,
       [analysisId]: [],
     }));
+    setResultsByAnalysis((currentResults) => ({
+      ...currentResults,
+      [analysisId]: null,
+    }));
+    setAnalysisError(null);
   }, []);
 
   const selectAnalysis = useCallback((analysisId: string) => {
     setActiveAnalysisId(analysisId);
+    setAnalysisError(null);
   }, []);
 
   const attachMeeting = useCallback(
@@ -237,17 +252,19 @@ export function useMultiAgents() {
   );
 
   const sendMessage = useCallback(
-    (content: string) => {
-      if (!activeAnalysisId) {
-        return;
+    async (content: string) => {
+      if (!activeAnalysisId || isAnalyzing) {
+        return false;
       }
 
       const normalizedContent = content.trim();
 
-      if (!normalizedContent && attachedMeetings.length === 0) {
-        return;
+      if (attachedMeetings.length === 0) {
+        setAnalysisError('Anexe pelo menos uma reuniao antes de solicitar a analise.');
+        return false;
       }
 
+      const targetAnalysisId = activeAnalysisId;
       const attachments = attachedMeetings.map(mapMeetingToAttachment);
       const meetingContext =
         attachments.length > 0
@@ -259,37 +276,74 @@ export function useMultiAgents() {
         content: `${normalizedContent || 'Analise as reunioes anexadas.'}${meetingContext}`,
         attachments,
       };
-      const agentMessage: MultiAgentMessage = {
-        id: createClientId('message'),
-        role: 'agent',
-        agent: attachments.length > 0 ? 'Agentes + Reunioes' : 'Agentes',
-        content:
-          attachments.length > 0
-            ? `Recebi ${attachments.length} reuniao(oes) como contexto. Vou cruzar sinais, decisoes pendentes e riscos antes de sugerir o proximo passo.`
-            : 'Recebi seu pedido. Vou analisar pelas perspectivas de cliente, razao, financeiro e narrativa.',
-      };
 
       setMessagesByAnalysis((currentMessages) => ({
         ...currentMessages,
-        [activeAnalysisId]: [...(currentMessages[activeAnalysisId] ?? []), userMessage, agentMessage],
+        [targetAnalysisId]: [...(currentMessages[targetAnalysisId] ?? []), userMessage],
       }));
-
       setAnalyses((currentAnalyses) =>
         currentAnalyses.map((analysis) =>
-          analysis.id === activeAnalysisId
+          analysis.id === targetAnalysisId
             ? {
                 ...analysis,
                 title: normalizedContent ? normalizedContent.slice(0, 42) : 'Analise de reunioes',
-                description:
-                  attachments.length > 0
-                    ? `${attachments.length} reuniao(oes) anexada(s) como contexto.`
-                    : 'Pedido enviado para os agentes.',
+                description: `${attachments.length} reuniao(oes) anexada(s) como contexto.`,
               }
             : analysis,
         ),
       );
+      setResultsByAnalysis((currentResults) => ({
+        ...currentResults,
+        [targetAnalysisId]: null,
+      }));
+      setAnalysisError(null);
+      setIsAnalyzing(true);
+
+      try {
+        const response = await analyzeMeetings(
+          attachments.map((meeting) => meeting.id),
+          normalizedContent || undefined,
+        );
+        const personaMessages = response.analise.comentarios_relevantes_das_personas.map((comment) => ({
+          id: createClientId('message'),
+          role: 'agent' as const,
+          agent: comment.persona,
+          content: comment.comentario_direcionador,
+        }));
+
+        setMessagesByAnalysis((currentMessages) => ({
+          ...currentMessages,
+          [targetAnalysisId]: [...(currentMessages[targetAnalysisId] ?? []), ...personaMessages],
+        }));
+        setResultsByAnalysis((currentResults) => ({
+          ...currentResults,
+          [targetAnalysisId]: response.analise,
+        }));
+        setAnalyses((currentAnalyses) =>
+          currentAnalyses.map((analysis) =>
+            analysis.id === targetAnalysisId
+              ? {
+                  ...analysis,
+                  agentCount: response.analise.comentarios_relevantes_das_personas.length,
+                }
+              : analysis,
+          ),
+        );
+
+        return true;
+      } catch (analysisRequestError) {
+        const message =
+          analysisRequestError instanceof Error
+            ? analysisRequestError.message
+            : 'Nao foi possivel concluir a analise das reunioes.';
+
+        setAnalysisError(message);
+        return false;
+      } finally {
+        setIsAnalyzing(false);
+      }
     },
-    [activeAnalysisId, attachedMeetings],
+    [activeAnalysisId, attachedMeetings, isAnalyzing],
   );
 
   return {
@@ -301,11 +355,14 @@ export function useMultiAgents() {
           attachedMeetings,
           meetings,
           messages,
+          analysisResult,
           selectedCompanyId,
         }
       : null,
     isLoading,
+    isAnalyzing,
     error,
+    analysisError,
     attachMeeting,
     createAnalysis,
     detachMeeting,

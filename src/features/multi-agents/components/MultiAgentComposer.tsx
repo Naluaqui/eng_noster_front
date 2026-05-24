@@ -1,20 +1,26 @@
 'use client';
 
 import { useMemo, useState, type FormEvent } from 'react';
-import { ArrowUp, Paperclip, Search, Sparkles, X } from 'lucide-react';
+import { ArrowUp, FileDown, Paperclip, Search, Sparkles, X } from 'lucide-react';
 import type { Meeting } from '@/features/meetings/types/meeting';
 import { formatShortDate } from '@/shared/lib/formatters';
+import { exportAnalysisPdf } from '../utils/exportAnalysisPdf';
+import type { AiAnalysis } from '../types/multiAgent';
 
 type MultiAgentComposerProps = {
+  analysisResult: AiAnalysis | null;
   attachedMeetings: Meeting[];
+  isAnalyzing: boolean;
   meetings: Meeting[];
   onAttachMeeting: (meetingId: string) => void;
   onDetachMeeting: (meetingId: string) => void;
-  onSendMessage: (content: string) => void;
+  onSendMessage: (content: string) => Promise<boolean>;
 };
 
 export function MultiAgentComposer({
+  analysisResult,
   attachedMeetings,
+  isAnalyzing,
   meetings,
   onAttachMeeting,
   onDetachMeeting,
@@ -45,7 +51,12 @@ export function MultiAgentComposer({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onSendMessage(message);
+
+    if (attachedMeetings.length === 0 || isAnalyzing) {
+      return;
+    }
+
+    void onSendMessage(message);
     setMessage('');
   }
 
@@ -64,6 +75,7 @@ export function MultiAgentComposer({
                 {meeting.title}
                 <button
                   aria-label={`Remover ${meeting.title}`}
+                  disabled={isAnalyzing}
                   onClick={() => onDetachMeeting(meeting.id)}
                   type="button"
                 >
@@ -78,25 +90,41 @@ export function MultiAgentComposer({
           <span className="sr-only">Mensagem para os agentes</span>
           <textarea
             name="message"
+            disabled={isAnalyzing}
             onChange={(event) => setMessage(event.target.value)}
             placeholder="Peca uma analise, compare perspectivas ou descreva a decisao..."
             value={message}
           />
         </label>
 
+        {attachedMeetings.length === 0 ? (
+          <p className="multi-agent-composer__hint">Anexe pelo menos uma reuniao para iniciar a analise.</p>
+        ) : null}
+
         <footer>
-          <button onClick={() => setIsMeetingPickerOpen(true)} type="button">
+          <button disabled={isAnalyzing} onClick={() => setIsMeetingPickerOpen(true)} type="button">
             <Paperclip size={15} aria-hidden="true" />
             Anexar reuniao
           </button>
-          <button type="button">
+          <button disabled={isAnalyzing} type="button">
             <Sparkles size={15} aria-hidden="true" />
             Agentes
           </button>
+          {analysisResult ? (
+            <button
+              className="multi-agent-composer__export"
+              disabled={isAnalyzing}
+              onClick={() => void exportAnalysisPdf(analysisResult)}
+              type="button"
+            >
+              <FileDown size={15} aria-hidden="true" />
+              Exportar analise
+            </button>
+          ) : null}
           <button
             type="submit"
             aria-label="Enviar mensagem"
-            disabled={!message.trim() && attachedMeetings.length === 0}
+            disabled={isAnalyzing || attachedMeetings.length === 0}
           >
             <ArrowUp size={17} aria-hidden="true" />
           </button>
