@@ -1,0 +1,31 @@
+# Stack para deploy no Portainer
+#
+# Como usar:
+# 1. No Portainer, crie uma Stack (Web editor) colando este arquivo.
+# 2. Em "Environment variables", defina:
+#    - FRONT_IMAGE  (ex: ghcr.io/<owner>/eng_decision_front:latest)
+#    - FRONT_PORT   (opcional, padrao 8787)
+# 3. Salve a stack. Para receber novas IMGs automaticamente, ative o
+#    "Webhook" da stack e cole essa URL no secret PORTAINER_WEBHOOK_URL
+#    do repositorio no GitHub Actions.
+#
+# IMPORTANT: NEXT_PUBLIC_* (API URL, Google client id/redirect) sao
+# embutidas no bundle durante o `next build`, portanto sao configuradas
+# como build-args no GitHub Actions (secrets), nao aqui em runtime.
+
+services:
+  front:
+    image: ${FRONT_IMAGE:-ghcr.io/OWNER/eng_decision_front:latest}
+    container_name: eng_decision_front
+    restart: unless-stopped
+    ports:
+      - "${FRONT_PORT:-8787}:8787"
+    environment:
+      PORT: 8787
+      NODE_ENV: production
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8787', r => process.exit(r.statusCode < 500 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

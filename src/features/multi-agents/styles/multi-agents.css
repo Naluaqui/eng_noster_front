@@ -954,6 +954,23 @@
   color: var(--color-background);
 }
 
+.analysis-result__focus-product {
+  border: 0 !important;
+  padding: clamp(1rem, 2vw, 1.25rem) !important;
+  background:
+    radial-gradient(circle at 94% 12%, rgba(255, 227, 66, 0.52), transparent 30%),
+    linear-gradient(135deg, rgba(0, 255, 195, 0.28), rgba(255, 253, 255, 0.96)) !important;
+  box-shadow: 0 1rem 2.2rem rgba(28, 28, 28, 0.1);
+}
+
+.analysis-result__focus-product strong {
+  display: block;
+  color: var(--color-background);
+  font-size: clamp(1.06rem, 1.8vw, 1.34rem);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .analysis-result__opportunities {
   border: 0 !important;
   padding: 1.2rem !important;

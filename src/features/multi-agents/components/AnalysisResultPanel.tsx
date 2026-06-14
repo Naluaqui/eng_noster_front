@@ -14,12 +14,20 @@ const solutionLabels = [
 ] as const;
 
 export function AnalysisResultPanel({ analysis }: AnalysisResultPanelProps) {
+  const focusProductName = getFocusProductName(analysis);
+
   return (
     <section className="analysis-result" aria-label="Analise consolidada">
       {analysis.resposta_da_pergunta ? (
         <article className="analysis-result__answer">
           <span>Resposta da pergunta</span>
           <p>{analysis.resposta_da_pergunta}</p>
+        </article>
+      ) : null}
+
+      {focusProductName ? (
+        <article className="analysis-result__focus-product" aria-label="Produto recomendado">
+          <strong>{focusProductName}</strong>
         </article>
       ) : null}
 
@@ -152,6 +160,18 @@ function EntityGroup({ label, values }: { label: string; values: Array<{ name: s
 
 function getEntityName(value: string | AiDetectedCompany | AiDetectedProduct) {
   return typeof value === 'string' ? value : value.nome;
+}
+
+function getFocusProductName(analysis: AiAnalysis) {
+  const focusText = analysis.solucao_final_clara.onde_focar ?? '';
+  const match = focusText.match(/produto foco:\s*(.+?)(?:\s+-\s+|$)/i);
+
+  if (match?.[1]) {
+    return match[1].trim();
+  }
+
+  const [firstProduct] = analysis.entidades_detectadas.produtos;
+  return firstProduct ? getEntityName(firstProduct) : null;
 }
 
 function getThemeName(value: string | AiDetectedTheme) {
