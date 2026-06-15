@@ -7,17 +7,17 @@ import type {
 } from '../types/persuasion';
 
 export const persuasionProfile: PersuasionProfile = {
-  id: 'mock-microsoft',
-  name: 'Microsoft',
-  role: 'Tecnologia',
+  id: 'mock-janete-padaria',
+  name: 'Janete Padaria',
+  role: 'Proprietária',
   registeredAt: '24 novembro 2022',
-  location: 'São Paulo, Brasil',
-  industry: 'Tecnologia',
-  email: '-',
-  phone: '-',
+  location: 'Belo Horizonte, Brasil',
+  industry: 'Alimentação e Panificação',
+  email: 'janete@padariajanete.com.br',
+  phone: '(31) 99876-5432',
   source: 'mock',
   avatar:
-    'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=720&q=80',
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=720&q=80',
 };
 
 export const persuasionSocials: PersuasionSocial[] = [
@@ -64,7 +64,7 @@ export const persuasionSidebarStats: PersuasionSidebarStat[] = [
 
 export const persuasionWorklist: PersuasionWorklistItem[] = [
   {
-    id: 'microsoft',
+    id: 'janete-padaria',
     profileId: persuasionProfile.id,
     name: persuasionProfile.name,
     role: persuasionProfile.role,
@@ -72,6 +72,6 @@ export const persuasionWorklist: PersuasionWorklistItem[] = [
     priority: 'Alta',
     channel: 'document',
     avatar:
-      'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=240&q=80',
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80',
   },
 ];

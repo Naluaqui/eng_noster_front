@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import { MultiAgentsProvider } from '@/features/multi-agents/context/MultiAgentsContext';
 import { AppHeader } from '../components/AppHeader';
 import { Sidebar } from '../components/Sidebar';
 
@@ -12,15 +13,17 @@ export function AuthenticatedAppLayout({ children }: AuthenticatedAppLayoutProps
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <div className={isSidebarOpen ? 'app-shell' : 'app-shell app-shell--sidebar-collapsed'}>
-      <Sidebar
-        isOpen={isSidebarOpen}
-        onToggle={() => setIsSidebarOpen((currentValue) => !currentValue)}
-      />
-      <div className="app-content">
-        <AppHeader />
-        {children}
+    <MultiAgentsProvider>
+      <div className={isSidebarOpen ? 'app-shell' : 'app-shell app-shell--sidebar-collapsed'}>
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onToggle={() => setIsSidebarOpen((currentValue) => !currentValue)}
+        />
+        <div className="app-content">
+          <AppHeader />
+          {children}
+        </div>
       </div>
-    </div>
+    </MultiAgentsProvider>
   );
 }

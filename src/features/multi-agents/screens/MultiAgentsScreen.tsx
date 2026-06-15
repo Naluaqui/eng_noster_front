@@ -3,7 +3,7 @@
 import { EmptyState } from '@/shared/components/feedback/EmptyState';
 import { LoadingState } from '@/shared/components/feedback/LoadingState';
 import { MultiAgentsChat } from '../components/MultiAgentsChat';
-import { useMultiAgents } from '../hooks/useMultiAgents';
+import { useMultiAgentsContext } from '../context/MultiAgentsContext';
 
 export function MultiAgentsScreen() {
   const {
@@ -18,7 +18,7 @@ export function MultiAgentsScreen() {
     detachMeeting,
     selectAnalysis,
     sendMessage,
-  } = useMultiAgents();
+  } = useMultiAgentsContext();
 
   if (isLoading) {
     return <LoadingState label="Carregando multi-agentes..." />;

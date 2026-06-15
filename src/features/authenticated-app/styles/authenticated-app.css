@@ -195,6 +195,34 @@
   padding-bottom: 1rem;
 }
 
+.app-header__analysis-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--color-accent-purple);
+  white-space: nowrap;
+}
+
+.app-header__analysis-spinner {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  border: 2px solid rgba(124, 58, 237, 0.25);
+  border-top-color: var(--color-accent-purple);
+  animation: app-header-spin 0.8s linear infinite;
+}
+
+@keyframes app-header-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .app-header h1,
 .feature-page__header h2 {
   margin: 0;
